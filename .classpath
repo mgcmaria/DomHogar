@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="DomHogar-master/DomHogar-master/src"/>
+	<classpathentry kind="lib" path="DomHogar-master/DomHogar-master/lib/mysql-connector-java-8.0.15.jar"/>
+	<classpathentry kind="output" path="DomHogar-master/bin"/>
+</classpath>
