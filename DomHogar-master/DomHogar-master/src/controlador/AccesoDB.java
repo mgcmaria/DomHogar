@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import tablas.Empleado;
 
 public class AccesoDB {
-
+	
 	public static Connection conexion() {
 		
 		// Paso 1: Cargar el driver
@@ -48,7 +48,7 @@ public class AccesoDB {
 
 	public static ArrayList<Empleado> datosEmpleado(Connection conexion ) {
 
-		ArrayList<Empleado> lista_users = new ArrayList<Empleado>();
+		ArrayList<Empleado> lista_empleados = new ArrayList<Empleado>();
 		
 		Empleado empleado;
 		
@@ -72,15 +72,30 @@ public class AccesoDB {
 				
 				empleado = new Empleado(nombre, apellidos, email, nif, usuario, contrasena, perfil, telefono);
 				
-				lista_users.add(empleado);				
+				lista_empleados.add(empleado);				
 			}
 			
 		} catch (SQLException e) {
 			e.getMessage();
 		}
 
-		return lista_users;
+		return lista_empleados;
 	}
 
-	
+	public static String[][] obtenerMatrizEmpleados() {
+		Connection conexion = AccesoDB.conexion();				
+		
+		ArrayList<Empleado> listaEmpleados = AccesoDB.datosEmpleado(conexion);
+		
+		String matrizInfo[][] = new String[listaEmpleados.size()][5];
+		
+		for (int i = 0; i < listaEmpleados.size(); i++) {
+			matrizInfo[i][0] = listaEmpleados.get(i).getNombre()+"";
+			matrizInfo[i][1] = listaEmpleados.get(i).getApellidos()+"";
+			matrizInfo[i][2] = listaEmpleados.get(i).getEmail()+"";
+			matrizInfo[i][3] = listaEmpleados.get(i).getNif()+"";
+			matrizInfo[i][4] = listaEmpleados.get(i).getTelefono()+"";
+		}		
+		return matrizInfo;
+	}	
 }

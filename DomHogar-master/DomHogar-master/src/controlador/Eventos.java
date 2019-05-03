@@ -16,6 +16,7 @@ import vista.Ventana;
 public class Eventos implements ActionListener, MouseListener {
 	
 	private Ventana ventana;
+	Connection conexion;
 
 	public Eventos(Ventana ventana) {
 		this.ventana = ventana;
@@ -25,7 +26,7 @@ public class Eventos implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		//Abrimos la conexion con la BBDD
-		Connection conexion = AccesoDB.conexion();				
+		conexion = AccesoDB.conexion();				
 		if (conexion == null)
 		return;	
 		
@@ -125,7 +126,16 @@ public class Eventos implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+		if (e.getSource()==ventana.getBotonExitInit()) {
+			// Pasamos como argumento la conexion a cerrar.
+			AccesoDB.cerrarConexion(conexion); 
+			//Cerramos la aplicación
+			System.exit(0);
+		}
+		else if (e.getSource()==ventana.getBotonHR()) {
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getBarraEmpleados().setVisible(true);
+		}
 		
 	}
 
@@ -235,57 +245,45 @@ public class Eventos implements ActionListener, MouseListener {
 	public void mousePressed(MouseEvent e) {
 		if(e.getSource()==ventana.getBotonLogin()) {
 			 ventana.getBotonLogin().setBackground(Color.WHITE);
-			 ventana.getBotonLogin().setIcon(new ImageIcon("imagenes/login press.png"));
-			 
-			 
+			 ventana.getBotonLogin().setIcon(new ImageIcon("imagenes/login press.png"));			 
 		}
 		else if (e.getSource()==ventana.getBotonExit()) {
 			 
 			ventana.getBotonExit().setIcon(new ImageIcon("imagenes/exit login press.png"));
 			ventana.getBotonLogin().setBackground(Color.WHITE);
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonPurchases()) {
 			ventana.getBotonPurchases().setIcon(new ImageIcon("img/purchases press.png"));
 			ventana.getBotonLogin().setBackground(Color.WHITE);
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSales()) {
 			ventana.getBotonSales().setIcon(new ImageIcon("img/sales press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSuppliers()) {
 			ventana.getBotonSuppliers().setIcon(new ImageIcon("img/suppliers press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonCustomers()) {
 			ventana.getBotonCustomers().setIcon(new ImageIcon("img/customers press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonServices()) {
 			ventana.getBotonServices().setIcon(new ImageIcon("img/services press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonStock()) {
 			ventana.getBotonStock().setIcon(new ImageIcon("img/stock press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonHR()) {
 			ventana.getBotonHR().setIcon(new ImageIcon("img/human resources press.png"));
 		}
 		
 		else if (e.getSource()==ventana.getBotonUser()) {
 			ventana.getBotonUser().setIcon(new ImageIcon("img/boton_user press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonLogout()) {
 			ventana.getBotonLogout().setIcon(new ImageIcon("img/logout press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonExitInit()) {
 			ventana.getBotonExitInit().setIcon(new ImageIcon("img/exit press.png"));
-		}
-		
+		}		
 	}
 
 	@Override
@@ -295,48 +293,37 @@ public class Eventos implements ActionListener, MouseListener {
 		}
 		else if (e.getSource()==ventana.getBotonExit()) {
 			ventana.getBotonExit().setIcon(new ImageIcon("imagenes/exit_login.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonPurchases()) {
 			ventana.getBotonPurchases().setIcon(new ImageIcon("img/purchases.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSales()) {
 			ventana.getBotonSales().setIcon(new ImageIcon("img/sales.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSuppliers()) {
 			ventana.getBotonSuppliers().setIcon(new ImageIcon("img/suppliers.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonCustomers()) {
 			ventana.getBotonCustomers().setIcon(new ImageIcon("img/customers.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonServices()) {
 			ventana.getBotonServices().setIcon(new ImageIcon("img/services.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonStock()) {
 			ventana.getBotonStock().setIcon(new ImageIcon("img/stock.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonHR()) {
 			ventana.getBotonHR().setIcon(new ImageIcon("img/human resources.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonUser()) {
 			ventana.getBotonUser().setIcon(new ImageIcon("img/boton_user.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonLogout()) {
 			ventana.getBotonLogout().setIcon(new ImageIcon("img/logout.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonExitInit()) {
 			ventana.getBotonExitInit().setIcon(new ImageIcon("img/exit.png"));
-		}
-		
+		}		
 	}	
 }
 

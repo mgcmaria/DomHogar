@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
+import controlador.AccesoDB;
 import controlador.Eventos;
 
 public class Ventana extends JFrame{
@@ -16,7 +17,9 @@ public class Ventana extends JFrame{
 	private JPasswordField cajaPass;
 	private JButton botonLogin, botonExit, botonPurchases, botonSales, botonSuppliers, botonCustomers, botonServices, botonStock,
 	botonHR, botonUser, botonLogout, botonExitInit;
-	private JPanel panelIzq, panelDer;
+	private JPanel panelIzq, panelDer;	
+	private JScrollPane barraEmpleados;
+	private JTable tablaEmpleados;
 	
 	//CONSTRUCTOR
 	public Ventana() {
@@ -207,9 +210,24 @@ public class Ventana extends JFrame{
 		botonExitInit.setBorder(null);
 		panelDer.add(botonExitInit);
 		
+		//TABLAS
 		
+		//Construimos la tabla empleados
+		
+		barraEmpleados = new JScrollPane();
+		barraEmpleados.setBounds(280, 20, 600, 400);
+		getContentPane().add(barraEmpleados);
+		
+		String titulosEmpleados[] = {"Nombre", "Apellidos", "e-mail", "NIF", "Telefono"};
+		String infoEmpleados[][] = AccesoDB.obtenerMatrizEmpleados();
+		
+		tablaEmpleados = new JTable(infoEmpleados,titulosEmpleados);
+		tablaEmpleados.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablaEmpleados.getColumnModel().getColumn(1).setPreferredWidth(115);
+		tablaEmpleados.getColumnModel().getColumn(2).setPreferredWidth(140);
+		barraEmpleados.setViewportView(tablaEmpleados);
+		barraEmpleados.setVisible(false);
 	}
-
 
 	//METODO PARA PONER A LA ESCUCHA LOS EVENTOS	
 	public void Eventos (Eventos manejador) {
@@ -226,9 +244,7 @@ public class Ventana extends JFrame{
 		botonHR.addMouseListener(manejador);
 		botonUser.addMouseListener(manejador);
 		botonLogout.addMouseListener(manejador);
-		botonExitInit.addMouseListener(manejador);
-		
-		
+		botonExitInit.addMouseListener(manejador);		
 	}
 	
 	//GETTER Y SETTER
@@ -307,87 +323,79 @@ public class Ventana extends JFrame{
 	public JPanel getPanelDer() {
 		return panelDer;
 	}
+	public JScrollPane getBarraEmpleados() {
+		return barraEmpleados;
+	}
+	public void setBarraEmpleados(JScrollPane barraEmpleados) {
+		this.barraEmpleados = barraEmpleados;
+	}
 	public void setPanelDer(JPanel panelDer) {
 		this.panelDer = panelDer;
 	}		
-	
 	public JLabel getImageLogo() {
 		return imageLogo;
 	}
-
 	public void setImageLogo(JLabel imageLogo) {
 		this.imageLogo = imageLogo;
 	}
-
 	public JButton getBotonSales() {
 		return botonSales;
 	}
-
 	public void setBotonSales(JButton botonSales) {
 		this.botonSales = botonSales;
 	}
-
 	public JButton getBotonSuppliers() {
 		return botonSuppliers;
 	}
-
 	public void setBotonSuppliers(JButton botonSuppliers) {
 		this.botonSuppliers = botonSuppliers;
 	}
-
 	public JButton getBotonCustomers() {
 		return botonCustomers;
 	}
-
 	public void setBotonCustomers(JButton botonCustomers) {
 		this.botonCustomers = botonCustomers;
 	}
-
 	public JButton getBotonServices() {
 		return botonServices;
 	}
-
 	public void setBotonServices(JButton botonServices) {
 		this.botonServices = botonServices;
 	}
-
 	public JButton getBotonStock() {
 		return botonStock;
 	}
-
 	public void setBotonStock(JButton botonStock) {
 		this.botonStock = botonStock;
 	}
-
 	public JButton getBotonHR() {
 		return botonHR;
 	}
-
 	public void setBotonHR(JButton botonHR) {
 		this.botonHR = botonHR;
 	}
-
 	public JButton getBotonUser() {
 		return botonUser;
 	}
-
 	public void setBotonUser(JButton botonUser) {
 		this.botonUser = botonUser;
 	}
-
 	public JButton getBotonLogout() {
 		return botonLogout;
 	}
-
 	public void setBotonLogout(JButton botonLogout) {
 		this.botonLogout = botonLogout;
 	}
-
 	public JButton getBotonExitInit() {
 		return botonExitInit;
 	}
-
 	public void setBotonExitInit(JButton botonExitInit) {
 		this.botonExitInit = botonExitInit;
+	}
+	public JTable getTablaEmpleados() {
+		return tablaEmpleados;
+	}
+	public void setTablaEmpleados(JTable tablaEmpleados) {
+		this.tablaEmpleados = tablaEmpleados;
 	}
 }
