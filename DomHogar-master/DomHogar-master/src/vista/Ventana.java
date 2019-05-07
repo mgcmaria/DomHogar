@@ -24,7 +24,7 @@ public class Ventana extends JFrame{
 	private JPanel panelEmpleado, subPanelEmpInsertar;
 	private JScrollPane barraEmpleados;
 	private JTable tablaEmpleados;
-	private JButton botonInsetEmpleado, botonActualizarEmpleado, botonBorrarEmpleado, botonExpEmplFichero,botonInsertFinal;
+	private JButton botonInsetEmpleado, botonActualizarEmpleado, botonBorrarEmpleado, botonExpEmplFichero, botonInsertFinal;
 	private JTextField insertNomEmpl, insertApelEmpl, insertNIFEmp, insertPhoneEmp, insertEmailEmp, insertUserEmp, 
 	insertPassEmp, insertPerfilEmp;
 	private JLabel resulInsertEmp;
@@ -225,7 +225,7 @@ public class Ventana extends JFrame{
 		//PANEL EMPLEADO
 		
 		panelEmpleado = new JPanel();
-		panelEmpleado.setBackground(Color.gray);
+		panelEmpleado.setBackground(Color.white);
 		panelEmpleado.setBounds(240, 0, 800, 320);
 		panelEmpleado.setLayout(null);
 		add(panelEmpleado);
@@ -284,7 +284,7 @@ public class Ventana extends JFrame{
 		
 		subPanelEmpInsertar = new JPanel();
 		subPanelEmpInsertar.setBounds(240, 350, 800, 350);
-		subPanelEmpInsertar.setBackground(Color.gray);
+		subPanelEmpInsertar.setBackground(Color.white);
 		subPanelEmpInsertar.setLayout(null);
 		add(subPanelEmpInsertar);
 		subPanelEmpInsertar.setVisible(false);	

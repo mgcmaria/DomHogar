@@ -94,8 +94,8 @@ public class Eventos implements ActionListener, MouseListener {
 						ventana.getBotonLogin().setVisible(false);
 						ventana.getBotonExit().setVisible(false);
 						//Mostramos los componentes de la aplicacion y redimensionamos la pantalla
-						//ventana.setSize(1200, 1000);
-						ventana.setExtendedState(Ventana.MAXIMIZED_BOTH);
+						ventana.setSize(1200, 800);
+						//ventana.setExtendedState(Ventana.MAXIMIZED_BOTH);
 						ventana.setLayout(null);
 						ventana.setLocationRelativeTo(null);
 						ventana.getImagenInicio().setVisible(true);
