@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import tablas.Empleado;
 import vista.Ventana;
@@ -69,6 +71,7 @@ public class Eventos implements ActionListener, MouseListener {
 						ventana.getBotonExit().setVisible(false);
 						//Mostramos los componentes de la aplicacion y redimensionamos la pantalla
 						//ventana.setSize(1200, 1000);
+						//Ajusta el tama�o de la ventana a la pantalla del usuario
 						ventana.setExtendedState(Ventana.MAXIMIZED_BOTH);
 						ventana.setLayout(null);
 						ventana.setLocationRelativeTo(null);
@@ -129,12 +132,42 @@ public class Eventos implements ActionListener, MouseListener {
 		if (e.getSource()==ventana.getBotonExitInit()) {
 			// Pasamos como argumento la conexion a cerrar.
 			AccesoDB.cerrarConexion(conexion); 
-			//Cerramos la aplicación
+			//Cerramos la aplicacion
 			System.exit(0);
 		}
 		else if (e.getSource()==ventana.getBotonHR()) {
 			ventana.getImagenInicio().setVisible(false);
-			ventana.getBarraEmpleados().setVisible(true);
+			ventana.getPanelEmpleado().setVisible(true);
+		}
+		else if (e.getSource() == ventana.getBotonInsetEmpleado()) {
+			ventana.getSubPanelEmpInsertar().setVisible(true);
+		}
+		else if (e.getSource() == ventana.getBotonInsertFinal()) {
+			
+			ArrayList<Empleado> nuevoEmpleado = new ArrayList<Empleado>();
+			
+			//Recogemos los datos del nuevo empleado
+			String nombre = ventana.getInsertNomEmpl().getText();
+			String apellidos = ventana.getInsertApelEmpl().getText();
+			String nif = ventana.getInsertNIFEmp().getText();
+			int telefono = Integer.parseInt(ventana.getInsertPhoneEmp().getText());
+			String email = ventana.getInsertEmailEmp().getText();
+			String user = ventana.getInsertUserEmp().getText();
+			String pass = ventana.getInsertPassEmp().getText();
+			String perfil = ventana.getInsertPerfilEmp().getText();
+			
+			Empleado emp = new Empleado(nombre, apellidos, email, nif, user, pass, perfil, telefono);
+			
+			nuevoEmpleado.add(emp);
+			
+			int afectados = AccesoDB.insertarEmpleado(nuevoEmpleado, conexion);
+			
+			if(afectados == 0) {
+				ventana.getResulInsertEmp().setText("Error al insertar empleado");
+			} else {
+				ventana.getResulInsertEmp().setText("Empleado insertado");
+				AccesoDB.obtenerMatrizEmpleados();
+			}
 		}
 		
 	}
@@ -143,14 +176,17 @@ public class Eventos implements ActionListener, MouseListener {
 	public void mouseEntered(MouseEvent e) {
 		if(e.getSource()==ventana.getBotonLogin()) {
 			 ventana.getBotonLogin().setIcon(new ImageIcon("imagenes/login hover.png"));
+			 ventana.getBotonLogin().setBackground(Color.WHITE);
 			 
 		}
 		else if (e.getSource()==ventana.getBotonExit()) {
 			ventana.getBotonExit().setIcon(new ImageIcon("imagenes/exit_login_hover.png"));
+			ventana.getBotonExit().setBackground(Color.WHITE);
 		}
 		
 		else if (e.getSource()==ventana.getBotonPurchases()) {
 			ventana.getBotonPurchases().setIcon(new ImageIcon("img/purchases hover.png"));
+			ventana.getBotonPurchases().setBackground(Color.WHITE);
 		}
 		
 		else if (e.getSource()==ventana.getBotonSales()) {
@@ -244,8 +280,8 @@ public class Eventos implements ActionListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(e.getSource()==ventana.getBotonLogin()) {
+			 ventana.getBotonLogin().setIcon(new ImageIcon("imagenes/login press.png"));	
 			 ventana.getBotonLogin().setBackground(Color.WHITE);
-			 ventana.getBotonLogin().setIcon(new ImageIcon("imagenes/login press.png"));			 
 		}
 		else if (e.getSource()==ventana.getBotonExit()) {
 			 
@@ -273,8 +309,7 @@ public class Eventos implements ActionListener, MouseListener {
 		}		
 		else if (e.getSource()==ventana.getBotonHR()) {
 			ventana.getBotonHR().setIcon(new ImageIcon("img/human resources press.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonUser()) {
 			ventana.getBotonUser().setIcon(new ImageIcon("img/boton_user press.png"));
 		}		

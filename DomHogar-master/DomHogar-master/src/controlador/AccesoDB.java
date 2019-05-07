@@ -2,6 +2,7 @@ package controlador;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -97,5 +98,61 @@ public class AccesoDB {
 			matrizInfo[i][4] = listaEmpleados.get(i).getTelefono()+"";
 		}		
 		return matrizInfo;
-	}	
+	}
+
+	public static int insertarEmpleado(ArrayList<Empleado> nuevoEmpleado, Connection conexion) {
+		
+		int afectados = 0;
+		
+		try {
+			//Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO EMPLEADO (NIF_EMPLEADO, NOMBRE, APELLIDOS, "
+					+ "TELEFONO, EMAIL, USUARIO, CONTRASENA, PERFIL) " 
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			
+			String nif = null;
+			String nombre = null;
+			String apellidos = null;
+			int telefono = 0;
+			String email = null;
+			String usuario = null;
+			String pass = null ;
+			String perfil = null;
+			
+			for (Empleado empleado : nuevoEmpleado) {
+				nif = empleado.getNif();
+				nombre = empleado.getNombre();
+				apellidos = empleado.getApellidos();
+				telefono = empleado.getTelefono();
+				email = empleado.getEmail();
+				usuario = empleado.getUsuario();
+				pass = empleado.getContrasena();
+				perfil = empleado.getPerfil();
+			}		
+			
+			//Con PreparedStatement recogemos los valores introducidos			
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setString(1, nif);
+			sentencia.setString(2, nombre);
+			sentencia.setString(3, apellidos);
+			sentencia.setInt(4, telefono);
+			sentencia.setString(5, email);
+			sentencia.setString(6, usuario);
+			sentencia.setString(7, pass);
+			sentencia.setString(8, perfil);
+			
+			afectados = sentencia.executeUpdate(); //Ejecutamos la inserci�n
+
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;		
+	}
+
+	
+
+	
+
+
 }
