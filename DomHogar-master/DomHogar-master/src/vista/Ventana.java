@@ -29,6 +29,12 @@ public class Ventana extends JFrame{
 	insertPassEmp, insertPerfilEmp;
 	private JLabel resulInsertEmp;
 	
+	//Atributos de COMPRAS
+	private JPanel panelCompras;
+	private JButton botonAlbaran;
+	private JScrollPane barraCompras;
+	
+	
 	//CONSTRUCTOR
 	public Ventana() {
 		setSize(400,520); //Tamano de la Ventana
@@ -117,22 +123,22 @@ public class Ventana extends JFrame{
 		
 		//PAGINA PRINCIPAL
 		
-		Image img = new ImageIcon("imagenes\\imagen_inicio.jpg").getImage();		
-		imagenInicio = new JLabel(new ImageIcon(img.getScaledInstance(800, 700, Image.SCALE_SMOOTH)));
-		imagenInicio.setBounds(280, 20, 800, 700);
+		Image img = new ImageIcon("img/imagen_inicio.jpg").getImage();		
+		imagenInicio = new JLabel(new ImageIcon(img.getScaledInstance(750, 600, Image.SCALE_SMOOTH)));
+		imagenInicio.setBounds(200, 40, 750, 600);
 		add(imagenInicio);
 		imagenInicio.setVisible(false);
 		
 		panelIzq = new JPanel();
 		panelIzq.setBackground(Color.white);
-		panelIzq.setBounds(0, 0, 240, 1000);
+		panelIzq.setBounds(0, 0, 240, 700);
 		panelIzq.setLayout(null);
 		add(panelIzq);
 		panelIzq.setVisible(false);
 		
 		panelDer = new JPanel();
 		panelDer.setBackground(Color.white);
-		panelDer.setBounds(960, 0, 400, 1000);
+		panelDer.setBounds(780, 0, 400, 700);
 		panelDer.setLayout(null);
 		add(panelDer);
 		panelDer.setVisible(false);
@@ -141,42 +147,42 @@ public class Ventana extends JFrame{
 		
 		Image imgBotonPurchases = new ImageIcon("img\\purchases.png").getImage();
 		botonPurchases = new JButton(new ImageIcon(imgBotonPurchases.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonPurchases.setBounds(70,60,125,80);
+		botonPurchases.setBounds(30,40,125,80);
 		botonPurchases.setBackground(Color.WHITE);
 		botonPurchases.setBorder(null);
 		panelIzq.add(botonPurchases);
 		
 		Image imgBotonSales = new ImageIcon("img\\sales.png").getImage();
 		botonSales = new JButton(new ImageIcon(imgBotonSales.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonSales.setBounds(70,160,125,80);
+		botonSales.setBounds(30,140,125,80);
 		botonSales.setBackground(Color.WHITE);
 		botonSales.setBorder(null);
 		panelIzq.add(botonSales);
 		
 		Image imgBotonSuppliers = new ImageIcon("img\\suppliers.png").getImage();
 		botonSuppliers = new JButton(new ImageIcon(imgBotonSuppliers.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonSuppliers.setBounds(70,260,125,80);
+		botonSuppliers.setBounds(30,240,125,80);
 		botonSuppliers.setBackground(Color.WHITE);
 		botonSuppliers.setBorder(null);
 		panelIzq.add(botonSuppliers);
 		
 		Image imgBotonCustomers = new ImageIcon("img\\customers.png").getImage();
 		botonCustomers = new JButton(new ImageIcon(imgBotonCustomers.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonCustomers.setBounds(70,360,125,80);
+		botonCustomers.setBounds(30,340,125,80);
 		botonCustomers.setBackground(Color.WHITE);
 		botonCustomers.setBorder(null);
 		panelIzq.add(botonCustomers);
 		
 		Image imgBotonServices = new ImageIcon("img\\services.png").getImage();
 		botonServices = new JButton(new ImageIcon(imgBotonServices.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonServices.setBounds(70,460,125,80);
+		botonServices.setBounds(30,440,125,80);
 		botonServices.setBackground(Color.WHITE);
 		botonServices.setBorder(null);
 		panelIzq.add(botonServices);
 		
 		Image imgBotonStock = new ImageIcon("img\\stock.png").getImage();
 		botonStock = new JButton(new ImageIcon(imgBotonStock.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonStock.setBounds(70,560,125,80);
+		botonStock.setBounds(30,540,125,80);
 		botonStock.setBackground(Color.WHITE);
 		botonStock.setBorder(null);
 		panelIzq.add(botonStock);
@@ -184,41 +190,69 @@ public class Ventana extends JFrame{
 		//Botones panel derecho
 		
 		Image imgLog = new ImageIcon("img\\logo sin fondo.PNG").getImage();
-		imageLogo = new JLabel(new ImageIcon(imgLog.getScaledInstance(255, 200, Image.SCALE_SMOOTH)));
+		imageLogo = new JLabel(new ImageIcon(imgLog.getScaledInstance(180, 130, Image.SCALE_SMOOTH)));
 		//las coordenadas del final han de coincidir con las anteriores
-		imageLogo.setBounds(140, 20, 255, 200);
+		imageLogo.setBounds(190, 40, 180, 130);
 		panelDer.add(imageLogo);
 		
 		Image imgBotonHR = new ImageIcon("img\\human resources.png").getImage();
 		botonHR = new JButton(new ImageIcon(imgBotonHR.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonHR.setBounds(200,240,125,80);
+		botonHR.setBounds(220,200,125,80);
 		botonHR.setBackground(Color.WHITE);
 		botonHR.setBorder(null);
 		panelDer.add(botonHR);
 		
 		Image imgBotonUser = new ImageIcon("img\\boton_user.png").getImage();
 		botonUser = new JButton(new ImageIcon(imgBotonUser.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonUser.setBounds(200,400,125,80);
+		botonUser.setBounds(220,350,125,80);
 		botonUser.setBackground(Color.WHITE);
 		botonUser.setBorder(null);
 		panelDer.add(botonUser);
 		
 		Image imgBotonLogout = new ImageIcon("img\\logout.png").getImage();
 		botonLogout = new JButton(new ImageIcon(imgBotonLogout.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonLogout.setBounds(200,500,125,80);
+		botonLogout.setBounds(220,450,125,80);
 		botonLogout.setBackground(Color.WHITE);
 		botonLogout.setBorder(null);
 		panelDer.add(botonLogout);
 		
 		Image imgBotonExit = new ImageIcon("img\\exit.png").getImage();
 		botonExitInit = new JButton(new ImageIcon(imgBotonExit.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonExitInit.setBounds(200,600,125,80);
+		botonExitInit.setBounds(220,550,125,80);
 		botonExitInit.setBackground(Color.WHITE);
 		botonExitInit.setBorder(null);
 		panelDer.add(botonExitInit);
 		
 		panelEmpleado();
+		panelCompras();
 	}
+
+	// PANEL COMPRAS
+	private void panelCompras() {
+		
+		panelCompras = new JPanel();
+		panelCompras.setBackground(Color.white);
+		panelCompras.setBounds(240, 0, 800, 320);
+		panelCompras.setLayout(null);
+		add(panelCompras);
+		panelCompras.setVisible(false);
+		
+		botonAlbaran = new JButton("ALBARÁN");
+		botonAlbaran.setBounds(300,200,110,42);
+		botonAlbaran.setBorder(null); //Eliminamos el borde
+		//Falta incluir la imagen del botï¿½n
+		botonAlbaran.setBackground(Color.BLUE);
+		panelCompras.add(botonAlbaran);//Anadimos 
+		
+		barraCompras = new JScrollPane();
+		barraCompras.setBounds(10, 400, 680, 300);
+		panelCompras.add(barraCompras);
+		
+		
+		
+		
+	} 
+	
 
 	private void panelEmpleado() {
 		
@@ -389,7 +423,7 @@ public class Ventana extends JFrame{
 		resulInsertEmp.setBounds(20,222,500,30);//Posicionamos
 		resulInsertEmp.setBorder(null); //Eliminamos el borde
 		resulInsertEmp.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		resulInsertEmp.setForeground(new Color(255,255,255));//Color del texto
+		resulInsertEmp.setForeground(new Color(000,000,000));//Color del texto
 		subPanelEmpInsertar.add(resulInsertEmp);//Anadimos	
 	}
 
@@ -411,6 +445,7 @@ public class Ventana extends JFrame{
 		botonExitInit.addMouseListener(manejador);	
 		botonInsetEmpleado.addMouseListener(manejador);
 		botonInsertFinal.addMouseListener(manejador);
+		imageLogo.addMouseListener(manejador);
 	}
 	
 	//GETTER Y SETTER
@@ -691,5 +726,13 @@ public class Ventana extends JFrame{
 
 	public void setInsertPerfilEmp(JTextField insertPerfilEmp) {
 		this.insertPerfilEmp = insertPerfilEmp;
+	}
+	
+	public JPanel getPanelCompras() {
+		return panelCompras;
+	}
+
+	public void setPanelCompras(JPanel panelCompras) {
+		this.panelCompras = panelCompras;
 	}
 }
