@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import tablas.Empleado;
+import tablas.Proveedor;
 
 public class AccesoDB {
 	
@@ -46,6 +47,9 @@ public class AccesoDB {
 	}
 	/*private String nombre, apellidos, email, nif, usuario, contrasena;
 	private int telefono;*/
+	
+	
+	//DATOS EMPLEADOS
 
 	public static ArrayList<Empleado> datosEmpleado(Connection conexion ) {
 
@@ -150,8 +154,54 @@ public class AccesoDB {
 		return afectados;		
 	}
 
+	//DATOS PROVEEDORES
 	
+	public static ArrayList<Proveedor> datosProveedor(Connection conexion ) {
 
+		ArrayList<Proveedor> lista_proveedores = new ArrayList<Proveedor>();
+		
+		Proveedor proveedor;
+		
+		try {			
+
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT * FROM PROVEEDOR");
+
+			// Mientras haya registros anadimos al ArrayList
+			while (rs.next()) { 
+				
+				String codProveedor = rs.getString("COD_PROVEEDOR");
+				String nombreProveedor = rs.getString("NOMBRE_PROVEEDOR");
+				String mail = rs.getString("MAIL");
+				
+				proveedor = new Proveedor(codProveedor, nombreProveedor, mail);
+				
+				lista_proveedores.add(proveedor);				
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+
+		return lista_proveedores;
+	}
+	
+		public static String[][] obtenerMatrizProveedores() {
+		Connection conexion = AccesoDB.conexion();				
+		
+		ArrayList<Proveedor> listaProveedores = AccesoDB.datosProveedor(conexion);
+		
+		String matrizInfoPr[][] = new String[listaProveedores.size()][3];
+		
+		for (int i = 0; i < listaProveedores.size(); i++) {
+			matrizInfoPr[i][0] = listaProveedores.get(i).getCodproveedor()+"";
+			matrizInfoPr[i][1] = listaProveedores.get(i).getNombreProveedor()+"";
+			matrizInfoPr[i][2] = listaProveedores.get(i).getMail()+"";
+
+		}		
+		return matrizInfoPr;
+	}
 	
 
 

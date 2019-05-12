@@ -71,9 +71,8 @@ public class Eventos implements ActionListener, MouseListener {
 						ventana.getBotonLogin().setVisible(false);
 						ventana.getBotonExit().setVisible(false);
 						//Mostramos los componentes de la aplicacion y redimensionamos la pantalla
-						//ventana.setSize(1200, 1000);
-						//Ajusta el tamaï¿½o de la ventana a la pantalla del usuario
-						ventana.setExtendedState(Ventana.MAXIMIZED_BOTH);
+						ventana.setSize(1180,700);
+						ventana.setResizable(false);
 						ventana.setLayout(null);
 						ventana.setLocationRelativeTo(null);
 						ventana.getImagenInicio().setVisible(true);
@@ -96,7 +95,7 @@ public class Eventos implements ActionListener, MouseListener {
 						ventana.getBotonExit().setVisible(false);
 						//Mostramos los componentes de la aplicacion y redimensionamos la pantalla
 						ventana.setSize(1180,700);
-						//ventana.setExtendedState(Ventana.MAXIMIZED_BOTH);
+						ventana.setResizable(false);
 						ventana.setLayout(null);
 						ventana.setLocationRelativeTo(null);
 						ventana.getImagenInicio().setVisible(true);
@@ -137,8 +136,15 @@ public class Eventos implements ActionListener, MouseListener {
 			System.exit(0);
 		}
 		else if (e.getSource()==ventana.getBotonHR()) {
-			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelEmpleado().setVisible(true);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+
 		}
 		else if (e.getSource() == ventana.getBotonInsetEmpleado()) {
 			ventana.getSubPanelEmpInsertar().setVisible(true);
@@ -173,11 +179,84 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		else if(e.getSource()==ventana.getBotonPurchases()) {
 			
+			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(true);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+		}
+		
+		
+		else if(e.getSource()==ventana.getBotonSales()) {
 			
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(true);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
 			
 		}
+		
+		else if(e.getSource()==ventana.getBotonSuppliers()) {
+			
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(true);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			
+		}
+		
+		else if(e.getSource()==ventana.getBotonCustomers()) {
+			
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(true);
+			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			
+		}
+		
+		else if(e.getSource()==ventana.getBotonServices()) {
+			
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getPanelServicios().setVisible(true);
+			ventana.getPanelAlmacen().setVisible(false);
+			
+		}
+		
+		else if(e.getSource()==ventana.getBotonStock()) {
+			
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(true);
+			
+		}
+		
+		
+		
 		
 		//Atrás
 		else if(e.getSource()==ventana.getImageLogo()) {

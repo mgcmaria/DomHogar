@@ -34,6 +34,15 @@ public class Ventana extends JFrame{
 	private JButton botonAlbaran;
 	private JScrollPane barraCompras;
 	
+	//Atributos de VENTAS
+	private JPanel panelVentas;
+	
+	//Atributos de PROVEEDORESE
+	private JPanel panelServicios;
+	
+	//Atributos de ALMACÉN
+	private JPanel panelAlmacen;
+	
 	
 	//CONSTRUCTOR
 	public Ventana() {
@@ -41,6 +50,7 @@ public class Ventana extends JFrame{
 		setLocationRelativeTo(null); //Eliminamos la autolocalizaciÃ³n
 		setTitle("ERP DOMHOGAR"); //Titulo
 		setLayout(null); // Lo colocamos nosotros
+		setResizable(false); //Desactivamos botón maximizar
 		setIconImage(Toolkit.getDefaultToolkit().getImage("imagenes\\logo sin fondo.png")); //Imagen de la App
 		setDefaultCloseOperation(EXIT_ON_CLOSE); //Para programa cuendo cerramos
 		incializarComponentes(); //Metodo que inicializa los componentes
@@ -60,6 +70,7 @@ public class Ventana extends JFrame{
 		 * nombreApp.setBounds(10,10,400,30); //Colocamos nombreApp.setForeground(new
 		 * Color(48,72,111)); //Damos color a la letra add(nombreApp); //anadimos
 		 */		
+		
 		//PANTALLA LOGIN
 		
 		Image imgLogin = new ImageIcon("imagenes\\logo1.PNG").getImage();
@@ -225,6 +236,12 @@ public class Ventana extends JFrame{
 		
 		panelEmpleado();
 		panelCompras();
+		panelVentas();
+		panelProveedores();
+		panelClientes();
+		panelServicios();
+		panelAlmacen();
+		
 	}
 
 	// PANEL COMPRAS
@@ -232,13 +249,13 @@ public class Ventana extends JFrame{
 		
 		panelCompras = new JPanel();
 		panelCompras.setBackground(Color.white);
-		panelCompras.setBounds(240, 0, 800, 320);
+		panelCompras.setBounds(240, 0, 900, 500);
 		panelCompras.setLayout(null);
 		add(panelCompras);
 		panelCompras.setVisible(false);
 		
 		botonAlbaran = new JButton("ALBARÁN");
-		botonAlbaran.setBounds(300,200,110,42);
+		botonAlbaran.setBounds(400,350,110,42);
 		botonAlbaran.setBorder(null); //Eliminamos el borde
 		//Falta incluir la imagen del botï¿½n
 		botonAlbaran.setBackground(Color.BLUE);
@@ -249,15 +266,83 @@ public class Ventana extends JFrame{
 		panelCompras.add(barraCompras);
 		
 		
-		
-		
 	} 
+
+
+	//PANEL VENTAS
+	private void panelVentas() {
+		panelVentas = new JPanel();
+		panelVentas.setBackground(Color.white);
+		panelVentas.setBounds(240, 0, 900, 500);
+		panelVentas.setLayout(null);
+		add(panelVentas);
+		panelVentas.setVisible(false);
+	}
+
+	//PANEL PROVEEDORES
+	private void panelProveedores() {
+		panelProveedores = new JPanel();
+		panelProveedores.setBackground(Color.white);
+		panelProveedores.setBounds(240, 0, 900, 500);
+		panelProveedores.setLayout(null);
+		add(panelProveedores);
+		panelProveedores.setVisible(false);
+		
+		botonAlbaran = new JButton("ALBARÁN");
+		botonAlbaran.setBounds(400,350,110,42);
+		botonAlbaran.setBorder(null); //Eliminamos el borde
+		//Falta incluir la imagen del botï¿½n
+		botonAlbaran.setBackground(Color.BLUE);
+		panelProveedores.add(botonAlbaran);//Anadimos 
+		
+		barraProveedores = new JScrollPane();
+		barraProveedores.setBounds(10, 400, 680, 300);
+		panelProveedores.add(barraProveedores);
+		
+		String titulosProveedores[] = {"Codigo proveedor", "Nombre proveedor", "contacto"};
+		String infoProveedores[][] = AccesoDB.obtenerMatrizProveedores();
+		
+		tablaProveedores = new JTable(infoProveedores,titulosProveedores);
+		tablaProveedores.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablaProveedores.getColumnModel().getColumn(1).setPreferredWidth(115);
+		tablaProveedores.getColumnModel().getColumn(2).setPreferredWidth(140);
+		barraProveedores.setViewportView(tablaProveedores);
+		
+	}
 	
+	//PANEL CLIENTES
+	private void panelClientes() {
+		panelClientes = new JPanel();
+		panelClientes.setBackground(Color.white);
+		panelClientes.setBounds(240, 0, 900, 500);
+		panelClientes.setLayout(null);
+		add(panelClientes);
+		panelClientes.setVisible(false);
+	}
+	
+	//PANEL SERVICIOS
+	private void panelServicios() {
+		panelServicios = new JPanel();
+		panelServicios.setBackground(Color.white);
+		panelServicios.setBounds(240, 0, 900, 500);
+		panelServicios.setLayout(null);
+		add(panelServicios);
+		panelServicios.setVisible(false);
+	}
+
+	//PANEL ALMACÉN
+	private void panelAlmacen() {
+		panelAlmacen = new JPanel();
+		panelAlmacen.setBackground(Color.white);
+		panelAlmacen.setBounds(240, 0, 900, 500);
+		panelAlmacen.setLayout(null);
+		add(panelAlmacen);
+		panelAlmacen.setVisible(false);
+	}
+
+	//PANEL EMPLEADO
 
 	private void panelEmpleado() {
-		
-		//PANEL EMPLEADO
-		
 		panelEmpleado = new JPanel();
 		panelEmpleado.setBackground(Color.white);
 		panelEmpleado.setBounds(240, 0, 800, 320);
@@ -734,5 +819,62 @@ public class Ventana extends JFrame{
 
 	public void setPanelCompras(JPanel panelCompras) {
 		this.panelCompras = panelCompras;
+	}
+	
+	public JButton getBotonAlbaran() {
+		return botonAlbaran;
+	}
+
+	public void setBotonAlbaran(JButton botonAlbaran) {
+		this.botonAlbaran = botonAlbaran;
+	}
+
+	public JScrollPane getBarraCompras() {
+		return barraCompras;
+	}
+
+	public void setBarraCompras(JScrollPane barraCompras) {
+		this.barraCompras = barraCompras;
+	}
+
+	public JPanel getPanelVentas() {
+		return panelVentas;
+	}
+
+	public void setPanelVentas(JPanel panelVentas) {
+		this.panelVentas = panelVentas;
+	}
+	
+	
+	public JPanel getPanelProveedores() {
+		return panelProveedores;
+	}
+
+	public void setPanelProveedores(JPanel panelProveedores) {
+		this.panelProveedores = panelProveedores;
+	}
+
+	public JPanel getPanelClientes() {
+		return panelClientes;
+	}
+
+	public void setPanelClientes(JPanel panelClientes) {
+		this.panelClientes = panelClientes;
+	}
+
+	public JPanel getPanelServicios() {
+		return panelServicios;
+	}
+
+	public void setPanelServicios(JPanel panelServicios) {
+		this.panelServicios = panelServicios;
+	}
+
+	public JPanel getPanelAlmacen() {
+		return panelAlmacen;
+	}
+
+	public void setPanelAlmacen(JPanel panelAlmacen) {
+		this.panelAlmacen = panelAlmacen;
 	}
 }

@@ -2,20 +2,22 @@ package tablas;
 
 public class Proveedor {
 	
-	private String codproveedor, nombreProveedor;
+	private String codProveedor, nombreProveedor, mail;
 
-	public Proveedor(String codproveedor, String nombreProveedor) {
+	public Proveedor(String codproveedor, String nombreProveedor, String mail) {
 		super();
-		this.codproveedor = codproveedor;
+		this.codProveedor = codproveedor;
 		this.nombreProveedor = nombreProveedor;
+		this.mail = mail;
 	}
 
+
 	public String getCodproveedor() {
-		return codproveedor;
+		return codProveedor;
 	}
 
 	public void setCodproveedor(String codproveedor) {
-		this.codproveedor = codproveedor;
+		this.codProveedor = codproveedor;
 	}
 
 	public String getNombreProveedor() {
@@ -24,6 +26,14 @@ public class Proveedor {
 
 	public void setNombreProveedor(String nombreProveedor) {
 		this.nombreProveedor = nombreProveedor;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 }
