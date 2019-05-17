@@ -44,10 +44,7 @@ public class AccesoDB {
 			e.getMessage();
 			return;
 		}		
-	}
-	/*private String nombre, apellidos, email, nif, usuario, contrasena;
-	private int telefono;*/
-	
+	}	
 	
 	//DATOS EMPLEADOS
 
@@ -171,8 +168,8 @@ public class AccesoDB {
 			// Mientras haya registros anadimos al ArrayList
 			while (rs.next()) { 
 				
-				String codProveedor = rs.getString("COD_PROVEEDOR");
-				String nombreProveedor = rs.getString("NOMBRE_PROVEEDOR");
+				String codProveedor = rs.getString("CODPROVEEDOR");
+				String nombreProveedor = rs.getString("NOMBREPROVEEDOR");
 				String mail = rs.getString("MAIL");
 				
 				proveedor = new Proveedor(codProveedor, nombreProveedor, mail);
@@ -187,21 +184,38 @@ public class AccesoDB {
 		return lista_proveedores;
 	}
 	
-		public static String[][] obtenerMatrizProveedores() {
-		Connection conexion = AccesoDB.conexion();				
-		
-		ArrayList<Proveedor> listaProveedores = AccesoDB.datosProveedor(conexion);
-		
-		String matrizInfoPr[][] = new String[listaProveedores.size()][3];
-		
-		for (int i = 0; i < listaProveedores.size(); i++) {
-			matrizInfoPr[i][0] = listaProveedores.get(i).getCodproveedor()+"";
-			matrizInfoPr[i][1] = listaProveedores.get(i).getNombreProveedor()+"";
-			matrizInfoPr[i][2] = listaProveedores.get(i).getMail()+"";
+	public static String[][] obtenerMatrizProveedores() {
+		Connection conexion = AccesoDB.conexion();
 
-		}		
+		ArrayList<Proveedor> listaProveedores = AccesoDB.datosProveedor(conexion);
+
+		String matrizInfoPr[][] = new String[listaProveedores.size()][3];
+
+		for (int i = 0; i < listaProveedores.size(); i++) {
+			matrizInfoPr[i][0] = listaProveedores.get(i).getCodproveedor() + "";
+			matrizInfoPr[i][1] = listaProveedores.get(i).getNombreProveedor() + "";
+			matrizInfoPr[i][2] = listaProveedores.get(i).getMail() + "";
+
+		}
 		return matrizInfoPr;
 	}
+	
+	public static String[][] obtenerMatrizCompras() {
+		Connection conexion = AccesoDB.conexion();
+
+		ArrayList<Proveedor> listaProveedores = AccesoDB.datosProveedor(conexion);
+
+		String matrizInfoPr[][] = new String[listaProveedores.size()][3];
+
+		for (int i = 0; i < listaProveedores.size(); i++) {
+			matrizInfoPr[i][0] = listaProveedores.get(i).getCodproveedor() + "";
+			matrizInfoPr[i][1] = listaProveedores.get(i).getNombreProveedor() + "";
+			matrizInfoPr[i][2] = listaProveedores.get(i).getMail() + "";
+
+		}
+		return matrizInfoPr;
+	}
+	
 	
 
 

@@ -113,7 +113,7 @@ public class Eventos implements ActionListener, MouseListener {
 				}
 			}			
 			
-			//Ponemos foco en el usuarioit
+			//Ponemos foco en el usuario
 			ventana.getCajaUser().requestFocus();
 			return;			
 		}	
@@ -122,7 +122,7 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			// Pasamos como argumento la conexion a cerrar.
 			AccesoDB.cerrarConexion(conexion); 
-			//Cerramos la aplicaciÃ³n
+			//Cerramos la aplicacion
 			System.exit(0);
 		}
 	}
@@ -136,7 +136,10 @@ public class Eventos implements ActionListener, MouseListener {
 			System.exit(0);
 		}
 		else if (e.getSource()==ventana.getBotonHR()) {
+			//Mostramos los paneles de recursos
 			ventana.getPanelEmpleado().setVisible(true);
+			ventana.getSubPanelEmpInsertar().setVisible(true);
+			//Ocultamos el resto
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -146,9 +149,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelAlmacen().setVisible(false);
 
 		}
-		else if (e.getSource() == ventana.getBotonInsetEmpleado()) {
-			ventana.getSubPanelEmpInsertar().setVisible(true);
-		}
+		
 		else if (e.getSource() == ventana.getBotonInsertFinal()) {
 			
 			ArrayList<Empleado> nuevoEmpleado = new ArrayList<Empleado>();
@@ -205,14 +206,19 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		else if(e.getSource()==ventana.getBotonSuppliers()) {
 			
+			//Mostramos los paneles de Proveedores
+			ventana.getPanelProveedores().setVisible(true);
+			//Aquí falta otro
+			
+			//Oculatamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
-			ventana.getPanelVentas().setVisible(false);
-			ventana.getPanelProveedores().setVisible(true);
+			ventana.getPanelVentas().setVisible(false);			
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
 			
 		}
 		

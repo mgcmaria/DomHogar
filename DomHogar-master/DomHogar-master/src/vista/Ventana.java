@@ -37,12 +37,19 @@ public class Ventana extends JFrame{
 	//Atributos de VENTAS
 	private JPanel panelVentas;
 	
-	//Atributos de PROVEEDORESE
+	//Atributos de SERVICIOS
 	private JPanel panelServicios;
+	
+	//Atributos de PROVEEDORES
+	private JPanel panelProveedores;
+	private JScrollPane barraProveedores;
+	private JTable tablaProveedores;
 	
 	//Atributos de ALMACÉN
 	private JPanel panelAlmacen;
 	
+	//Atributos de CLIENTES
+	private JPanel panelClientes;
 	
 	//CONSTRUCTOR
 	public Ventana() {
@@ -61,16 +68,7 @@ public class Ventana extends JFrame{
 	private void incializarComponentes() {
 		
 		getContentPane().setBackground(new Color(255,255,255)); //Damos un color de fondo 
-		
-		//Nombre de la aplicacion
-		/*
-		 * nombreApp = new JLabel("");
-		 * nombreApp.setHorizontalAlignment(SwingConstants.CENTER); //Centramos
-		 * nombreApp.setFont(new Font("Segoe UI",Font.BOLD,28)); //Tamano
-		 * nombreApp.setBounds(10,10,400,30); //Colocamos nombreApp.setForeground(new
-		 * Color(48,72,111)); //Damos color a la letra add(nombreApp); //anadimos
-		 */		
-		
+				
 		//PANTALLA LOGIN
 		
 		Image imgLogin = new ImageIcon("imagenes\\logo1.PNG").getImage();
@@ -135,21 +133,21 @@ public class Ventana extends JFrame{
 		//PAGINA PRINCIPAL
 		
 		Image img = new ImageIcon("img/imagen_inicio.jpg").getImage();		
-		imagenInicio = new JLabel(new ImageIcon(img.getScaledInstance(750, 600, Image.SCALE_SMOOTH)));
-		imagenInicio.setBounds(200, 40, 750, 600);
+		imagenInicio = new JLabel(new ImageIcon(img.getScaledInstance(750, 580, Image.SCALE_SMOOTH)));
+		imagenInicio.setBounds(200, 40, 750, 580);
 		add(imagenInicio);
 		imagenInicio.setVisible(false);
 		
 		panelIzq = new JPanel();
 		panelIzq.setBackground(Color.white);
-		panelIzq.setBounds(0, 0, 240, 700);
+		panelIzq.setBounds(0, 0, 200, 700);
 		panelIzq.setLayout(null);
 		add(panelIzq);
 		panelIzq.setVisible(false);
 		
 		panelDer = new JPanel();
 		panelDer.setBackground(Color.white);
-		panelDer.setBounds(780, 0, 400, 700);
+		panelDer.setBounds(980, 0, 200, 700);
 		panelDer.setLayout(null);
 		add(panelDer);
 		panelDer.setVisible(false);
@@ -199,37 +197,38 @@ public class Ventana extends JFrame{
 		panelIzq.add(botonStock);
 		
 		//Botones panel derecho
+		//panelDer.setBounds(840, 0, 200, 700);
 		
 		Image imgLog = new ImageIcon("img\\logo sin fondo.PNG").getImage();
 		imageLogo = new JLabel(new ImageIcon(imgLog.getScaledInstance(180, 130, Image.SCALE_SMOOTH)));
 		//las coordenadas del final han de coincidir con las anteriores
-		imageLogo.setBounds(190, 40, 180, 130);
+		imageLogo.setBounds(5, 40, 180, 130);
 		panelDer.add(imageLogo);
 		
 		Image imgBotonHR = new ImageIcon("img\\human resources.png").getImage();
 		botonHR = new JButton(new ImageIcon(imgBotonHR.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonHR.setBounds(220,200,125,80);
+		botonHR.setBounds(18,200,125,80);
 		botonHR.setBackground(Color.WHITE);
 		botonHR.setBorder(null);
 		panelDer.add(botonHR);
 		
 		Image imgBotonUser = new ImageIcon("img\\boton_user.png").getImage();
 		botonUser = new JButton(new ImageIcon(imgBotonUser.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonUser.setBounds(220,350,125,80);
+		botonUser.setBounds(18,350,125,80);
 		botonUser.setBackground(Color.WHITE);
 		botonUser.setBorder(null);
 		panelDer.add(botonUser);
 		
 		Image imgBotonLogout = new ImageIcon("img\\logout.png").getImage();
 		botonLogout = new JButton(new ImageIcon(imgBotonLogout.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonLogout.setBounds(220,450,125,80);
+		botonLogout.setBounds(18,450,125,80);
 		botonLogout.setBackground(Color.WHITE);
 		botonLogout.setBorder(null);
 		panelDer.add(botonLogout);
 		
 		Image imgBotonExit = new ImageIcon("img\\exit.png").getImage();
 		botonExitInit = new JButton(new ImageIcon(imgBotonExit.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonExitInit.setBounds(220,550,125,80);
+		botonExitInit.setBounds(18,550,125,80);
 		botonExitInit.setBackground(Color.WHITE);
 		botonExitInit.setBorder(null);
 		panelDer.add(botonExitInit);
@@ -263,11 +262,9 @@ public class Ventana extends JFrame{
 		
 		barraCompras = new JScrollPane();
 		barraCompras.setBounds(10, 400, 680, 300);
-		panelCompras.add(barraCompras);
-		
+		panelCompras.add(barraCompras);		
 		
 	} 
-
 
 	//PANEL VENTAS
 	private void panelVentas() {
@@ -291,7 +288,7 @@ public class Ventana extends JFrame{
 		botonAlbaran = new JButton("ALBARÁN");
 		botonAlbaran.setBounds(400,350,110,42);
 		botonAlbaran.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botï¿½n
+		//Falta incluir la imagen del boton
 		botonAlbaran.setBackground(Color.BLUE);
 		panelProveedores.add(botonAlbaran);//Anadimos 
 		
@@ -344,8 +341,8 @@ public class Ventana extends JFrame{
 
 	private void panelEmpleado() {
 		panelEmpleado = new JPanel();
-		panelEmpleado.setBackground(Color.white);
-		panelEmpleado.setBounds(240, 0, 800, 320);
+		panelEmpleado.setBackground(new Color(186,236,247));
+		panelEmpleado.setBounds(200, 40, 750, 290);
 		panelEmpleado.setLayout(null);
 		add(panelEmpleado);
 		panelEmpleado.setVisible(false);		
@@ -370,7 +367,7 @@ public class Ventana extends JFrame{
 		botonInsetEmpleado = new JButton("NEW EMPLOYEE");//Creamos el componente
 		botonInsetEmpleado.setBounds(20,20,110,42);
 		botonInsetEmpleado.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botï¿½n
+		//Falta incluir la imagen del botn
 		//botonInsetEmpleado.setIcon(new ImageIcon("imagenes/login.png"));
 		botonInsetEmpleado.setBackground(Color.BLUE);
 		panelEmpleado.add(botonInsetEmpleado);//Anadimos 
@@ -394,7 +391,7 @@ public class Ventana extends JFrame{
 		botonExpEmplFichero = new JButton("EXPORT FILE EMPLOYEE");//Creamos el componente
 		botonExpEmplFichero.setBounds(450,20,160,42);
 		botonExpEmplFichero.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botï¿½n
+		//Falta incluir la imagen del boton
 		//botonInsetEmpleado.setIcon(new ImageIcon("imagenes/login.png"));
 		botonExpEmplFichero.setBackground(Color.green);
 		panelEmpleado.add(botonExpEmplFichero);//Anadimos 
@@ -402,8 +399,8 @@ public class Ventana extends JFrame{
 		//SUBPANEL INSERTAR
 		
 		subPanelEmpInsertar = new JPanel();
-		subPanelEmpInsertar.setBounds(240, 350, 800, 350);
-		subPanelEmpInsertar.setBackground(Color.white);
+		subPanelEmpInsertar.setBounds(200, 330, 750, 290);
+		subPanelEmpInsertar.setBackground(new Color(186,236,247));
 		subPanelEmpInsertar.setLayout(null);
 		add(subPanelEmpInsertar);
 		subPanelEmpInsertar.setVisible(false);	
