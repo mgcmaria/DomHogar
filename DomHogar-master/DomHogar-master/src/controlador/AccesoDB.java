@@ -216,7 +216,37 @@ public class AccesoDB {
 		return matrizInfoPr;
 	}
 	
-	
+	public static int insertarProveedor(ArrayList<Proveedor> nuevoProveedor, Connection conexion) {
 
+		int afectados = 0;
+
+		try {
+			// Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO PROVEEDOR (CODPROVEEDOR, NOMBREPROVEEDOR, MAIL) " + "VALUES (?, ?, ?)";
+
+			String codigo = null;
+			String nombre = null;
+			String mail = null;
+
+			for (Proveedor proveedor : nuevoProveedor) {
+				codigo = proveedor.getCodproveedor();
+				nombre = proveedor.getNombreProveedor();
+				mail = proveedor.getMail();
+			}
+
+			// Con PreparedStatement recogemos los valores introducidos
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setString(1, codigo);
+			sentencia.setString(2, nombre);
+			sentencia.setString(3, mail);
+
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;
+	}
 
 }
