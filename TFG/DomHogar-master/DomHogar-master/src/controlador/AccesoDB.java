@@ -16,7 +16,6 @@ public class AccesoDB {
 	public static Connection conexion() {
 		
 		// Paso 1: Cargar el driver
-		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {

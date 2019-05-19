@@ -206,7 +206,6 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelAlmacen().setVisible(false);
 		}
 		
-		
 		//BOTÓN VENTAS
 		else if(e.getSource()==ventana.getBotonSales()) {
 			

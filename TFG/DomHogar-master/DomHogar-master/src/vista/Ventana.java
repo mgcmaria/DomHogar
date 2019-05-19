@@ -9,6 +9,7 @@ import controlador.Eventos;
 
 public class Ventana extends JFrame{
 	
+	
 	private static final long serialVersionUID = 1L;
 	
 	//DECLARACION DE COMPONENTES - ATRIBUTOS DE LA CLASE (PRIVADAS)	
