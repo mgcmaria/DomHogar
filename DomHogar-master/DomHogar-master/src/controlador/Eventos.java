@@ -1,5 +1,6 @@
 package controlador;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,7 +74,6 @@ public class Eventos implements ActionListener, MouseListener {
 						ventana.setLayout(null);
 						ventana.setLocationRelativeTo(null);
 						ventana.getImagenInicio().setVisible(true);
-						//ventana.getNombreApp().setBounds(0, 15, 1200, 40);
 						ventana.getPanelIzq().setVisible(true);
 						ventana.getPanelDer().setVisible(true); 
 						ventana.getBotonHR().setVisible(false);
@@ -96,20 +96,15 @@ public class Eventos implements ActionListener, MouseListener {
 						ventana.setLayout(null);
 						ventana.setLocationRelativeTo(null);
 						ventana.getImagenInicio().setVisible(true);
-						//ventana.getNombreApp().setBounds(0, 15, 1200, 40);
 						ventana.getPanelIzq().setVisible(true);
 						ventana.getPanelDer().setVisible(true); 
 						ventana.getBotonHR().setVisible(true);
-						return;
-					
-					}
-					
-					else {
+						return;					
+					} else {
 						ventana.getEtiquetaResulLogin().setText("Incorrect user and/or password");
 					}
 				}
 			}			
-			
 			//Ponemos foco en el usuario
 			ventana.getCajaUser().requestFocus();
 			return;			
@@ -133,10 +128,23 @@ public class Eventos implements ActionListener, MouseListener {
 			System.exit(0);
 		}
 		else if (e.getSource()==ventana.getBotonHR()) {
+			
+			//Limpiamos todas la etiquetas rellenas
+			ventana.getInsertNomEmpl().setText("");
+			ventana.getInsertApelEmpl().setText("");
+			ventana.getInsertNIFEmp().setText("");
+			ventana.getInsertPhoneEmp().setText("");
+			ventana.getInsertEmailEmp().setText("");
+			ventana.getInsertUserEmp().setText("");
+			ventana.getInsertPassEmp().setText("");
+			ventana.getInsertPerfilEmp().setText("");
+			ventana.getResulInsertEmp().setText("");
+			
 			//Mostramos los paneles de recursos
 			ventana.getPanelEmpleado().setVisible(true);
 			ventana.getSubPanelEmpInsertar().setVisible(true);
 			ventana.getSubPanelBotonesEmp().setVisible(true);
+			
 			//Ocultamos el resto
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
@@ -152,35 +160,141 @@ public class Eventos implements ActionListener, MouseListener {
 
 		}
 		
-		else if (e.getSource() == ventana.getBotonInsertFinal()) {
+		else if (e.getSource() == ventana.getBotonInsertEmpFinal()) {
 			
-			ArrayList<Empleado> nuevoEmpleado = new ArrayList<Empleado>();
+			if(ventana.getInsertNomEmpl().getText().isEmpty() || ventana.getInsertApelEmpl().getText().isEmpty() ||
+					ventana.getInsertNIFEmp().getText().isEmpty() || ventana.getInsertPhoneEmp().getText().isEmpty() ||
+					ventana.getInsertEmailEmp().getText().isEmpty() || ventana.getInsertUserEmp().getText().isEmpty() ||
+					ventana.getInsertPassEmp().getText().isEmpty() || ventana.getInsertPerfilEmp().getText().isEmpty())
+			{
+				ventana.getResulInsertEmp().setForeground(Color.RED);
+				ventana.getResulInsertEmp().setText("Please, enter all the items");
+				
+			} else {
+				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				ventana.getResulInsertEmp().setText("");
+				ventana.getResulInsertEmp().setForeground(new Color(0,157,233));
+				
+				ArrayList<Empleado> nuevoEmpleado = new ArrayList<Empleado>();
+				
+				//Recogemos los datos del nuevo empleado
+				String nombre = ventana.getInsertNomEmpl().getText();
+				String apellidos = ventana.getInsertApelEmpl().getText();
+				String nif = ventana.getInsertNIFEmp().getText();
+				int telefono = Integer.parseInt(ventana.getInsertPhoneEmp().getText());
+				String email = ventana.getInsertPhoneEmp().getText();
+				String user = ventana.getInsertUserEmp().getText();
+				String pass = ventana.getInsertPassEmp().getText();
+				String perfil = ventana.getInsertPassEmp().getText();
+				
+				Empleado emp = new Empleado(nombre, apellidos, email, nif, user, pass, perfil, telefono);
+				
+				nuevoEmpleado.add(emp);
+				
+				int afectados = AccesoDB.insertarEmpleado(nuevoEmpleado, conexion);
+				
+				if(afectados == 0) {
+					ventana.getResulInsertEmp().setText("Error to insert employee");
+				} else {
+					ventana.getResulInsertEmp().setText("Employee insert");
+					
+					//COMPROBACIONES QUE FALTAN PARA ACTUALIZAR LA JTABLE
+					AccesoDB.cerrarConexion(conexion);
+					conexion = AccesoDB.conexion();
+					AccesoDB.obtenerMatrizEmpleados();
+					ventana.getPanelEmpleado().updateUI();
+					ventana.getTablaEmpleados().updateUI();
+				}
+			}			
+		}
+		
+		else if(e.getSource() == ventana.getBotonActualizarEmpleado()) {
 			
-			//Recogemos los datos del nuevo empleado
-			String nombre = ventana.getInsertNomEmpl().getText();
-			String apellidos = ventana.getInsertApelEmpl().getText();
-			String nif = ventana.getInsertNIFEmp().getText();
-			int telefono = Integer.parseInt(ventana.getInsertPhoneEmp().getText());
-			String email = ventana.getInsertEmailEmp().getText();
-			String user = ventana.getInsertUserEmp().getText();
-			String pass = ventana.getInsertPassEmp().getText();
-			String perfil = ventana.getInsertPerfilEmp().getText();
+			//Limpiamos todas la etiquetas rellenas
+			ventana.getInsertNIFUpdateEmp().setText("");
+			ventana.getInsertNewDataEmp().setText("");
+			ventana.getResultUpdateEmp().setText("");
 			
-			Empleado emp = new Empleado(nombre, apellidos, email, nif, user, pass, perfil, telefono);
+			//Ocultamos los paneles de Insert y delete
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			
-			nuevoEmpleado.add(emp);
+			//Mostramos el panel de Update
+			ventana.getSubPanelEmpUpdate().setVisible(true);
+		}
+		
+		else if(e.getSource() == ventana.getBotonUpdateEmpFinal()) {
 			
-			int afectados = AccesoDB.insertarEmpleado(nuevoEmpleado, conexion);
+			if(ventana.getInsertNIFUpdateEmp().getText().isEmpty() || ventana.getInsertNewDataEmp().getText().isEmpty()) {
+				ventana.getResultUpdateEmp().setForeground(Color.RED);
+				ventana.getResultUpdateEmp().setText("Please, enter all the items");
+			} else {
+				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				ventana.getResultUpdateEmp().setText("");
+				ventana.getResultUpdateEmp().setForeground(new Color(0,157,233));
+				
+				//Recogemos los datos que queremos actualizar
+				String nif = ventana.getInsertNIFUpdateEmp().getText();
+				String campo = ventana.getComboUpdateEmp().getSelectedItem().toString();
+				String nuevoDato = ventana.getInsertNewDataEmp().getText();
+				
+				int afectados = AccesoDB.actualizarEmpleado(nif,campo,nuevoDato, conexion);
+				
+				if(afectados == 0) {
+					ventana.getResultUpdateEmp().setText("Error to update employee");
+				} else {
+					ventana.getResultUpdateEmp().setText("Employee update");
+				}
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonBorrarEmpleado()) {
+			
+			//Limpiamos etiquetas rellenas
+			ventana.getInsertNIFDeleteEmp().setText("");
+			ventana.getResulBusquedaEmp().setText("");
+			ventana.getResulDeleteEmp().setText("");
+			
+			//Ocultamos los paneles de insert y update empleado así como el botón delete
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getBotonDeleteEmpFinal().setVisible(false);
+			
+			//Mostramos el panel de Update
+			ventana.getSubPanelEmpDelete().setVisible(true);
+		}
+		
+		else if(e.getSource() == ventana.getBotonSearchEmp()) {
+			
+			//Recogemos el nif para buscar el empleado
+			String nif = ventana.getInsertNIFDeleteEmp().getText();
+			
+			ArrayList<Empleado> listaE = AccesoDB.datosEmpleado(conexion);
+			
+			for (Empleado empleado : listaE) {
+				
+				if(empleado.getNif().equalsIgnoreCase(nif)) {
+					ventana.getResulBusquedaEmp().setText("The employee: | "+ empleado.getNombre()
+					+" "+empleado.getApellidos()+" | , will be deleted.");
+					ventana.getBotonDeleteEmpFinal().setVisible(true);
+					return;
+				} else {
+					ventana.getResulBusquedaEmp().setText("Employee doesn't exist");
+				}
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonDeleteEmpFinal()) {
+			
+			//Recogemos el nif para buscar el empleado
+			String nif = ventana.getInsertNIFDeleteEmp().getText();
+			
+			int afectados = AccesoDB.borrarEmpleado(nif, conexion);
 			
 			if(afectados == 0) {
-				ventana.getResulInsertEmp().setText("Error al insertar empleado");
+				ventana.getResulDeleteEmp().setText("Error to delete employee");
 			} else {
-				ventana.getResulInsertEmp().setText("Empleado insertado");
-				AccesoDB.cerrarConexion(conexion);
-				conexion = AccesoDB.conexion();
-				AccesoDB.obtenerMatrizEmpleados();
-				ventana.getPanelEmpleado().updateUI();
-				ventana.getTablaEmpleados().updateUI();
+				ventana.getResulDeleteEmp().setText("Employee delete");
 			}
 		}
 		
@@ -189,9 +303,11 @@ public class Eventos implements ActionListener, MouseListener {
 			//Mostramos paneles de compras
 			ventana.getPanelCompras().setVisible(true);
 			
-			//Oculetamos el resto
+			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);			
 			ventana.getPanelVentas().setVisible(false);
@@ -203,8 +319,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
-		}
-		
+		}		
 		
 		else if(e.getSource()==ventana.getBotonSales()) {
 			
@@ -214,6 +329,8 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);			
@@ -240,6 +357,8 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
@@ -260,9 +379,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(true);
 
-			// Oculatamos el resto
+			// Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -307,9 +428,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(true);
 
-			// Oculatamos el resto
+			// Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -330,9 +453,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelElimProv().setVisible(true);
 			ventana.getPanelBotonesProv().setVisible(true);
 
-			// Oculatamos el resto
+			// Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -351,6 +476,8 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
@@ -373,6 +500,8 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
@@ -395,6 +524,8 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
@@ -418,6 +549,8 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -483,22 +616,34 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonExitInit().setIcon(new ImageIcon("img/exit hover.png"));
 		}
 		
-		else if (e.getSource()==ventana.getBotonInsertFinal()) {
+		else if (e.getSource()==ventana.getBotonInsertEmpFinal()) {
 			Image imgBotonInsertFinal = new ImageIcon("img\\insert hover.png").getImage();
-			ventana.getBotonInsertFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertEmpFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonActualizarEmpleado()) {
-			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update hover.png").getImage();
+			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update employee hover.png").getImage();
 			ventana.getBotonActualizarEmpleado().setIcon(new ImageIcon(imgBotonUpdateEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonBorrarEmpleado()) {
-			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete hover.png").getImage();
+			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete employee hover.png").getImage();
 			ventana.getBotonBorrarEmpleado().setIcon(new ImageIcon(imgBotonDeleteEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonExpEmplFichero()) {
 			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file hover.png").getImage();
 			ventana.getBotonExpEmplFichero().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}		
+		}	
+		else if (e.getSource()==ventana.getBotonUpdateEmpFinal()) {
+			Image imgBotonUpdateFinal = new ImageIcon("img\\update hover.png").getImage();
+			ventana.getBotonUpdateEmpFinal().setIcon(new ImageIcon(imgBotonUpdateFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonSearchEmp()) {
+			Image imgBotonSearchEmp = new ImageIcon("img\\search hover.png").getImage();
+			ventana.getBotonSearchEmp().setIcon(new ImageIcon(imgBotonSearchEmp.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}	
+		else if (e.getSource()==ventana.getBotonDeleteEmpFinal()) {
+			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete hover.png").getImage();
+			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
 		
 	}
 
@@ -540,21 +685,33 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonExitInit()) {
 			ventana.getBotonExitInit().setIcon(new ImageIcon("img/exit.png"));
 		}		
-		else if (e.getSource()==ventana.getBotonInsertFinal()) {
+		else if (e.getSource()==ventana.getBotonInsertEmpFinal()) {
 			Image imgBotonInsertFinal = new ImageIcon("img\\insert.png").getImage();
-			ventana.getBotonInsertFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertEmpFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonActualizarEmpleado()) {
-			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update.png").getImage();
+			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update employee.png").getImage();
 			ventana.getBotonActualizarEmpleado().setIcon(new ImageIcon(imgBotonUpdateEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonBorrarEmpleado()) {
-			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete.png").getImage();
+			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete employee.png").getImage();
 			ventana.getBotonBorrarEmpleado().setIcon(new ImageIcon(imgBotonDeleteEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonExpEmplFichero()) {
 			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExpEmplFichero().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonUpdateEmpFinal()) {
+			Image imgBotonUpdateFinal = new ImageIcon("img\\update.png").getImage();
+			ventana.getBotonUpdateEmpFinal().setIcon(new ImageIcon(imgBotonUpdateFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonSearchEmp()) {
+			Image imgBotonSearchEmp = new ImageIcon("img\\search.png").getImage();
+			ventana.getBotonSearchEmp().setIcon(new ImageIcon(imgBotonSearchEmp.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteEmpFinal()) {
+			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete.png").getImage();
+			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
 	}
@@ -611,18 +768,18 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonExitInit().setIcon(new ImageIcon("img/exit press.png"));			
 			ventana.getBotonExitInit().setContentAreaFilled(false);
 		}		
-		else if (e.getSource()==ventana.getBotonInsertFinal()) {
+		else if (e.getSource()==ventana.getBotonInsertEmpFinal()) {
 			Image imgBotonInsertFinal = new ImageIcon("img\\insert press.png").getImage();
-			ventana.getBotonInsertFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-			ventana.getBotonInsertFinal().setContentAreaFilled(false);
+			ventana.getBotonInsertEmpFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertEmpFinal().setContentAreaFilled(false);
 		}
 		else if (e.getSource()==ventana.getBotonActualizarEmpleado()) {
-			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update press.png").getImage();
+			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update employee press.png").getImage();
 			ventana.getBotonActualizarEmpleado().setIcon(new ImageIcon(imgBotonUpdateEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonActualizarEmpleado().setContentAreaFilled(false);
 		}
 		else if (e.getSource()==ventana.getBotonBorrarEmpleado()) {
-			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete press.png").getImage();
+			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete employee press.png").getImage();
 			ventana.getBotonBorrarEmpleado().setIcon(new ImageIcon(imgBotonDeleteEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonBorrarEmpleado().setContentAreaFilled(false);
 		}
@@ -630,6 +787,21 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file press.png").getImage();
 			ventana.getBotonExpEmplFichero().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonExpEmplFichero().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonUpdateEmpFinal()) {
+			Image imgBotonUpdateFinal = new ImageIcon("img\\update press.png").getImage();
+			ventana.getBotonUpdateEmpFinal().setIcon(new ImageIcon(imgBotonUpdateFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonUpdateEmpFinal().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonSearchEmp()) {
+			Image imgBotonSearchEmp = new ImageIcon("img\\search press.png").getImage();
+			ventana.getBotonSearchEmp().setIcon(new ImageIcon(imgBotonSearchEmp.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonSearchEmp().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonDeleteEmpFinal()) {
+			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete press.png").getImage();
+			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeleteEmpFinal().setContentAreaFilled(false);
 		}
 	}
 
@@ -671,23 +843,34 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonExitInit()) {
 			ventana.getBotonExitInit().setIcon(new ImageIcon("img/exit.png"));
 		}		
-		else if (e.getSource()==ventana.getBotonInsertFinal()) {
+		else if (e.getSource()==ventana.getBotonInsertEmpFinal()) {
 			Image imgBotonInsertFinal = new ImageIcon("img\\insert.png").getImage();
-			ventana.getBotonInsertFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertEmpFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonActualizarEmpleado()) {
-			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update.png").getImage();
+			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update employee.png").getImage();
 			ventana.getBotonActualizarEmpleado().setIcon(new ImageIcon(imgBotonUpdateEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonBorrarEmpleado()) {
-			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete.png").getImage();
+			Image imgBotonDeleteEmpleado = new ImageIcon("img\\delete employee.png").getImage();
 			ventana.getBotonBorrarEmpleado().setIcon(new ImageIcon(imgBotonDeleteEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonExpEmplFichero()) {
 			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExpEmplFichero().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		
+		else if (e.getSource()==ventana.getBotonUpdateEmpFinal()) {
+			Image imgBotonUpdateFinal = new ImageIcon("img\\update.png").getImage();
+			ventana.getBotonUpdateEmpFinal().setIcon(new ImageIcon(imgBotonUpdateFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonSearchEmp()) {
+			Image imgBotonSearchEmp = new ImageIcon("img\\search.png").getImage();
+			ventana.getBotonSearchEmp().setIcon(new ImageIcon(imgBotonSearchEmp.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteEmpFinal()) {
+			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete.png").getImage();
+			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
 	}	
 }
 

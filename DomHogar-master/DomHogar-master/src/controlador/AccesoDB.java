@@ -249,4 +249,36 @@ public class AccesoDB {
 		return afectados;
 	}
 
+	public static int actualizarEmpleado(String nif, String campo, String nuevoDato, Connection conexion) {
+		
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "UPDATE EMPLEADO SET " +campo+"= '"+nuevoDato+"' WHERE NIF_EMPLEADO='"+nif+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;
+	}
+
+	public static int borrarEmpleado(String nif, Connection conexion) {
+	
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM EMPLEADO WHERE NIF_EMPLEADO='"+nif+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;		
+	}
+
 }
