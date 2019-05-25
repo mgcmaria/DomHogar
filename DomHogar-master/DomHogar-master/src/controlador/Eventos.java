@@ -127,6 +127,37 @@ public class Eventos implements ActionListener, MouseListener {
 			//Cerramos la aplicacion
 			System.exit(0);
 		}
+		
+		//BOTÓN LOGOUT
+		else if(e.getSource()==ventana.getBotonLogout()) {
+			
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelIzq().setVisible(false);
+			ventana.getPanelDer().setVisible(false); 
+			ventana.getBotonHR().setVisible(false);
+			
+			ventana.setSize(400,520);
+			ventana.setResizable(false);
+			ventana.setLayout(null);
+			ventana.setLocationRelativeTo(null);
+			ventana.getImagenLogin().setVisible(true);
+			ventana.getEtiquetaUser().setVisible(true);
+			ventana.getEtiquetaPass().setVisible(true);
+			ventana.getCajaUser().setVisible(true);
+			ventana.getCajaPass().setVisible(true);
+			ventana.getEtiquetaResulLogin().setVisible(true);
+			ventana.getBotonLogin().setVisible(true);
+			ventana.getBotonExit().setVisible(true);
+			
+			//Limpiamos todas la etiquetas rellenas
+			ventana.getCajaUser().setText("");
+			ventana.getCajaPass().setText("");
+			ventana.getCajaUser().requestFocus();
+
+		}
+		
+		
+		
 		else if (e.getSource()==ventana.getBotonHR()) {
 			
 			//Limpiamos todas la etiquetas rellenas
@@ -347,12 +378,19 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		else if(e.getSource()==ventana.getBotonSuppliers()) {
 			
+			//Limpiamos todas la etiquetas rellenas
+			ventana.getInsertCodProv().setText("");
+			ventana.getInsertNomProv().setText("");
+			ventana.getInsertContProv().setText("");
+			ventana.getResulInsertProv().setText("");
+			
 			//Mostramos los paneles de Proveedores
 			ventana.getPanelProveedores().setVisible(true);
 			ventana.getSubPanelInsProv().setVisible(true);
 			ventana.getPanelBotonesProv().setVisible(true);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
+			
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -369,34 +407,22 @@ public class Eventos implements ActionListener, MouseListener {
 			
 		}
 		
-		//OPCIÓN INSERTAR PROVEEDORES
-		else if (e.getSource() == ventana.getBotonInsertProveedor()) {
-
-			// Proveedores
-			ventana.getPanelProveedores().setVisible(true);
-			ventana.getPanelBotonesProv().setVisible(true);
-			ventana.getSubPanelEditProv().setVisible(false);
-			ventana.getSubPanelElimProv().setVisible(false);
-			ventana.getSubPanelInsProv().setVisible(true);
-
-			// Ocultamos el resto
-			ventana.getPanelEmpleado().setVisible(false);
-			ventana.getSubPanelEmpInsertar().setVisible(false);
-			ventana.getSubPanelEmpUpdate().setVisible(false);
-			ventana.getSubPanelEmpDelete().setVisible(false);
-			ventana.getImagenInicio().setVisible(false);
-			ventana.getPanelCompras().setVisible(false);
-			ventana.getPanelVentas().setVisible(false);
-			ventana.getPanelClientes().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
-			ventana.getPanelAlmacen().setVisible(false);
-			ventana.getSubPanelEmpInsertar().setVisible(false);
-
-		}
 		
-		//BOTÓN INSERTAR PROVEEDOR OK
+		//BOTÓN INSERTAR PROVEEDOR 
 		else if (e.getSource() == ventana.getBotonInsertProvOk()) {
 
+			if(ventana.getInsertCodProv().getText().isEmpty() || ventana.getInsertNomProv().getText().isEmpty() ||
+					ventana.getInsertContProv().getText().isEmpty())
+			{
+				ventana.getResulInsertProv().setForeground(Color.GRAY);
+				ventana.getResulInsertProv().setText("Please, enter all the fields");
+				
+			} else {
+				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				ventana.getResulInsertProv().setText("");
+				ventana.getResulInsertProv().setForeground(new Color(0,157,233));
+				
+				
 			ArrayList<Proveedor> nuevoProveedor = new ArrayList<Proveedor>();
 
 			// Recogemos los datos del nuevo empleado
@@ -417,56 +443,99 @@ public class Eventos implements ActionListener, MouseListener {
 				AccesoDB.obtenerMatrizProveedores();
 			}
 		}
-		
-		//OPCIÓN ACTUALIZAR PROVEEDOR
-		else if (e.getSource() == ventana.getBotonActualizarProveedor()) {
-
-			// Mostramos los paneles de Proveedores
-			ventana.getPanelProveedores().setVisible(true);
-			ventana.getSubPanelInsProv().setVisible(false);
-			ventana.getSubPanelEditProv().setVisible(true);
-			ventana.getSubPanelElimProv().setVisible(false);
-			ventana.getPanelBotonesProv().setVisible(true);
-
-			// Ocultamos el resto
-			ventana.getPanelEmpleado().setVisible(false);
-			ventana.getSubPanelEmpInsertar().setVisible(false);
-			ventana.getSubPanelEmpUpdate().setVisible(false);
-			ventana.getSubPanelEmpDelete().setVisible(false);
-			ventana.getImagenInicio().setVisible(false);
-			ventana.getPanelCompras().setVisible(false);
-			ventana.getPanelVentas().setVisible(false);
-			ventana.getPanelClientes().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
-			ventana.getPanelAlmacen().setVisible(false);
-			ventana.getSubPanelEmpInsertar().setVisible(false);
-
+			
 		}
 		
-		//OPCIÓN BORRAR PROVEEDOR
-		else if (e.getSource() == ventana.getBotonBorrarProveedor()) {
-
-			// Proveedores
-			ventana.getPanelProveedores().setVisible(true);
+		else if(e.getSource() == ventana.getBotonActualizarProveedor()) {
+			
+			//Limpiamos todas la etiquetas rellenas
+			ventana.getInsertCODUpdateProv().setText("");
+			ventana.getInsertNewDataProv().setText("");
+			ventana.getResultUpdateProv().setText("");
+			
+			//Ocultamos los paneles de Insert y delete
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			
+			//Mostramos el panel de Update
+			ventana.getSubPanelEditProv().setVisible(true);
+		}
+		
+		else if(e.getSource() == ventana.getBotonUpdateFinalPr()) {
+			
+			if(ventana.getInsertCODUpdateProv().getText().isEmpty() || ventana.getInsertNewDataProv().getText().isEmpty()) {
+				ventana.getResultUpdateProv().setForeground(Color.RED);
+				ventana.getResultUpdateProv().setText("Please, enter all the items");
+			} else {
+				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				ventana.getResultUpdateProv().setText("");
+				ventana.getResultUpdateProv().setForeground(new Color(0,157,233));
+				
+				//Recogemos los datos que queremos actualizar
+				String cod = ventana.getInsertCODUpdateProv().getText();
+				String campo = ventana.getComboUpdateProv().getSelectedItem().toString();
+				String nuevoDato = ventana.getInsertNewDataProv().getText();
+				
+				int afectados = AccesoDB.actualizarProveedor(cod, campo, nuevoDato, conexion);
+				
+				if(afectados == 0) {
+					ventana.getResultUpdateProv().setText("Error to update supplier");
+				} else {
+					ventana.getResultUpdateProv().setText("Supplier updated");
+				}
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonBorrarProveedor()) {
+			
+			//Limpiamos etiquetas rellenas
+			ventana.getInsertCODDeleteProv().setText("");
+			ventana.getResulBusquedaProv().setText("");
+			ventana.getResulDeleteProv().setText("");
+			
+			//Ocultamos los paneles de insert y update empleado así como el botón delete
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getBotonDeleteProvFinal().setVisible(false);
+			
+			//Mostramos el panel de Update
 			ventana.getSubPanelElimProv().setVisible(true);
-			ventana.getPanelBotonesProv().setVisible(true);
-
-			// Ocultamos el resto
-			ventana.getPanelEmpleado().setVisible(false);
-			ventana.getSubPanelEmpInsertar().setVisible(false);
-			ventana.getSubPanelEmpUpdate().setVisible(false);
-			ventana.getSubPanelEmpDelete().setVisible(false);
-			ventana.getImagenInicio().setVisible(false);
-			ventana.getPanelCompras().setVisible(false);
-			ventana.getPanelVentas().setVisible(false);
-			ventana.getPanelClientes().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
-			ventana.getPanelAlmacen().setVisible(false);
-			ventana.getSubPanelEmpInsertar().setVisible(false);
-
 		}
+		
+		else if(e.getSource() == ventana.getBotonSearchProv()) {
+			
+			//Recogemos el nif para buscar el empleado
+			String cod = ventana.getInsertCODDeleteProv().getText();
+			
+			ArrayList<Proveedor> listaP = AccesoDB.datosProveedor(conexion);
+			
+			for (Proveedor proveedor : listaP) {
+				
+				if(proveedor.getCodproveedor().equalsIgnoreCase(cod)) {
+					ventana.getResulBusquedaProv().setText("The supplier: | "+ proveedor.getNombreProveedor()
+					+" "+" | , will be deleted.");
+					ventana.getBotonDeleteProvFinal().setVisible(true);
+					return;
+				} else {
+					ventana.getResulBusquedaProv().setText("Supplier doesn't exist");
+				}
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonDeleteProvFinal()) {
+			
+			//Recogemos el nif para buscar el empleado
+			String cod = ventana.getInsertCODDeleteProv().getText();
+			
+			int afectados = AccesoDB.borrarProveedor(cod, conexion);
+			
+			if(afectados == 0) {
+				ventana.getResulDeleteProv().setText("Error deleting supplier");
+			} else {
+				ventana.getResulDeleteProv().setText("Supplier deleted");
+			}
+		}
+		
 		
 		else if(e.getSource()==ventana.getBotonCustomers()) {
 			
@@ -645,6 +714,39 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
+		//
+		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
+			Image imgBotonInsertProvOk = new ImageIcon("img\\insert hover.png").getImage();
+			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
+			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier hover.png").getImage();
+			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBorrarProveedor()) {
+			Image imgBotonBorrarProveedor = new ImageIcon("img\\delete supplier hover.png").getImage();
+			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
+			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes hover.png").getImage();
+			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}	
+		
+		
+		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
+			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update hover.png").getImage();
+			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonSearchProv()) {
+			Image imgBotonSearchProv = new ImageIcon("img\\search hover.png").getImage();
+			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}	
+		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
+			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete hover.png").getImage();
+			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
 	}
 
 	@Override
@@ -714,6 +816,39 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
+		//
+		
+		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
+			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier.png").getImage();
+			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBorrarProveedor()) {
+			Image imgBotonBorrarProveedor = new ImageIcon("img\\delete supplier.png").getImage();
+			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
+			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes.png").getImage();
+			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}	
+		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
+			Image imgBotonInsertProvOk = new ImageIcon("img\\insert.png").getImage();
+			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
+			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update.png").getImage();
+			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonSearchProv()) {
+			Image imgBotonSearchProv = new ImageIcon("img\\search.png").getImage();
+			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
+			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
+			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
 	}
 
 	@Override
@@ -803,6 +938,47 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonDeleteEmpFinal().setContentAreaFilled(false);
 		}
+		
+		//
+		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
+			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier press.png").getImage();
+			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonActualizarProveedor().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonBorrarProveedor()) {
+			Image imgBotonBorrarProveedor = new ImageIcon("img\\delete supplier press.png").getImage();
+			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonBorrarProveedor().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
+			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes press.png").getImage();
+			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeliveryNotes().setContentAreaFilled(false);
+		}	
+		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
+			Image imgBotonInsertProvOk = new ImageIcon("img\\insert press.png").getImage();
+			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertProvOk().setContentAreaFilled(false);
+		}
+		
+		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
+			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update.png").getImage();
+			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonUpdateFinalPr().setContentAreaFilled(false);
+		}
+		
+		else if (e.getSource()==ventana.getBotonSearchProv()) {
+			Image imgBotonSearchProv = new ImageIcon("img\\search.png").getImage();
+			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonSearchProv().setContentAreaFilled(false);
+		}
+		
+		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
+			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
+			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeleteProvFinal().setContentAreaFilled(false);
+		}
+		
 	}
 
 	@Override
@@ -870,6 +1046,39 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonDeleteEmpFinal()) {
 			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		//
+		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
+			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier.png").getImage();
+			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBorrarProveedor()) {
+			Image imgBotonBorrarProveedor = new ImageIcon("img\\delete supplier.png").getImage();
+			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
+			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes.png").getImage();
+			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}	
+		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
+			Image imgBotonInsertProvOk = new ImageIcon("img\\insert.png").getImage();
+			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
+			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update.png").getImage();
+			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonSearchProv()) {
+			Image imgBotonSearchProv = new ImageIcon("img\\search.png").getImage();
+			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
+			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
+			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 	}	
 }

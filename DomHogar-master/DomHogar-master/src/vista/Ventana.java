@@ -28,9 +28,9 @@ public class Ventana extends JFrame{
 	botonDeleteEmpFinal;
 	private JLabel nuevoEmpleado, updateEmpleado, deleteEmpleado, labelPreguntaCambioEmp, labelNewDataEmp;
 	private JTextField insertNomEmpl, insertApelEmpl, insertNIFEmp, insertPhoneEmp, insertEmailEmp, insertUserEmp, 
-	insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp, insertNIFDeleteEmp;
+	insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp;
 	private JLabel resulInsertEmp, resultUpdateEmp, resulBusquedaEmp, resulDeleteEmp;
-	private JComboBox comboUpdateEmp;
+	private JComboBox <String>comboUpdateEmp;
 	
 	//Atributos de COMPRAS
 	private JPanel panelCompras;
@@ -45,11 +45,14 @@ public class Ventana extends JFrame{
 	
 	//Atributos de PROVEEDORES
 	private JPanel panelProveedores, subPanelInsProv, subPanelEditProv, subPanelElimProv, panelBotonesProv;
-	private JTextField insertCodProv, insertNomProv, insertContProv;
+	private JTextField insertCodProv, insertNomProv, insertContProv, insertCODUpdateProv, insertNewDataProv, insertCODDeleteProv;
 	private JScrollPane barraProveedores;
 	private JTable tablaProveedores;
-	private JButton botonInsertProveedor, botonActualizarProveedor, botonBorrarProveedor, botonInsertProvOk;
-	private JLabel nuevoProv, resulInsertProv, editProv, elimProv;
+	private JButton botonInsertProveedor, botonActualizarProveedor, botonBorrarProveedor, botonInsertProvOk, 
+	botonDeliveryNotes, botonUpdateEmpFinalPr, botonSearchProv, botonDeleteProvFinal, botonUpdateFinalPr;
+	private JLabel nuevoProv, resulInsertProv, editProv, elimProv, labelPreguntaCambioProv, labelNewDataProv,
+	resultUpdateProv, resulBusquedaProv, resulDeleteProv;
+	private JComboBox <String>comboUpdateProv;
 	
 	//Atributos de ALMACÉN
 	private JPanel panelAlmacen;
@@ -289,14 +292,14 @@ public class Ventana extends JFrame{
 	//PANEL PROVEEDORES
 	private void panelProveedores() {
 		panelProveedores = new JPanel();
-		panelProveedores.setBackground(new Color(186,236,247));
+		panelProveedores.setBackground(color_panel);
 		panelProveedores.setBounds(200, 40, 750, 230);
 		panelProveedores.setLayout(null);
 		add(panelProveedores);
 		panelProveedores.setVisible(false);
 		
 		barraProveedores = new JScrollPane();
-		barraProveedores.setBounds(38, 20, 680, 120);
+		barraProveedores.setBounds(20, 20, 710, 190);
 		panelProveedores.add(barraProveedores);
 		
 		String titulosProveedores[] = {"Codigo proveedor", "Nombre proveedor", "contacto"};
@@ -311,61 +314,67 @@ public class Ventana extends JFrame{
 		//SUBPANEL INSERTAR PROVEEDOR
 		
 		subPanelInsProv = new JPanel();
-		subPanelInsProv.setBounds(200, 230, 750, 268);
-		subPanelInsProv.setBackground(new Color(186,236,247));
+		subPanelInsProv.setBounds(200, 270, 750, 268);
+		subPanelInsProv.setBackground(color_panel);
 		subPanelInsProv.setLayout(null);
 		add(subPanelInsProv);
 		subPanelInsProv.setVisible(false);	
 		
 		nuevoProv = new JLabel("new supplier");
-		nuevoProv.setBounds(300,30,200,30);
+		nuevoProv.setBounds(20, 0, 710, 60);
 		nuevoProv.setBorder(null);
-		nuevoProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		nuevoProv.setForeground(new Color(000,000,000));//Color del texto
+		nuevoProv.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		nuevoProv.setForeground(color_azul);//Color del texto
+		nuevoProv.setHorizontalAlignment(JLabel.CENTER);
+		nuevoProv.setVerticalAlignment(JLabel.CENTER);
 		subPanelInsProv.add(nuevoProv);
 		
+		//caja codigo nuevo proveedor
 		insertCodProv = new JTextField();//Creamos el componente
-		TextPrompt placeholder = new TextPrompt("Código Proveedor", insertCodProv);
+		TextPrompt placeholder = new TextPrompt("supplier's code", insertCodProv);
 	    placeholder.changeAlpha(0.75f);
 	    placeholder.changeStyle(Font.ITALIC);
 	    insertCodProv.setBounds(40,90,200,30);//Posicionamos
-	    insertCodProv.setBorder(null); //Eliminamos el borde
+	    insertCodProv.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
 	    insertCodProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-	    insertCodProv.setBackground(new Color(0,157,233)); //Color de fondo
-	    insertCodProv.setForeground(new Color(255,255,255));//Color del texto
+	    insertCodProv.setBackground(Color.WHITE); //Color de fondo
+	    insertCodProv.setForeground(color_azul);//Color del texto
 	    subPanelInsProv.add(insertCodProv);//Anadimos
 	    
+	    //caja nombre nuevo proveedor
 	    insertNomProv = new JTextField();//Creamos el componente
-		TextPrompt placeholder1 = new TextPrompt("Nombre Proveedor", insertNomProv);
+		TextPrompt placeholder1 = new TextPrompt("supplier's name", insertNomProv);
 	    placeholder1.changeAlpha(0.75f);
 	    placeholder1.changeStyle(Font.ITALIC);
 	    insertNomProv.setBounds(250,90,430,30);//Posicionamos
-	    insertNomProv.setBorder(null); //Eliminamos el borde
+	    insertNomProv.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
 	    insertNomProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-	    insertNomProv.setBackground(new Color(0,157,233)); //Color de fondo
-	    insertNomProv.setForeground(new Color(255,255,255));//Color del texto
+	    insertNomProv.setBackground(Color.WHITE); //Color de fondo
+	    insertNomProv.setForeground(color_azul);//Color del texto
 	    subPanelInsProv.add(insertNomProv);//Anadimos
-				
+		
+	    //caja mail nuevo proveedor
 		insertContProv = new JTextField();//Creamos el componente
-		TextPrompt placeholder2 = new TextPrompt("Contacto Proveedor", insertContProv);
+		TextPrompt placeholder2 = new TextPrompt("contact", insertContProv);
 	    placeholder2.changeAlpha(0.75f);
 	    placeholder2.changeStyle(Font.ITALIC);
 	    insertContProv.setBounds(40,150,400,30);//Posicionamos
-	    insertContProv.setBorder(null); //Eliminamos el borde
+	    insertContProv.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
 	    insertContProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-	    insertContProv.setBackground(new Color(0,157,233)); //Color de fondo
-	    insertContProv.setForeground(new Color(255,255,255));//Color del texto
+	    insertContProv.setBackground(Color.WHITE); //Color de fondo
+	    insertContProv.setForeground(color_azul);//Color del texto
 	    subPanelInsProv.add(insertContProv);//Anadimos
 	    
-	        
-		botonInsertProvOk = new JButton("INSERT");//Creamos el componente
+	    //boton insertar
+	    Image imgBotonInsertProvOk = new ImageIcon("img\\insert.png").getImage();
+		botonInsertProvOk = new JButton(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));//Creamos el componente
 		botonInsertProvOk.setBounds(550,140,110,42);
 		botonInsertProvOk.setBorder(null); //Eliminamos el borde
 		//Falta incluir la imagen del botï¿½n
-		//botonInsetEmpleado.setIcon(new ImageIcon("imagenes/login.png"));
-		botonInsertProvOk.setBackground(Color.BLUE);
+		botonInsertProvOk.setBackground(new Color(186,236,247));
 		subPanelInsProv.add(botonInsertProvOk);//Anadimos 
 		
+		//resultado insercion
 		resulInsertProv = new JLabel("");//Creamos el componente
 		resulInsertProv.setBounds(100,200,500,30);//Posicionamos
 		resulInsertProv.setBorder(null); //Eliminamos el borde
@@ -376,69 +385,178 @@ public class Ventana extends JFrame{
 		//SUBPANEL EDITAR PROVEEDOR
 		
 		subPanelEditProv = new JPanel();
-		subPanelEditProv.setBounds(200, 230, 750, 268);
-		subPanelEditProv.setBackground(new Color(186,236,247));
+		subPanelEditProv.setBounds(200, 270, 750, 268);
+		subPanelEditProv.setBackground(color_panel);
 		subPanelEditProv.setLayout(null);
 		add(subPanelEditProv);
 		subPanelEditProv.setVisible(false);	
 		
-		editProv = new JLabel("edit supplier");
-		editProv.setBounds(300,30,200,30);
+		editProv = new JLabel("update supplier");
+		editProv.setBounds(20, 0, 710, 60);
 		editProv.setBorder(null);
-		editProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		editProv.setForeground(new Color(000,000,000));//Color del texto
+		editProv.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		editProv.setForeground(color_azul);//Color del texto
+		editProv.setHorizontalAlignment(JLabel.CENTER);
+		editProv.setVerticalAlignment(JLabel.CENTER);
 		subPanelEditProv.add(editProv);
+		
+		//caja cod proveedor a editar
+		insertCODUpdateProv = new JTextField();//Creamos el componente
+		TextPrompt placeholder8 = new TextPrompt("Insert supplier's code", insertCODUpdateProv);
+	    placeholder8.changeAlpha(0.75f);
+	    placeholder8.changeStyle(Font.ITALIC);
+	    insertCODUpdateProv.setBounds(20,70,200,30);//Posicionamos		
+	    insertCODUpdateProv.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertCODUpdateProv.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertCODUpdateProv.setBackground(Color.WHITE); //Color de fondo
+	    insertCODUpdateProv.setForeground(color_azul);//Color del texto
+	    subPanelEditProv.add(insertCODUpdateProv);//Anadimos
+	    
+	    labelPreguntaCambioProv = new JLabel("What do you want to change?");
+	    labelPreguntaCambioProv.setBounds(20, 120, 300, 30);
+	    labelPreguntaCambioProv.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+	    labelPreguntaCambioProv.setForeground(color_azul);//Color del texto
+	    subPanelEditProv.add(labelPreguntaCambioProv);//Anadimos
+	    
+	    //combo para elegir que campo editar
+	    comboUpdateProv = new JComboBox<String>();
+	    comboUpdateProv.addItem("codproveedor");
+	    comboUpdateProv.addItem("nombreProveedor");
+	    comboUpdateProv.addItem("mail");
+	    comboUpdateProv.setBounds(340, 120, 300, 30);
+	    subPanelEditProv.add(comboUpdateProv);
+
+		labelNewDataProv = new JLabel("Insert new data");
+		labelNewDataProv.setBounds(20, 170, 300, 30);
+		labelNewDataProv.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+		labelNewDataProv.setForeground(color_azul);//Color del texto
+		subPanelEditProv.add(labelNewDataProv);//Anadimos
+		
+		//nueva info
+		insertNewDataProv = new JTextField();//Creamos el componente
+		TextPrompt placeholder9 = new TextPrompt("Insert new data", insertNewDataProv);
+	    placeholder9.changeAlpha(0.75f);
+	    placeholder9.changeStyle(Font.ITALIC);
+	    insertNewDataProv.setBounds(340,170,300,30);//Posicionamos		
+	    insertNewDataProv.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertNewDataProv.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertNewDataProv.setBackground(Color.WHITE); //Color de fondo
+	    insertNewDataProv.setForeground(color_azul);//Color del texto
+	    subPanelEditProv.add(insertNewDataProv);//Anadimos
+	    
+	    //boton actualizar
+	    Image imgBotonUpdateFinalPr = new ImageIcon("img\\update.png").getImage();
+		botonUpdateFinalPr = new JButton(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonUpdateFinalPr.setBounds(20,220,110,42);
+		botonUpdateFinalPr.setBackground(new Color(186,236,247));
+		botonUpdateFinalPr.setBorder(null); //Eliminamos el borde
+		subPanelEditProv.add(botonUpdateFinalPr);//Anadimos 
+		
+		//resultado de la actualizacion
+		resultUpdateProv = new JLabel();//Creamos el componente
+		resultUpdateProv.setBounds(150,222,500,30);//Posicionamos
+		resultUpdateProv.setBorder(null); //Eliminamos el borde
+		resultUpdateProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		resultUpdateProv.setForeground(color_azul);//Color del texto
+		subPanelEditProv.add(resultUpdateProv);//Anadimos
+
 		
 		//SUBPANEL ELIMINAR PROVEEDOR
 		
 		subPanelElimProv = new JPanel();
-		subPanelElimProv.setBounds(200, 230, 750, 268);
-		subPanelElimProv.setBackground(new Color(186,236,247));
+		subPanelElimProv.setBounds(200, 270, 750, 268);
+		subPanelElimProv.setBackground(color_panel);
 		subPanelElimProv.setLayout(null);
 		add(subPanelElimProv);
 		subPanelElimProv.setVisible(false);	
 		
 		elimProv = new JLabel("delete supplier");
-		elimProv.setBounds(300,30,200,30);
+		elimProv.setBounds(20, 0, 710, 60);
 		elimProv.setBorder(null);
-		elimProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		elimProv.setForeground(new Color(000,000,000));//Color del texto
+		elimProv.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		elimProv.setForeground(color_azul);//Color del texto
+		elimProv.setHorizontalAlignment(JLabel.CENTER);
+		elimProv.setVerticalAlignment(JLabel.CENTER);
 		subPanelElimProv.add(elimProv);
+		
+		//cod proveedor a eliminar
+		insertCODDeleteProv = new JTextField();//Creamos el componente
+		TextPrompt placeholder11 = new TextPrompt("Insert supplier's code", insertCODDeleteProv);
+	    placeholder11.changeAlpha(0.75f);
+	    placeholder11.changeStyle(Font.ITALIC);
+	    insertCODDeleteProv.setBounds(20,70,200,30);//Posicionamos		
+	    insertCODDeleteProv.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertCODDeleteProv.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertCODDeleteProv.setBackground(Color.WHITE); //Color de fondo
+	    insertCODDeleteProv.setForeground(color_azul);//Color del texto
+	    subPanelElimProv.add(insertCODDeleteProv);//Anadimos
+		
+	    //boton busqueda
+	    Image imgBotonSearchProv = new ImageIcon("img\\search.png").getImage();
+		botonSearchProv = new JButton(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonSearchProv.setBounds(20,130,110,42);
+		botonSearchProv.setBackground(new Color(186,236,247));
+		botonSearchProv.setBorder(null); //Eliminamos el borde
+		subPanelElimProv.add(botonSearchProv);//Anadimos 
+		
+		//resultado busqueda
+		resulBusquedaProv = new JLabel();//Creamos el componente
+		resulBusquedaProv.setBounds(150,130,500,30);//Posicionamos
+		resulBusquedaProv.setBorder(null); //Eliminamos el borde
+		resulBusquedaProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		resulBusquedaProv.setForeground(color_azul);//Color del texto
+		subPanelElimProv.add(resulBusquedaProv);//Anadimos
+		
+		//boton borrar el proveedor seleccionado
+		Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
+		botonDeleteProvFinal = new JButton(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonDeleteProvFinal.setBounds(20,190,110,42);
+		botonDeleteProvFinal.setBackground(new Color(186,236,247));
+		botonDeleteProvFinal.setBorder(null); //Eliminamos el borde
+		subPanelElimProv.add(botonDeleteProvFinal);//Anadimos 
+		botonDeleteProvFinal.setVisible(false);
+		
+		//resultado del borrado
+		resulDeleteProv = new JLabel();//Creamos el componente
+		resulDeleteProv.setBounds(150,190,500,30);//Posicionamos
+		resulDeleteProv.setBorder(null); //Eliminamos el borde
+		resulDeleteProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		resulDeleteProv.setForeground(color_azul);//Color del texto
+		subPanelEmpDelete.add(resulDeleteProv);//Anadimos	
+	
+
+		 
 		
 	    
 		//Panel botones PROVEEDORES
 	    
 		panelBotonesProv = new JPanel();
-		panelBotonesProv.setBounds(200, 498, 750, 120);
-		panelBotonesProv.setBackground(new Color(186,236,247));
+		panelBotonesProv.setBounds(200, 538, 750, 82);
+		panelBotonesProv.setBackground(color_panel);
 		panelBotonesProv.setLayout(null);
 		add(panelBotonesProv);
 		panelBotonesProv.setVisible(false);		
 	    
-	  
-		botonInsertProveedor = new JButton("NEW SUPPLIER");//Creamos el componente
-		botonInsertProveedor.setBounds(67,42,160,42);
-		botonInsertProveedor.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botn
-		//botonInsertProveedor.setIcon(new ImageIcon("imagenes/login.png"));
-		botonInsertProveedor.setBackground(Color.BLUE);
-		panelBotonesProv.add(botonInsertProveedor);//Anadimos 
-		
-		botonActualizarProveedor = new JButton("UPDATE SUPPLIER");//Creamos el componente
-		botonActualizarProveedor.setBounds(294,42,160,42);
+		Image imgbotonActualizarProveedor = new ImageIcon("img\\update supplier.png").getImage();
+		botonActualizarProveedor = new JButton(new ImageIcon(imgbotonActualizarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonActualizarProveedor.setBounds((int) 67.5, 20, 160, 42);
 		botonActualizarProveedor.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botï¿½n
-		//botonActualizarProveedor.setIcon(new ImageIcon("imagenes/login.png"));
-		botonActualizarProveedor.setBackground(Color.BLUE);
+		botonActualizarProveedor.setBackground(color_panel);
 		panelBotonesProv.add(botonActualizarProveedor);//Anadimos 
 		
-		botonBorrarProveedor = new JButton("DELETE SUPPLIER");//Creamos el componente
-		botonBorrarProveedor.setBounds(521,42,160,42);
+		Image imgbotonBorrarProveedor = new ImageIcon("img\\delete supplier.png").getImage();
+		botonBorrarProveedor = new JButton(new ImageIcon(imgbotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonBorrarProveedor.setBounds(295, 20, 160, 42);
 		botonBorrarProveedor.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botï¿½n
-		//botonBorrarProveedor.setIcon(new ImageIcon("imagenes/login.png"));
-		botonBorrarProveedor.setBackground(Color.BLUE);
+		botonBorrarProveedor.setBackground(color_panel);
 		panelBotonesProv.add(botonBorrarProveedor);//Anadimos 
+		
+		Image imgbotonDeliveryNotes = new ImageIcon("img\\delivery notes.png").getImage();
+		botonDeliveryNotes = new JButton(new ImageIcon(imgbotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonDeliveryNotes.setBounds((int) 522.5, 20, 160, 42);
+		botonDeliveryNotes.setBorder(null); //Eliminamos el borde
+		botonDeliveryNotes.setBackground(color_panel);
+		panelBotonesProv.add(botonDeliveryNotes);//Anadimos 
 		
 
 
@@ -686,7 +804,7 @@ public class Ventana extends JFrame{
 	    labelPreguntaCambioEmp.setForeground(color_azul);//Color del texto
 		subPanelEmpUpdate.add(labelPreguntaCambioEmp);//Anadimos
 		
-		comboUpdateEmp = new JComboBox();
+		comboUpdateEmp = new JComboBox<String>();
 		comboUpdateEmp.addItem("nombre");
 		comboUpdateEmp.addItem("apellidos");
 		comboUpdateEmp.addItem("email");
@@ -745,18 +863,7 @@ public class Ventana extends JFrame{
 		deleteEmpleado.setHorizontalAlignment(JLabel.CENTER);
 		deleteEmpleado.setVerticalAlignment(JLabel.CENTER);
 		subPanelEmpDelete.add(deleteEmpleado);//Anadimos al panel
-		
-		insertNIFDeleteEmp = new JTextField();//Creamos el componente
-		TextPrompt placeholder11 = new TextPrompt("Insert employee's NIF", insertNIFDeleteEmp);
-	    placeholder11.changeAlpha(0.75f);
-	    placeholder11.changeStyle(Font.ITALIC);
-	    insertNIFDeleteEmp.setBounds(20,70,200,30);//Posicionamos		
-	    insertNIFDeleteEmp.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
-	    insertNIFDeleteEmp.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
-	    insertNIFDeleteEmp.setBackground(Color.WHITE); //Color de fondo
-	    insertNIFDeleteEmp.setForeground(color_azul);//Color del texto
-		subPanelEmpDelete.add(insertNIFDeleteEmp);//Anadimos		
-		 
+
 	    Image imgBotonSearchEmp = new ImageIcon("img\\search.png").getImage();
 		botonSearchEmp = new JButton(new ImageIcon(imgBotonSearchEmp.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		botonSearchEmp.setBounds(20,130,110,42);
@@ -803,22 +910,30 @@ public class Ventana extends JFrame{
 		botonUser.addMouseListener(manejador);
 		botonLogout.addMouseListener(manejador);
 		botonExitInit.addMouseListener(manejador);	
-		botonInsertEmpFinal.addMouseListener(manejador);
 		imageLogo.addMouseListener(manejador);
-		botonInsertProveedor.addMouseListener(manejador);
-		botonActualizarProveedor.addMouseListener(manejador);
-		botonBorrarProveedor.addMouseListener(manejador);
-		botonInsertProvOk.addMouseListener(manejador);
+		
 		botonActualizarEmpleado.addMouseListener(manejador);
 		botonBorrarEmpleado.addMouseListener(manejador);
 		botonExpEmplFichero.addMouseListener(manejador);
-		botonActualizarEmpleado.addMouseListener(manejador);
 		botonUpdateEmpFinal.addMouseListener(manejador);
 		botonSearchEmp.addMouseListener(manejador);
 		botonDeleteEmpFinal.addMouseListener(manejador);
+		botonInsertEmpFinal.addMouseListener(manejador);
+		
+		botonActualizarProveedor.addMouseListener(manejador);
+		botonBorrarProveedor.addMouseListener(manejador);
+		botonDeliveryNotes.addMouseListener(manejador);
+		
+		botonUpdateFinalPr.addMouseListener(manejador);
+		botonSearchProv.addMouseListener(manejador);
+		botonDeleteProvFinal.addMouseListener(manejador);
+		
+		botonInsertProvOk.addMouseListener(manejador);
 		
 	}
 	
+
+
 	//GETTER Y SETTER
 	public JLabel getEtiquetaUser() {
 		return etiquetaUser;
@@ -916,6 +1031,62 @@ public class Ventana extends JFrame{
 	public void setBotonSuppliers(JButton botonSuppliers) {
 		this.botonSuppliers = botonSuppliers;
 	}
+	public JLabel getDeleteEmpleado() {
+		return deleteEmpleado;
+	}
+
+	public void setDeleteEmpleado(JLabel deleteEmpleado) {
+		this.deleteEmpleado = deleteEmpleado;
+	}
+
+	public JTextField getInsertCODDeleteProv() {
+		return insertCODDeleteProv;
+	}
+
+	public void setInsertCODDeleteProv(JTextField insertCODDeleteProv) {
+		this.insertCODDeleteProv = insertCODDeleteProv;
+	}
+
+	public JButton getBotonSearchProv() {
+		return botonSearchProv;
+	}
+
+	public void setBotonSearchProv(JButton botonSearchProv) {
+		this.botonSearchProv = botonSearchProv;
+	}
+
+	public JButton getBotonUpdateFinalPr() {
+		return botonUpdateFinalPr;
+	}
+
+	public void setBotonUpdateFinalPr(JButton botonUpdateFinalPr) {
+		this.botonUpdateFinalPr = botonUpdateFinalPr;
+	}
+
+	public JButton getBotonDeleteProvFinal() {
+		return botonDeleteProvFinal;
+	}
+
+	public void setBotonDeleteProvFinal(JButton botonDeleteProvFinal) {
+		this.botonDeleteProvFinal = botonDeleteProvFinal;
+	}
+
+	public JLabel getResulBusquedaProv() {
+		return resulBusquedaProv;
+	}
+
+	public void setResulBusquedaProv(JLabel resulBusquedaProv) {
+		this.resulBusquedaProv = resulBusquedaProv;
+	}
+
+	public JLabel getResulDeleteProv() {
+		return resulDeleteProv;
+	}
+
+	public void setResulDeleteProv(JLabel resulDeleteProv) {
+		this.resulDeleteProv = resulDeleteProv;
+	}
+
 	public JButton getBotonCustomers() {
 		return botonCustomers;
 	}
@@ -1180,6 +1351,38 @@ public class Ventana extends JFrame{
 	public void setPanelBotonesProv(JPanel panelBotonesProv) {
 		this.panelBotonesProv = panelBotonesProv;
 	}
+	public JTextField getInsertCODUpdateProv() {
+		return insertCODUpdateProv;
+	}
+
+	public void setInsertCODUpdateProv(JTextField insertCODUpdateProv) {
+		this.insertCODUpdateProv = insertCODUpdateProv;
+	}
+
+	public JTextField getInsertNewDataProv() {
+		return insertNewDataProv;
+	}
+
+	public void setInsertNewDataProv(JTextField insertNewDataProv) {
+		this.insertNewDataProv = insertNewDataProv;
+	}
+
+	public JButton getBotonUpdateEmpFinalPr() {
+		return botonUpdateEmpFinalPr;
+	}
+
+	public void setBotonUpdateEmpFinalPr(JButton botonUpdateEmpFinalPr) {
+		this.botonUpdateEmpFinalPr = botonUpdateEmpFinalPr;
+	}
+
+	public JLabel getResultUpdateProv() {
+		return resultUpdateProv;
+	}
+
+	public void setResultUpdateProv(JLabel resultUpdateProv) {
+		this.resultUpdateProv = resultUpdateProv;
+	}
+
 	public JTextField getInsertCodProv() {
 		return insertCodProv;
 	}
@@ -1252,8 +1455,24 @@ public class Ventana extends JFrame{
 	public void setEditProv(JLabel editProv) {
 		this.editProv = editProv;
 	}
+	public JComboBox<String> getComboUpdateProv() {
+		return comboUpdateProv;
+	}
+
+	public void setComboUpdateProv(JComboBox<String> comboUpdateProv) {
+		this.comboUpdateProv = comboUpdateProv;
+	}
+
 	public JLabel getElimProv() {
 		return elimProv;
+	}
+	
+	public JButton getBotonDeliveryNotes() {
+		return botonDeliveryNotes;
+	}
+
+	public void setBotonDeliveryNotes(JButton botonDeliveryNotes) {
+		this.botonDeliveryNotes = botonDeliveryNotes;
 	}
 	public void setElimProv(JLabel elimProv) {
 		this.elimProv = elimProv;
@@ -1271,10 +1490,10 @@ public class Ventana extends JFrame{
 		this.botonSearchEmp = botonSearchEmp;
 	}
 	public JTextField getInsertNIFDeleteEmp() {
-		return insertNIFDeleteEmp;
+		return insertCODDeleteProv;
 	}
 	public void setInsertNIFDeleteEmp(JTextField insertNIFDeleteEmp) {
-		this.insertNIFDeleteEmp = insertNIFDeleteEmp;
+		this.insertCODDeleteProv = insertNIFDeleteEmp;
 	}
 
 	public JLabel getResulBusquedaEmp() {

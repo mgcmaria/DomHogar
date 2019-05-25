@@ -280,5 +280,39 @@ public class AccesoDB {
 		}
 		return afectados;		
 	}
+	
+	public static int actualizarProveedor(String cod, String campo, String nuevoDato, Connection conexion) {
+		
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "UPDATE PROVEEDOR SET " +campo+"= '"+nuevoDato+"' WHERE CODPROVEEDOR='"+cod+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;
+	}
+
+	public static int borrarProveedor(String cod, Connection conexion) {
+	
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM PROVEEDOR WHERE CODPROVEEDOR='"+cod+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;		
+	}
+
+	
 
 }
