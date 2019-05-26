@@ -135,6 +135,20 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelIzq().setVisible(false);
 			ventana.getPanelDer().setVisible(false); 
 			ventana.getBotonHR().setVisible(false);
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelBotonesEmp().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getPanelBotonesProv().setVisible(false);
 			
 			ventana.setSize(400,520);
 			ventana.setResizable(false);
@@ -153,6 +167,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getCajaUser().setText("");
 			ventana.getCajaPass().setText("");
 			ventana.getCajaUser().requestFocus();
+			ventana.getEtiquetaResulLogin().setText("");
 
 		}
 		
