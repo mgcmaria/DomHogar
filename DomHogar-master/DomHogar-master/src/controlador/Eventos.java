@@ -149,6 +149,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getBotonDeleteEmpFinal().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+
 			
 			ventana.setSize(400,520);
 			ventana.setResizable(false);
@@ -201,6 +206,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getBotonDeleteEmpFinal().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
 
 		}
 		
