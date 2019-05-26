@@ -21,16 +21,16 @@ public class Ventana extends JFrame{
 	private JPanel panelIzq, panelDer;	
 	
 	//Atributos de RECURSOS / EMPLEADOS
-	private JPanel panelEmpleado, subPanelEmpInsertar, subPanelBotonesEmp, subPanelEmpUpdate, subPanelEmpDelete;
+	private JPanel panelEmpleado, subPanelEmpInsertar, subPanelBotonesEmp, subPanelEmpUpdate, subPanelEmpDelete, subPanelEmpExport;
 	private JScrollPane barraEmpleados;
 	private JTable tablaEmpleados;
 	private JButton botonActualizarEmpleado, botonBorrarEmpleado, botonExpEmplFichero, botonInsertEmpFinal, botonUpdateEmpFinal, botonSearchEmp,
-	botonDeleteEmpFinal;
-	private JLabel nuevoEmpleado, updateEmpleado, deleteEmpleado, labelPreguntaCambioEmp, labelNewDataEmp;
+	botonDeleteEmpFinal, botonExportEmpFinal;
+	private JLabel nuevoEmpleado, updateEmpleado, deleteEmpleado, labelPreguntaCambioEmp, labelNewDataEmp, exportEmpleado;
 	private JTextField insertNomEmpl, insertApelEmpl, insertNIFEmp, insertPhoneEmp, insertEmailEmp, insertUserEmp, 
-	insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp;
-	private JLabel resulInsertEmp, resultUpdateEmp, resulBusquedaEmp, resulDeleteEmp;
-	private JComboBox <String>comboUpdateEmp;
+	insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp, insertNIFDeleteEmp, insertRutaExportEmp;
+	private JLabel resulInsertEmp, resultUpdateEmp, resulBusquedaEmp, resulDeleteEmp, resulExportEmp;
+	private JComboBox <String> comboUpdateEmp;
 	
 	//Atributos de COMPRAS
 	private JPanel panelCompras;
@@ -54,7 +54,7 @@ public class Ventana extends JFrame{
 	resultUpdateProv, resulBusquedaProv, resulDeleteProv;
 	private JComboBox <String>comboUpdateProv;
 	
-	//Atributos de ALMACÉN
+	//Atributos de ALMACï¿½N
 	private JPanel panelAlmacen;
 	
 	//Atributos de CLIENTES
@@ -71,7 +71,7 @@ public class Ventana extends JFrame{
 		setLocationRelativeTo(null); //Eliminamos la autolocalizaciÃ³n
 		setTitle("ERP DOMHOGAR"); //Titulo
 		setLayout(null); // Lo colocamos nosotros
-		setResizable(false); //Desactivamos botón maximizar
+		setResizable(false); //Desactivamos botï¿½n maximizar
 		setIconImage(Toolkit.getDefaultToolkit().getImage("imagenes\\logo sin fondo.png")); //Imagen de la App
 		setDefaultCloseOperation(EXIT_ON_CLOSE); //Para programa cuendo cerramos
 		incializarComponentes(); //Metodo que inicializa los componentes
@@ -266,7 +266,7 @@ public class Ventana extends JFrame{
 		add(panelCompras);
 		panelCompras.setVisible(false);
 		
-		botonAlbaran = new JButton("ALBARÁN");
+		botonAlbaran = new JButton("ALBARï¿½N");
 		botonAlbaran.setBounds(400,350,110,42);
 		botonAlbaran.setBorder(null); //Eliminamos el borde
 		//Falta incluir la imagen del botï¿½n
@@ -582,7 +582,7 @@ public class Ventana extends JFrame{
 		panelServicios.setVisible(false);
 	}
 
-	//PANEL ALMACÉN
+	//PANEL ALMACï¿½N
 	private void panelAlmacen() {
 		panelAlmacen = new JPanel();
 		panelAlmacen.setBackground(Color.white);
@@ -619,7 +619,7 @@ public class Ventana extends JFrame{
 		tablaEmpleados.getColumnModel().getColumn(2).setPreferredWidth(140);
 		barraEmpleados.setViewportView(tablaEmpleados);
 			
-		//SUBPANEL INSERTAR EMPLEADO - Este sub-panel va cambiando en función de los botones que se vayan pulsando
+		//SUBPANEL INSERTAR EMPLEADO - Este sub-panel va cambiando en funciï¿½n de los botones que se vayan pulsando
 		
 		subPanelEmpInsertar = new JPanel();
 		subPanelEmpInsertar.setBounds(200, 270, 750, 268);
@@ -737,7 +737,7 @@ public class Ventana extends JFrame{
 		resulInsertEmp.setBounds(150,222,500,30);//Posicionamos
 		resulInsertEmp.setBorder(null); //Eliminamos el borde
 		resulInsertEmp.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		resulInsertEmp.setForeground(color_azul);//Color del texto
+		resulInsertEmp.setForeground(Color.gray);//Color del texto
 		subPanelEmpInsertar.add(resulInsertEmp);//Anadimos	
 		
 		//SUBPANEL BOTONES
@@ -844,7 +844,7 @@ public class Ventana extends JFrame{
 		resultUpdateEmp.setBounds(150,222,500,30);//Posicionamos
 		resultUpdateEmp.setBorder(null); //Eliminamos el borde
 		resultUpdateEmp.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		resultUpdateEmp.setForeground(color_azul);//Color del texto
+		resultUpdateEmp.setForeground(Color.gray);//Color del texto
 		subPanelEmpUpdate.add(resultUpdateEmp);//Anadimos	
 		
 		//SUBPANEL DELETE EMPLEADO
@@ -863,6 +863,17 @@ public class Ventana extends JFrame{
 		deleteEmpleado.setHorizontalAlignment(JLabel.CENTER);
 		deleteEmpleado.setVerticalAlignment(JLabel.CENTER);
 		subPanelEmpDelete.add(deleteEmpleado);//Anadimos al panel
+		
+		insertNIFDeleteEmp = new JTextField();//Creamos el componente
+		TextPrompt placeholder11 = new TextPrompt("Insert employee's NIF", insertNIFDeleteEmp);
+	    placeholder11.changeAlpha(0.75f);
+	    placeholder11.changeStyle(Font.ITALIC);
+	    insertNIFDeleteEmp.setBounds(20,70,200,30);//Posicionamos		
+	    insertNIFDeleteEmp.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertNIFDeleteEmp.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertNIFDeleteEmp.setBackground(Color.WHITE); //Color de fondo
+	    insertNIFDeleteEmp.setForeground(color_azul);//Color del texto
+		subPanelEmpDelete.add(insertNIFDeleteEmp);//Anadimos	
 
 	    Image imgBotonSearchEmp = new ImageIcon("img\\search.png").getImage();
 		botonSearchEmp = new JButton(new ImageIcon(imgBotonSearchEmp.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -875,7 +886,7 @@ public class Ventana extends JFrame{
 		resulBusquedaEmp.setBounds(150,130,500,30);//Posicionamos
 		resulBusquedaEmp.setBorder(null); //Eliminamos el borde
 		resulBusquedaEmp.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		resulBusquedaEmp.setForeground(color_azul);//Color del texto
+		resulBusquedaEmp.setForeground(Color.gray);//Color del texto
 		subPanelEmpDelete.add(resulBusquedaEmp);//Anadimos
 		
 		Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete.png").getImage();
@@ -890,8 +901,50 @@ public class Ventana extends JFrame{
 		resulDeleteEmp.setBounds(150,190,500,30);//Posicionamos
 		resulDeleteEmp.setBorder(null); //Eliminamos el borde
 		resulDeleteEmp.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		resulDeleteEmp.setForeground(color_azul);//Color del texto
-		subPanelEmpDelete.add(resulDeleteEmp);//Anadimos	
+		resulDeleteEmp.setForeground(Color.gray);//Color del texto
+		subPanelEmpDelete.add(resulDeleteEmp);//Anadimos
+		
+		//SUBPANEL EXPORT EMPLEADO
+		
+		subPanelEmpExport = new JPanel();
+		subPanelEmpExport.setBounds(200, 270, 750, 268);
+		subPanelEmpExport.setBackground(color_panel);
+		subPanelEmpExport.setLayout(null);
+		add(subPanelEmpExport);
+		subPanelEmpExport.setVisible(false);
+		
+		exportEmpleado = new JLabel("export employee's to file");
+		exportEmpleado.setBounds(20, 0, 710, 60);
+		exportEmpleado.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		exportEmpleado.setForeground(color_azul);//Color del texto
+		exportEmpleado.setHorizontalAlignment(JLabel.CENTER);
+		exportEmpleado.setVerticalAlignment(JLabel.CENTER);
+		subPanelEmpExport.add(exportEmpleado);//Anadimos al panel
+		
+		insertRutaExportEmp = new JTextField();//Creamos el componente
+		TextPrompt placeholder12 = new TextPrompt("Insert path to file. Eg. D:\\path...", insertRutaExportEmp);
+	    placeholder12.changeAlpha(0.75f);
+	    placeholder12.changeStyle(Font.ITALIC);
+	    insertRutaExportEmp.setBounds(20,70,670,30);//Posicionamos		
+	    insertRutaExportEmp.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertRutaExportEmp.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertRutaExportEmp.setBackground(Color.WHITE); //Color de fondo
+	    insertRutaExportEmp.setForeground(color_azul);//Color del texto
+	    subPanelEmpExport.add(insertRutaExportEmp);//Anadimos
+	    
+	    Image imgBotonExportEmpFinal = new ImageIcon("img\\export to file.png").getImage();
+		botonExportEmpFinal = new JButton(new ImageIcon(imgBotonExportEmpFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonExportEmpFinal.setBounds(20,130,160,42);
+		botonExportEmpFinal.setBackground(new Color(186,236,247));
+		botonExportEmpFinal.setBorder(null); //Eliminamos el borde
+		subPanelEmpExport.add(botonExportEmpFinal);//Anadimos 
+				
+	    resulExportEmp = new JLabel();//Creamos el componente
+	    resulExportEmp.setBounds(200,130,500,30);//Posicionamos
+	    resulExportEmp.setBorder(null); //Eliminamos el borde
+	    resulExportEmp.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    resulExportEmp.setForeground(Color.GRAY);//Color del texto
+	    subPanelEmpExport.add(resulExportEmp);//Anadimos	
 	}
 
 	//METODO PARA PONER A LA ESCUCHA LOS EVENTOS	
@@ -919,6 +972,7 @@ public class Ventana extends JFrame{
 		botonSearchEmp.addMouseListener(manejador);
 		botonDeleteEmpFinal.addMouseListener(manejador);
 		botonInsertEmpFinal.addMouseListener(manejador);
+		botonExportEmpFinal.addMouseListener(manejador);
 		
 		botonActualizarProveedor.addMouseListener(manejador);
 		botonBorrarProveedor.addMouseListener(manejador);
@@ -1321,10 +1375,10 @@ public class Ventana extends JFrame{
 	public void setInsertNewDataEmp(JTextField insertNewDataEmp) {
 		this.insertNewDataEmp = insertNewDataEmp;
 	}
-	public JComboBox getComboUpdateEmp() {
+	public JComboBox<String> getComboUpdateEmp() {
 		return comboUpdateEmp;
 	}
-	public void setComboUpdateEmp(JComboBox comboUpdateEmp) {
+	public void setComboUpdateEmp(JComboBox<String> comboUpdateEmp) {
 		this.comboUpdateEmp = comboUpdateEmp;
 	}
 	public JPanel getSubPanelInsProv() {
@@ -1490,33 +1544,57 @@ public class Ventana extends JFrame{
 		this.botonSearchEmp = botonSearchEmp;
 	}
 	public JTextField getInsertNIFDeleteEmp() {
-		return insertCODDeleteProv;
+		return insertNIFDeleteEmp;
 	}
 	public void setInsertNIFDeleteEmp(JTextField insertNIFDeleteEmp) {
-		this.insertCODDeleteProv = insertNIFDeleteEmp;
+		this.insertNIFDeleteEmp = insertNIFDeleteEmp;
 	}
-
 	public JLabel getResulBusquedaEmp() {
 		return resulBusquedaEmp;
 	}
-
 	public void setResulBusquedaEmp(JLabel resulBusquedaEmp) {
 		this.resulBusquedaEmp = resulBusquedaEmp;
 	}
-
 	public JButton getBotonDeleteEmpFinal() {
 		return botonDeleteEmpFinal;
 	}
-
 	public void setBotonDeleteEmpFinal(JButton botonDeleteEmpFinal) {
 		this.botonDeleteEmpFinal = botonDeleteEmpFinal;
 	}
-
 	public JLabel getResulDeleteEmp() {
 		return resulDeleteEmp;
 	}
-
 	public void setResulDeleteEmp(JLabel resulDeleteEmp) {
 		this.resulDeleteEmp = resulDeleteEmp;
+	}
+	public JPanel getSubPanelEmpExport() {
+		return subPanelEmpExport;
+	}
+	public void setSubPanelEmpExport(JPanel subPanelEmpExport) {
+		this.subPanelEmpExport = subPanelEmpExport;
+	}
+	public JButton getBotonExportEmpFinal() {
+		return botonExportEmpFinal;
+	}
+	public void setBotonExportEmpFinal(JButton botonExportEmpFinal) {
+		this.botonExportEmpFinal = botonExportEmpFinal;
+	}
+	public JLabel getExportEmpleado() {
+		return exportEmpleado;
+	}
+	public void setExportEmpleado(JLabel exportEmpleado) {
+		this.exportEmpleado = exportEmpleado;
+	}
+	public JTextField getInsertRutaExportEmp() {
+		return insertRutaExportEmp;
+	}
+	public void setInsertRutaExportEmp(JTextField insertRutaExportEmp) {
+		this.insertRutaExportEmp = insertRutaExportEmp;
+	}
+	public JLabel getResulExportEmp() {
+		return resulExportEmp;
+	}
+	public void setResulExportEmp(JLabel resulExportEmp) {
+		this.resulExportEmp = resulExportEmp;
 	}
 }

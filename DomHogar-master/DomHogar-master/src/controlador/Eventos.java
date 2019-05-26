@@ -128,7 +128,7 @@ public class Eventos implements ActionListener, MouseListener {
 			System.exit(0);
 		}
 		
-		//BOTÓN LOGOUT
+		//BOTï¿½N LOGOUT
 		else if(e.getSource()==ventana.getBotonLogout()) {
 			
 			ventana.getImagenInicio().setVisible(false);
@@ -169,9 +169,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getCajaUser().requestFocus();
 			ventana.getEtiquetaResulLogin().setText("");
 
-		}
-		
-		
+		}		
 		
 		else if (e.getSource()==ventana.getBotonHR()) {
 			
@@ -213,13 +211,11 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getInsertEmailEmp().getText().isEmpty() || ventana.getInsertUserEmp().getText().isEmpty() ||
 					ventana.getInsertPassEmp().getText().isEmpty() || ventana.getInsertPerfilEmp().getText().isEmpty())
 			{
-				ventana.getResulInsertEmp().setForeground(Color.RED);
 				ventana.getResulInsertEmp().setText("Please, enter all the items");
 				
 			} else {
-				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				//Limpiamos la etiqueta de resultado final
 				ventana.getResulInsertEmp().setText("");
-				ventana.getResulInsertEmp().setForeground(new Color(0,157,233));
 				
 				ArrayList<Empleado> nuevoEmpleado = new ArrayList<Empleado>();
 				
@@ -245,11 +241,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getResulInsertEmp().setText("Employee insert");
 					
 					//COMPROBACIONES QUE FALTAN PARA ACTUALIZAR LA JTABLE
-					AccesoDB.cerrarConexion(conexion);
-					conexion = AccesoDB.conexion();
-					AccesoDB.obtenerMatrizEmpleados();
-					ventana.getPanelEmpleado().updateUI();
-					ventana.getTablaEmpleados().updateUI();
+				
 				}
 			}			
 		}
@@ -261,9 +253,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getInsertNewDataEmp().setText("");
 			ventana.getResultUpdateEmp().setText("");
 			
-			//Ocultamos los paneles de Insert y delete
+			//Ocultamos los paneles de Insert, delete, export
 			ventana.getSubPanelEmpInsertar().setVisible(false);
 			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getBotonDeleteEmpFinal().setVisible(false);
 			
 			//Mostramos el panel de Update
 			ventana.getSubPanelEmpUpdate().setVisible(true);
@@ -272,12 +266,10 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonUpdateEmpFinal()) {
 			
 			if(ventana.getInsertNIFUpdateEmp().getText().isEmpty() || ventana.getInsertNewDataEmp().getText().isEmpty()) {
-				ventana.getResultUpdateEmp().setForeground(Color.RED);
 				ventana.getResultUpdateEmp().setText("Please, enter all the items");
 			} else {
-				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				//Limpiamos la etiqueta de resultado final
 				ventana.getResultUpdateEmp().setText("");
-				ventana.getResultUpdateEmp().setForeground(new Color(0,157,233));
 				
 				//Recogemos los datos que queremos actualizar
 				String nif = ventana.getInsertNIFUpdateEmp().getText();
@@ -301,12 +293,13 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getResulBusquedaEmp().setText("");
 			ventana.getResulDeleteEmp().setText("");
 			
-			//Ocultamos los paneles de insert y update empleado así como el botón delete
+			//Ocultamos los paneles de insert y update empleado, boton delete y export
 			ventana.getSubPanelEmpInsertar().setVisible(false);
 			ventana.getSubPanelEmpUpdate().setVisible(false);
 			ventana.getBotonDeleteEmpFinal().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 			
-			//Mostramos el panel de Update
+			//Mostramos el panel de Borrar
 			ventana.getSubPanelEmpDelete().setVisible(true);
 		}
 		
@@ -342,6 +335,22 @@ public class Eventos implements ActionListener, MouseListener {
 			} else {
 				ventana.getResulDeleteEmp().setText("Employee delete");
 			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonExpEmplFichero()) {
+			
+			//Limpiamos la etiqueta de la ruta si estuviera rellena
+			ventana.getInsertRutaExportEmp().setText("");
+			
+			//Ocultamos los paneles de insert, update empleado y boton delete
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getBotonDeleteEmpFinal().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			
+			//Mostramos el panel de Export
+			ventana.getSubPanelEmpExport().setVisible(true);
+			
 		}
 		
 		else if(e.getSource()==ventana.getBotonPurchases()) {
@@ -423,7 +432,7 @@ public class Eventos implements ActionListener, MouseListener {
 		}
 		
 		
-		//BOTÓN INSERTAR PROVEEDOR 
+		//BOTï¿½N INSERTAR PROVEEDOR 
 		else if (e.getSource() == ventana.getBotonInsertProvOk()) {
 
 			if(ventana.getInsertCodProv().getText().isEmpty() || ventana.getInsertNomProv().getText().isEmpty() ||
@@ -508,7 +517,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getResulBusquedaProv().setText("");
 			ventana.getResulDeleteProv().setText("");
 			
-			//Ocultamos los paneles de insert y update empleado así como el botón delete
+			//Ocultamos los paneles de insert y update empleado asï¿½ como el botï¿½n delete
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getBotonDeleteProvFinal().setVisible(false);
@@ -624,7 +633,7 @@ public class Eventos implements ActionListener, MouseListener {
 			
 		}	
 		
-		//Atrás
+		//Atrï¿½s
 		else if(e.getSource()==ventana.getImageLogo()) {
 			
 			//Mostramos la imagen de Inicio
