@@ -1,5 +1,8 @@
 package controlador;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -241,7 +244,7 @@ public class AccesoDB {
 
 		ArrayList<Cliente> listaClientes = AccesoDB.datosCliente(conexion);
 
-		String matrizInfoCliente[][] = new String[listaClientes.size()][3];
+		String matrizInfoCliente[][] = new String[listaClientes.size()][4];
 
 		for (int i = 0; i < listaClientes.size(); i++) {
 			matrizInfoCliente[i][0] = listaClientes.get(i).getDni_Cliente() + "";
@@ -323,6 +326,7 @@ public class AccesoDB {
 	
 	//DATOS COMPRAS	
 	public static String[][] obtenerMatrizCompras() {
+		
 		Connection conexion = AccesoDB.conexion();
 
 		ArrayList<Proveedor> listaProveedores = AccesoDB.datosProveedor(conexion);
@@ -436,6 +440,51 @@ public class AccesoDB {
 			e.printStackTrace();
 		}
 		return afectados;		
+	}
+
+	public static Boolean exportarFicheroEmpleados(String user) {
+		
+		File f = new File("C:\\Users\\"+user+"\\empleados.csv");
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Empleado> lista_empleados = datosEmpleado(conexion);
+		
+		try {
+			FileWriter ficheroEmp = new FileWriter(f);
+			
+			ficheroEmp.write("NIF,Nombre,Apellidos,Email,Telefono,Usuario,Contraseña,Perfil");
+			ficheroEmp.write("\n");
+			
+			for (Empleado empleado : lista_empleados) {
+				
+				ficheroEmp.write(empleado.getNif());
+				ficheroEmp.write(",");
+				ficheroEmp.write(empleado.getNombre());
+				ficheroEmp.write(",");
+				ficheroEmp.write(empleado.getApellidos());
+				ficheroEmp.write(",");
+				ficheroEmp.write(empleado.getEmail());
+				ficheroEmp.write(",");
+				ficheroEmp.write(Integer.toString(empleado.getTelefono()));
+				ficheroEmp.write(",");
+				ficheroEmp.write(empleado.getUsuario());
+				ficheroEmp.write(",");
+				ficheroEmp.write(empleado.getContrasena());
+				ficheroEmp.write(",");
+				ficheroEmp.write(empleado.getPerfil());
+				ficheroEmp.write("\n");
+			
+			}
+			
+			ficheroEmp.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
 	}
 
 	

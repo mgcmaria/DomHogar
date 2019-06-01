@@ -28,8 +28,8 @@ public class Ventana extends JFrame{
 	botonDeleteEmpFinal, botonExportEmpFinal;
 	private JLabel nuevoEmpleado, updateEmpleado, deleteEmpleado, labelPreguntaCambioEmp, labelNewDataEmp, exportEmpleado;
 	private JTextField insertNomEmpl, insertApelEmpl, insertNIFEmp, insertPhoneEmp, insertEmailEmp, insertUserEmp, 
-	insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp, insertNIFDeleteEmp, insertRutaExportEmp;
-	private JLabel resulInsertEmp, resultUpdateEmp, resulBusquedaEmp, resulDeleteEmp, resulExportEmp;
+	insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp, insertNIFDeleteEmp, insertUsuarioPC;
+	private JLabel resulInsertEmp, resultUpdateEmp, resulBusquedaEmp, resulDeleteEmp, resulExportEmp, insertRutaExportEmp;
 	private JComboBox <String> comboUpdateEmp;
 	
 	//Atributos de COMPRAS
@@ -1202,26 +1202,33 @@ public class Ventana extends JFrame{
 		exportEmpleado.setVerticalAlignment(JLabel.CENTER);
 		subPanelEmpExport.add(exportEmpleado);//Anadimos al panel
 		
-		insertRutaExportEmp = new JTextField();//Creamos el componente
-		TextPrompt placeholder12 = new TextPrompt("Insert path to file. Eg. D:\\path...", insertRutaExportEmp);
-	    placeholder12.changeAlpha(0.75f);
-	    placeholder12.changeStyle(Font.ITALIC);
-	    insertRutaExportEmp.setBounds(20,70,670,30);//Posicionamos		
-	    insertRutaExportEmp.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
-	    insertRutaExportEmp.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
-	    insertRutaExportEmp.setBackground(Color.WHITE); //Color de fondo
+		insertUsuarioPC = new JTextField();//Creamos el componente
+		TextPrompt placeholder12 = new TextPrompt("Insert user PC. Ej. ejemplo", insertUsuarioPC);
+		placeholder12.changeAlpha(0.75f);
+		placeholder12.changeStyle(Font.ITALIC);
+	    insertUsuarioPC.setBounds(20,70,200,30);//Posicionamos		
+	    insertUsuarioPC.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertUsuarioPC.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertUsuarioPC.setBackground(Color.WHITE); //Color de fondo
+	    insertUsuarioPC.setForeground(color_azul);//Color del texto
+	    subPanelEmpExport.add(insertUsuarioPC);//Anadimos	
+		
+		insertRutaExportEmp = new JLabel("You'll find the file in C:\\Users\\youruser. Name of file: empleados.csv ");//Creamos el componente
+	    insertRutaExportEmp.setBounds(20,120,670,30);//Posicionamos		
+	    insertRutaExportEmp.setBorder(null); //Eliminamos el borde
+	    insertRutaExportEmp.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
 	    insertRutaExportEmp.setForeground(color_azul);//Color del texto
 	    subPanelEmpExport.add(insertRutaExportEmp);//Anadimos
 	    
 	    Image imgBotonExportEmpFinal = new ImageIcon("img\\export to file.png").getImage();
 		botonExportEmpFinal = new JButton(new ImageIcon(imgBotonExportEmpFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		botonExportEmpFinal.setBounds(20,130,160,42);
+		botonExportEmpFinal.setBounds(20,180,160,42);
 		botonExportEmpFinal.setBackground(new Color(186,236,247));
 		botonExportEmpFinal.setBorder(null); //Eliminamos el borde
 		subPanelEmpExport.add(botonExportEmpFinal);//Anadimos 
 				
 	    resulExportEmp = new JLabel();//Creamos el componente
-	    resulExportEmp.setBounds(200,130,500,30);//Posicionamos
+	    resulExportEmp.setBounds(200,180,500,30);//Posicionamos
 	    resulExportEmp.setBorder(null); //Eliminamos el borde
 	    resulExportEmp.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 	    resulExportEmp.setForeground(Color.GRAY);//Color del texto
@@ -1230,6 +1237,7 @@ public class Ventana extends JFrame{
 
 	//METODO PARA PONER A LA ESCUCHA LOS EVENTOS	
 	public void Eventos (Eventos manejador) {
+		
 		botonLogin.addActionListener(manejador);
 		botonExit.addActionListener(manejador);
 		botonLogin.addMouseListener(manejador);
@@ -1268,13 +1276,9 @@ public class Ventana extends JFrame{
 		botonBorrarCliente.addMouseListener(manejador);
 		botonUpdateFinalCl.addMouseListener(manejador);
 		botonSearchCliente.addMouseListener(manejador);
-		botonDeleteClienteFinal.addMouseListener(manejador);
-		
-		
+		botonDeleteClienteFinal.addMouseListener(manejador);		
 		
 	}
-	
-
 
 	//GETTER Y SETTER
 	public JLabel getEtiquetaUser() {
@@ -1696,35 +1700,27 @@ public class Ventana extends JFrame{
 	public JTextField getInsertCODUpdateProv() {
 		return insertCODUpdateProv;
 	}
-
 	public void setInsertCODUpdateProv(JTextField insertCODUpdateProv) {
 		this.insertCODUpdateProv = insertCODUpdateProv;
 	}
-
 	public JTextField getInsertNewDataProv() {
 		return insertNewDataProv;
 	}
-
 	public void setInsertNewDataProv(JTextField insertNewDataProv) {
 		this.insertNewDataProv = insertNewDataProv;
 	}
-
 	public JButton getBotonUpdateEmpFinalPr() {
 		return botonUpdateEmpFinalPr;
 	}
-
 	public void setBotonUpdateEmpFinalPr(JButton botonUpdateEmpFinalPr) {
 		this.botonUpdateEmpFinalPr = botonUpdateEmpFinalPr;
 	}
-
 	public JLabel getResultUpdateProv() {
 		return resultUpdateProv;
 	}
-
 	public void setResultUpdateProv(JLabel resultUpdateProv) {
 		this.resultUpdateProv = resultUpdateProv;
 	}
-
 	public JTextField getInsertCodProv() {
 		return insertCodProv;
 	}
@@ -1873,10 +1869,10 @@ public class Ventana extends JFrame{
 	public void setExportEmpleado(JLabel exportEmpleado) {
 		this.exportEmpleado = exportEmpleado;
 	}
-	public JTextField getInsertRutaExportEmp() {
+	public JLabel getInsertRutaExportEmp() {
 		return insertRutaExportEmp;
 	}
-	public void setInsertRutaExportEmp(JTextField insertRutaExportEmp) {
+	public void setInsertRutaExportEmp(JLabel insertRutaExportEmp) {
 		this.insertRutaExportEmp = insertRutaExportEmp;
 	}
 	public JLabel getResulExportEmp() {
@@ -1885,220 +1881,174 @@ public class Ventana extends JFrame{
 	public void setResulExportEmp(JLabel resulExportEmp) {
 		this.resulExportEmp = resulExportEmp;
 	}
-
 	public JPanel getSubPanelInsCliente() {
 		return subPanelInsCliente;
 	}
-
 	public void setSubPanelInsCliente(JPanel subPanelInsCliente) {
 		this.subPanelInsCliente = subPanelInsCliente;
 	}
-
 	public JPanel getPanelBotonesCliente() {
 		return panelBotonesCliente;
 	}
-
 	public void setPanelBotonesCliente(JPanel panelBotonesCliente) {
 		this.panelBotonesCliente = panelBotonesCliente;
 	}
-
 	public JPanel getSubPanelEditCliente() {
 		return subPanelEditCliente;
 	}
-
 	public void setSubPanelEditCliente(JPanel subPanelEditCliente) {
 		this.subPanelEditCliente = subPanelEditCliente;
 	}
-
 	public JPanel getSubPanelElimCliente() {
 		return subPanelElimCliente;
 	}
-
 	public void setSubPanelElimCliente(JPanel subPanelElimCliente) {
 		this.subPanelElimCliente = subPanelElimCliente;
 	}
-
 	public JScrollPane getBarraClientes() {
 		return barraClientes;
 	}
-
 	public void setBarraClientes(JScrollPane barraClientes) {
 		this.barraClientes = barraClientes;
 	}
-
 	public JTable getTablaClientes() {
 		return tablaClientes;
 	}
-
 	public void setTablaClientes(JTable tablaClientes) {
 		this.tablaClientes = tablaClientes;
 	}
-
 	public JLabel getNuevoCliente() {
 		return nuevoCliente;
 	}
-
 	public void setNuevoCliente(JLabel nuevoCliente) {
 		this.nuevoCliente = nuevoCliente;
 	}
-
 	public JLabel getResulInsertCliente() {
 		return resulInsertCliente;
 	}
-
 	public void setResulInsertCliente(JLabel resulInsertCliente) {
 		this.resulInsertCliente = resulInsertCliente;
 	}
-
 	public JLabel getEditCliente() {
 		return editCliente;
 	}
-
 	public void setEditCliente(JLabel editCliente) {
 		this.editCliente = editCliente;
 	}
-
 	public JLabel getResultUpdateCliente() {
 		return resultUpdateCliente;
 	}
-
 	public void setResultUpdateCliente(JLabel resultUpdateCliente) {
 		this.resultUpdateCliente = resultUpdateCliente;
 	}
-
 	public JLabel getElimCliente() {
 		return elimCliente;
 	}
-
 	public void setElimCliente(JLabel elimCliente) {
 		this.elimCliente = elimCliente;
 	}
-
 	public JLabel getResulBusquedaCli() {
 		return resulBusquedaCli;
 	}
-
 	public void setResulBusquedaCli(JLabel resulBusquedaCli) {
 		this.resulBusquedaCli = resulBusquedaCli;
 	}
-
 	public JLabel getResulDeleteCliente() {
 		return resulDeleteCliente;
 	}
-
 	public void setResulDeleteCliente(JLabel resulDeleteCliente) {
 		this.resulDeleteCliente = resulDeleteCliente;
 	}
-
 	public JTextField getInsertNIFCliente() {
 		return insertNIFCliente;
 	}
-
 	public void setInsertNIFCliente(JTextField insertNIFCliente) {
 		this.insertNIFCliente = insertNIFCliente;
 	}
-
 	public JTextField getInsertNomCliente() {
 		return insertNomCliente;
 	}
-
 	public void setInsertNomCliente(JTextField insertNomCliente) {
 		this.insertNomCliente = insertNomCliente;
 	}
-
 	public JTextField getInsertTelCliente() {
 		return insertTelCliente;
 	}
-
 	public void setInsertTelCliente(JTextField insertTelCliente) {
 		this.insertTelCliente = insertTelCliente;
 	}
-
 	public JTextField getInsertNIFUpdateCliente() {
 		return insertNIFUpdateCliente;
 	}
-
 	public void setInsertNIFUpdateCliente(JTextField insertNIFUpdateCliente) {
 		this.insertNIFUpdateCliente = insertNIFUpdateCliente;
 	}
-
 	public JTextField getInsertNIFDeleteCli() {
 		return insertNIFDeleteCli;
 	}
-
 	public void setInsertNIFDeleteCli(JTextField insertNIFDeleteCli) {
 		this.insertNIFDeleteCli = insertNIFDeleteCli;
 	}
-
 	public JTextField getInsertNewDataCliente() {
 		return insertNewDataCliente;
 	}
-
 	public void setInsertNewDataCliente(JTextField insertNewDataCliente) {
 		this.insertNewDataCliente = insertNewDataCliente;
 	}
-
 	public JButton getBotonInsertClienteok() {
 		return botonInsertClienteok;
 	}
-
 	public void setBotonInsertClienteok(JButton botonInsertClienteok) {
 		this.botonInsertClienteok = botonInsertClienteok;
 	}
-
 	public JButton getBotonActualizarCliente() {
 		return botonActualizarCliente;
 	}
-
 	public void setBotonActualizarCliente(JButton botonActualizarCliente) {
 		this.botonActualizarCliente = botonActualizarCliente;
 	}
-
 	public JButton getBotonBorrarCliente() {
 		return botonBorrarCliente;
 	}
-
 	public void setBotonBorrarCliente(JButton botonBorrarCliente) {
 		this.botonBorrarCliente = botonBorrarCliente;
 	}
-
 	public JButton getBotonUpdateFinalCl() {
 		return botonUpdateFinalCl;
 	}
-
 	public void setBotonUpdateFinalCl(JButton botonUpdateFinalCl) {
 		this.botonUpdateFinalCl = botonUpdateFinalCl;
 	}
-
 	public JButton getBotonSearchCliente() {
 		return botonSearchCliente;
 	}
-
 	public void setBotonSearchCliente(JButton botonSearchCliente) {
 		this.botonSearchCliente = botonSearchCliente;
 	}
-
 	public JButton getBotonDeleteClienteFinal() {
 		return botonDeleteClienteFinal;
 	}
-
 	public void setBotonDeleteClienteFinal(JButton botonDeleteClienteFinal) {
 		this.botonDeleteClienteFinal = botonDeleteClienteFinal;
 	}
-
 	public JComboBox<String> getComboUpdateCliente() {
 		return comboUpdateCliente;
 	}
-
 	public void setComboUpdateCliente(JComboBox<String> comboUpdateCliente) {
 		this.comboUpdateCliente = comboUpdateCliente;
 	}
-
 	public JTextField getInsertMailCliente() {
 		return insertMailCliente;
 	}
-
 	public void setInsertMailCliente(JTextField insertMailCliente) {
 		this.insertMailCliente = insertMailCliente;
+	}
+
+	public JTextField getInsertUsuarioPC() {
+		return insertUsuarioPC;
+	}
+
+	public void setInsertUsuarioPC(JTextField insertUsuarioPC) {
+		this.insertUsuarioPC = insertUsuarioPC;
 	}
 }

@@ -359,8 +359,8 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		else if(e.getSource() == ventana.getBotonExpEmplFichero()) {
 			
-			//Limpiamos la etiqueta de la ruta si estuviera rellena
-			ventana.getInsertRutaExportEmp().setText("");
+			//Limpiamos la etiqueta usuario
+			ventana.getInsertUsuarioPC().setText("");
 			
 			//Ocultamos los paneles de insert, update empleado y boton delete
 			ventana.getSubPanelEmpInsertar().setVisible(false);
@@ -370,6 +370,24 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Mostramos el panel de Export
 			ventana.getSubPanelEmpExport().setVisible(true);
+			
+		}
+		
+		else if(e.getSource() == ventana.getBotonExportEmpFinal()) {
+			
+			//Recojemos el usuario del PC
+			String user = ventana.getInsertUsuarioPC().getText();
+			
+			Boolean ok_fichero = AccesoDB.exportarFicheroEmpleados(user);
+			
+			if (ok_fichero == true) {
+				
+				ventana.getResulExportEmp().setText("Fichero generado con éxito");
+				
+			} else {
+				
+				ventana.getResulExportEmp().setText("Error al generar fichero");
+			}
 			
 		}
 		
@@ -922,13 +940,16 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete hover.png").getImage();
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		else if (e.getSource()==ventana.getBotonExportEmpFinal()) {
+			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 		
 		//
 		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert hover.png").getImage();
 			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
 			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier hover.png").getImage();
 			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
@@ -940,9 +961,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
 			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes hover.png").getImage();
 			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}	
-		
-		
+		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
 			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update hover.png").getImage();
 			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -955,6 +974,7 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete hover.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		
 		
 	}
 
@@ -1024,6 +1044,10 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		else if (e.getSource()==ventana.getBotonExportEmpFinal()) {
+			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 		
 		//
 		
@@ -1058,6 +1082,7 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		
 	}
 
 	@Override
@@ -1066,13 +1091,11 @@ public class Eventos implements ActionListener, MouseListener {
 			 ventana.getBotonLogin().setIcon(new ImageIcon("imagenes/login press.png"));	
 			 ventana.getBotonLogin().setContentAreaFilled(false);			
 		}
-		else if (e.getSource()==ventana.getBotonExit()) {
-			
+		else if (e.getSource()==ventana.getBotonExit()) {			
 			ventana.getBotonExit().setIcon(new ImageIcon("imagenes/exit login press.png"));
 			ventana.getBotonExit().setContentAreaFilled(false);
 		}		
-		else if (e.getSource()==ventana.getBotonPurchases()) {
-			
+		else if (e.getSource()==ventana.getBotonPurchases()) {			
 			ventana.getBotonPurchases().setIcon(new ImageIcon("img/purchases press.png"));
 			ventana.getBotonPurchases().setContentAreaFilled(false);
 		}		
@@ -1118,7 +1141,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonInsertEmpFinal().setContentAreaFilled(false);
 		}
 		else if (e.getSource()==ventana.getBotonActualizarEmpleado()) {
-			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update employee press.png").getImage();
+			Image imgBotonUpdateEmpleado = new ImageIcon("img\\update employee  press.png").getImage();
 			ventana.getBotonActualizarEmpleado().setIcon(new ImageIcon(imgBotonUpdateEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonActualizarEmpleado().setContentAreaFilled(false);
 		}
@@ -1146,6 +1169,11 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete press.png").getImage();
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonDeleteEmpFinal().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportEmpFinal()) {
+			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportEmpFinal().setContentAreaFilled(false);
 		}
 		
 		//
@@ -1255,6 +1283,10 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonDeleteEmpFinal()) {
 			Image imgBotonDeleteEmpFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteEmpFinal().setIcon(new ImageIcon(imgBotonDeleteEmpFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportEmpFinal()) {
+			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		
 		//
