@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import tablas.Cliente;
 import tablas.Empleado;
 import tablas.Proveedor;
 
@@ -200,6 +201,127 @@ public class AccesoDB {
 		return matrizInfoPr;
 	}
 	
+	
+	//DATOS CLIENTES
+	public static ArrayList<Cliente> datosCliente(Connection conexion ) {
+
+		ArrayList<Cliente> lista_clientes = new ArrayList<Cliente>();
+		
+		Cliente cliente;
+		
+		try {			
+
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT * FROM CLIENTE");
+
+			// Mientras haya registros anadimos al ArrayList
+			while (rs.next()) { 
+				
+				String dni_Cliente = rs.getString("DNI_CLIENTE");
+				String nombre = rs.getString("NOMBRE");
+				int telefono = rs.getInt("TELEFONO");
+				String email = rs.getString("EMAIL");
+				
+				cliente = new Cliente(dni_Cliente, nombre, email, telefono);
+				
+				lista_clientes.add(cliente);				
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+
+		return lista_clientes;
+	}
+	
+	
+	public static String[][] obtenerMatrizClientes() {
+		Connection conexion = AccesoDB.conexion();
+
+		ArrayList<Cliente> listaClientes = AccesoDB.datosCliente(conexion);
+
+		String matrizInfoCliente[][] = new String[listaClientes.size()][3];
+
+		for (int i = 0; i < listaClientes.size(); i++) {
+			matrizInfoCliente[i][0] = listaClientes.get(i).getDni_Cliente() + "";
+			matrizInfoCliente[i][1] = listaClientes.get(i).getNombre() + "";
+			matrizInfoCliente[i][2] = listaClientes.get(i).getEmail() + "";
+			matrizInfoCliente[i][3] = listaClientes.get(i).getTelefono() + "";
+
+		}
+		return matrizInfoCliente;
+	}
+	
+	public static int insertarCliente(ArrayList<Cliente> nuevoCliente, Connection conexion) {
+
+		int afectados = 0;
+
+		try {
+			// Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO CLIENTE (DNI_CLIENTE, NOMBRE, EMAIL, TELEFONO) " + "VALUES (?, ?, ?, ?)";
+
+			String dni = null;
+			String nombre = null;
+			String email = null;
+			int telefono = 0;
+
+			for (Cliente cliente : nuevoCliente) {
+				dni = cliente.getDni_Cliente();
+				nombre = cliente.getNombre();
+				email = cliente.getEmail();
+				telefono = cliente.getTelefono();
+			}
+
+			// Con PreparedStatement recogemos los valores introducidos
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setString(1, dni);
+			sentencia.setString(2, nombre);
+			sentencia.setString(3, email);
+			sentencia.setInt(4, telefono);
+
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;
+	}
+	
+	public static int actualizarCliente(String dni, String campo, String nuevoDato, Connection conexion) {
+		
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "UPDATE CLIENTE SET " +campo+"= '"+nuevoDato+"' WHERE CODPROVEEDOR='"+dni+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;
+	}
+
+	public static int borrarCliente(String dni, Connection conexion) {
+	
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM CLIENTE WHERE DNI_CLIENTE='"+dni+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;		
+	}
+	
+	//DATOS COMPRAS	
 	public static String[][] obtenerMatrizCompras() {
 		Connection conexion = AccesoDB.conexion();
 
@@ -214,6 +336,40 @@ public class AccesoDB {
 
 		}
 		return matrizInfoPr;
+	}
+	
+	
+
+	public static int actualizarEmpleado(String nif, String campo, String nuevoDato, Connection conexion) {
+		
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "UPDATE EMPLEADO SET " +campo+"= '"+nuevoDato+"' WHERE NIF_EMPLEADO='"+nif+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;
+	}
+
+	public static int borrarEmpleado(String nif, Connection conexion) {
+	
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM EMPLEADO WHERE NIF_EMPLEADO='"+nif+"';";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;		
 	}
 	
 	public static int insertarProveedor(ArrayList<Proveedor> nuevoProveedor, Connection conexion) {
@@ -248,38 +404,7 @@ public class AccesoDB {
 		}
 		return afectados;
 	}
-
-	public static int actualizarEmpleado(String nif, String campo, String nuevoDato, Connection conexion) {
-		
-		int afectados = 0;
-		
-		// Almacenamos en un String la Sentencia SQL
-		String sql = "UPDATE EMPLEADO SET " +campo+"= '"+nuevoDato+"' WHERE NIF_EMPLEADO='"+nif+"';";
-		
-		try {
-			PreparedStatement sentencia = conexion.prepareStatement(sql);
-			afectados = sentencia.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return afectados;
-	}
-
-	public static int borrarEmpleado(String nif, Connection conexion) {
 	
-		int afectados = 0;
-		
-		// Almacenamos en un String la Sentencia SQL
-		String sql = "DELETE FROM EMPLEADO WHERE NIF_EMPLEADO='"+nif+"';";
-		
-		try {
-			PreparedStatement sentencia = conexion.prepareStatement(sql);
-			afectados = sentencia.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return afectados;		
-	}
 	
 	public static int actualizarProveedor(String cod, String campo, String nuevoDato, Connection conexion) {
 		

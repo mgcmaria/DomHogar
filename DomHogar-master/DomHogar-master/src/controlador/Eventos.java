@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
+import tablas.Cliente;
 import tablas.Empleado;
 import tablas.Proveedor;
 import vista.Ventana;
@@ -143,6 +144,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
@@ -200,6 +205,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
@@ -377,6 +386,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
@@ -400,6 +413,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);			
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
@@ -435,6 +452,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);			
 			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			
@@ -574,6 +595,10 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Mostramos panel de clientes
 			ventana.getPanelClientes().setVisible(true);
+			ventana.getSubPanelInsCliente().setVisible(true);
+			ventana.getPanelBotonesCliente().setVisible(true);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -592,7 +617,141 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			
+			
 		}
+		
+		//BOT�N INSERTAR CLIENTE
+		else if (e.getSource() == ventana.getBotonInsertClienteok()) {
+
+			if(ventana.getInsertCodProv().getText().isEmpty() || ventana.getInsertNomProv().getText().isEmpty() ||
+					ventana.getInsertContProv().getText().isEmpty())
+			{
+				ventana.getResulInsertCliente().setForeground(Color.GRAY);
+				ventana.getResulInsertCliente().setText("Please, enter all the fields");
+				
+			} else {
+				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				ventana.getResulInsertCliente().setText("");
+				ventana.getResulInsertCliente().setForeground(new Color(0,157,233));
+				
+				
+			ArrayList<Cliente> nuevoCliente = new ArrayList<Cliente>();
+
+			// Recogemos los datos del nuevo empleado
+			String dni = ventana.getInsertNIFCliente().getText();
+			String nombre = ventana.getInsertNomCliente().getText();
+			int telefono = Integer.parseInt(ventana.getInsertTelCliente().getText());
+			String email = ventana.getInsertMailCliente().getText();
+
+			Cliente cli = new Cliente(dni, nombre, email, telefono);
+
+			nuevoCliente.add(cli);
+
+			int afectados = AccesoDB.insertarCliente(nuevoCliente, conexion);
+
+			if (afectados == 0) {
+				ventana.getResulInsertCliente().setText("Error adding customer");
+			} else {
+				ventana.getResulInsertCliente().setText("Customer added");
+				AccesoDB.obtenerMatrizClientes();
+			}
+		}
+		
+	}
+		
+		
+		else if(e.getSource() == ventana.getBotonActualizarCliente()) {
+			
+			//Limpiamos todas la etiquetas rellenas
+			ventana.getInsertNIFUpdateCliente().setText("");
+			ventana.getInsertNewDataCliente().setText("");
+			ventana.getResultUpdateCliente().setText("");
+			
+			//Ocultamos los paneles de Insert y delete
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+			
+			//Mostramos el panel de Update
+			ventana.getSubPanelEditCliente().setVisible(true);
+		}
+		
+		else if(e.getSource() == ventana.getBotonUpdateFinalCl()) {
+			
+			if(ventana.getInsertNIFUpdateCliente().getText().isEmpty() || ventana.getInsertNewDataCliente().getText().isEmpty()) {
+				ventana.getResultUpdateProv().setForeground(Color.RED);
+				ventana.getResultUpdateCliente().setText("Please, enter all the items");
+			} else {
+				//Limpiamos la etiqueta de resultado final y devolvemos el color
+				ventana.getResultUpdateCliente().setText("");
+				ventana.getResultUpdateCliente().setForeground(new Color(0,157,233));
+				
+				//Recogemos los datos que queremos actualizar
+				String cod = ventana.getInsertNIFUpdateCliente().getText();
+				String campo = ventana.getComboUpdateCliente().getSelectedItem().toString();
+				String nuevoDato = ventana.getInsertNewDataCliente().getText();
+				
+				int afectados = AccesoDB.actualizarCliente(cod, campo, nuevoDato, conexion);
+				
+				if(afectados == 0) {
+					ventana.getResultUpdateCliente().setText("Error updating customer");
+				} else {
+					ventana.getResultUpdateCliente().setText("Customer updated");
+				}
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonBorrarCliente()) {
+			
+			//Limpiamos etiquetas rellenas
+			ventana.getInsertNIFDeleteCli().setText("");
+			ventana.getResulBusquedaCli().setText("");
+			ventana.getResulDeleteCliente().setText("");
+			
+			//Ocultamos los paneles de insert y update empleado as� como el bot�n delete
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getBotonDeleteClienteFinal().setVisible(false);
+			
+			//Mostramos el panel de Update
+			ventana.getSubPanelElimCliente().setVisible(true);
+		}
+		
+		else if(e.getSource() == ventana.getBotonSearchCliente()) {
+			
+			//Recogemos el nif para buscar el cliente
+			String nif = ventana.getInsertNIFDeleteCli().getText();
+			
+			ArrayList<Cliente> listaCli = AccesoDB.datosCliente(conexion);
+			
+			for (Cliente cliente : listaCli) {
+				
+				if(cliente.getDni_Cliente().equalsIgnoreCase(nif)) {
+					ventana.getResulBusquedaCli().setText("The customer: | "+ cliente.getNombre()
+					+" "+" | , will be deleted.");
+					ventana.getBotonDeleteClienteFinal().setVisible(true);
+					return;
+				} else {
+					ventana.getResulBusquedaCli().setText("Customer doesn't exist");
+				}
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonDeleteClienteFinal()) {
+			
+			//Recogemos el nif para buscar el cliente
+			String nif = ventana.getInsertNIFDeleteCli().getText();
+			
+			int afectados = AccesoDB.borrarCliente(nif, conexion);
+			
+			if(afectados == 0) {
+				ventana.getResulDeleteCliente().setText("Error deleting customer");
+			} else {
+				ventana.getResulDeleteCliente().setText("Customer deleted");
+			}
+		}
+		
+		
+
 		
 		else if(e.getSource()==ventana.getBotonServices()) {
 			
@@ -609,7 +768,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
-			ventana.getPanelClientes().setVisible(false);		
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
@@ -634,6 +797,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);			
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
@@ -658,6 +825,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
@@ -669,6 +840,8 @@ public class Eventos implements ActionListener, MouseListener {
 		
 	}
 
+	//FALTAN IMAGENES BOTONES CLIENTES
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if(e.getSource()==ventana.getBotonLogin()) {			

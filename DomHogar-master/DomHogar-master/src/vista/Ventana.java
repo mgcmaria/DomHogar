@@ -58,7 +58,16 @@ public class Ventana extends JFrame{
 	private JPanel panelAlmacen;
 	
 	//Atributos de CLIENTES
-	private JPanel panelClientes;
+	private JPanel panelClientes, subPanelInsCliente, panelBotonesCliente, subPanelEditCliente, subPanelElimCliente;
+	private JScrollPane barraClientes;
+	private JTable tablaClientes;
+	private JLabel nuevoCliente, resulInsertCliente, editCliente, labelPreguntaCambioCliente, labelNewDataCliente,
+	resultUpdateCliente, elimCliente, resulBusquedaCli, resulDeleteCliente;
+	private JTextField insertNIFCliente, insertNomCliente, insertTelCliente, insertNIFUpdateCliente, insertNIFDeleteCli,
+	insertNewDataCliente, insertMailCliente;
+	private JButton botonInsertClienteok, botonActualizarCliente, botonBorrarCliente, botonUpdateFinalCl,
+	botonSearchCliente, botonDeleteClienteFinal;
+	private JComboBox<String> comboUpdateCliente;
 	
 	//COLORES
 	Color color_blanco = Color.WHITE;
@@ -260,7 +269,7 @@ public class Ventana extends JFrame{
 	private void panelCompras() {
 		
 		panelCompras = new JPanel();
-		panelCompras.setBackground(Color.white);
+		panelCompras.setBackground(color_panel);
 		panelCompras.setBounds(240, 0, 900, 500);
 		panelCompras.setLayout(null);
 		add(panelCompras);
@@ -282,7 +291,7 @@ public class Ventana extends JFrame{
 	//PANEL VENTAS
 	private void panelVentas() {
 		panelVentas = new JPanel();
-		panelVentas.setBackground(Color.white);
+		panelVentas.setBackground(color_panel);
 		panelVentas.setBounds(240, 0, 900, 500);
 		panelVentas.setLayout(null);
 		add(panelVentas);
@@ -370,7 +379,6 @@ public class Ventana extends JFrame{
 		botonInsertProvOk = new JButton(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));//Creamos el componente
 		botonInsertProvOk.setBounds(550,140,110,42);
 		botonInsertProvOk.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botï¿½n
 		botonInsertProvOk.setBackground(new Color(186,236,247));
 		subPanelInsProv.add(botonInsertProvOk);//Anadimos 
 		
@@ -565,11 +573,284 @@ public class Ventana extends JFrame{
 	//PANEL CLIENTES
 	private void panelClientes() {
 		panelClientes = new JPanel();
-		panelClientes.setBackground(Color.white);
-		panelClientes.setBounds(240, 0, 900, 500);
+		panelClientes.setBackground(color_panel);
+		panelClientes.setBounds(200, 40, 750, 230);
 		panelClientes.setLayout(null);
 		add(panelClientes);
 		panelClientes.setVisible(false);
+		
+		barraClientes = new JScrollPane();
+		barraClientes.setBounds(20, 20, 710, 190);
+		panelClientes.add(barraClientes);
+		
+		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Teléfono", "Email"};
+		String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
+		
+		tablaClientes = new JTable(infoClientes,titulosClientes);
+		tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablaClientes.getColumnModel().getColumn(1).setPreferredWidth(115);
+		tablaClientes.getColumnModel().getColumn(2).setPreferredWidth(140);
+		barraClientes.setViewportView(tablaClientes);
+		
+		//SUBPANEL INSERTAR CLIENTE
+		
+		subPanelInsCliente = new JPanel();
+		subPanelInsCliente.setBounds(200, 270, 750, 268);
+		subPanelInsCliente.setBackground(color_panel);
+		subPanelInsCliente.setLayout(null);
+		add(subPanelInsCliente);
+		subPanelInsCliente.setVisible(false);	
+				
+		nuevoCliente = new JLabel("new customer");
+		nuevoCliente.setBounds(20, 0, 710, 60);
+		nuevoCliente.setBorder(null);
+		nuevoCliente.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		nuevoCliente.setForeground(color_azul);//Color del texto
+		nuevoCliente.setHorizontalAlignment(JLabel.CENTER);
+		nuevoCliente.setVerticalAlignment(JLabel.CENTER);
+		subPanelInsCliente.add(nuevoCliente);
+		
+		//caja codigo nuevo cliente
+		insertNIFCliente = new JTextField();//Creamos el componente
+		TextPrompt placeholder = new TextPrompt("customer's code", insertNIFCliente);
+	    placeholder.changeAlpha(0.75f);
+	    placeholder.changeStyle(Font.ITALIC);
+	    insertNIFCliente.setBounds(40,90,200,30);//Posicionamos
+	    insertNIFCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertNIFCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    insertNIFCliente.setBackground(Color.WHITE); //Color de fondo
+	    insertNIFCliente.setForeground(color_azul);//Color del texto
+	    subPanelInsCliente.add(insertNIFCliente);//Anadimos
+				
+		  //caja nombre nuevo cliente
+	    insertNomCliente = new JTextField();//Creamos el componente
+		TextPrompt placeholder1 = new TextPrompt("customer's name", insertNomCliente);
+	    placeholder1.changeAlpha(0.75f);
+	    placeholder1.changeStyle(Font.ITALIC);
+	    insertNomCliente.setBounds(250,90,430,30);//Posicionamos
+	    insertNomCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertNomCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    insertNomCliente.setBackground(Color.WHITE); //Color de fondo
+	    insertNomCliente.setForeground(color_azul);//Color del texto
+	    subPanelInsCliente.add(insertNomCliente);//Anadimos
+				
+			//caja telefono nuevo cliente
+		insertTelCliente = new JTextField();//Creamos el componente
+		TextPrompt placeholder2 = new TextPrompt("phone", insertTelCliente);
+	    placeholder2.changeAlpha(0.75f);
+	    placeholder2.changeStyle(Font.ITALIC);
+	    insertTelCliente.setBounds(40,150,400,30);//Posicionamos
+	    insertTelCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertTelCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    insertTelCliente.setBackground(Color.WHITE); //Color de fondo
+	    insertTelCliente.setForeground(color_azul);//Color del texto
+	    subPanelInsCliente.add(insertTelCliente);//Anadimos
+	    
+	    //insertMailCliente
+	    insertMailCliente = new JTextField();//Creamos el componente
+		TextPrompt placeholder3 = new TextPrompt("email", insertMailCliente);
+	    placeholder3.changeAlpha(0.75f);
+	    placeholder3.changeStyle(Font.ITALIC);
+	    insertMailCliente.setBounds(170,120,120,30);//Posicionamos
+	    insertMailCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertMailCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    insertMailCliente.setBackground(Color.WHITE); //Color de fondo
+	    insertMailCliente.setForeground(color_azul);//Color del texto
+	    subPanelInsCliente.add(insertMailCliente);//Anadimos
+		
+			//boton insertar
+	    Image imgBotonInsertClienteOk = new ImageIcon("img\\insert.png").getImage();
+		botonInsertClienteok = new JButton(new ImageIcon(imgBotonInsertClienteOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonInsertClienteok.setBounds(550,140,110,42);
+		botonInsertClienteok.setBorder(null); //Eliminamos el borde
+		//Falta incluir la imagen del botï¿½n
+		botonInsertClienteok.setBackground(new Color(186,236,247));
+		subPanelInsCliente.add(botonInsertClienteok);//Anadimos 
+				
+		//resultado insercion
+		resulInsertCliente = new JLabel("");//Creamos el componente
+		resulInsertCliente.setBounds(100,200,500,30);//Posicionamos
+		resulInsertCliente.setBorder(null); //Eliminamos el borde
+		resulInsertCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		resulInsertCliente.setForeground(new Color(000,000,000));//Color del texto
+		subPanelInsCliente.add(resulInsertCliente);//Anadimos	
+		
+		
+		//SUBPANEL EDITAR CLIENTE
+		
+		subPanelEditCliente = new JPanel();
+		subPanelEditCliente.setBounds(200, 270, 750, 268);
+		subPanelEditCliente.setBackground(color_panel);
+		subPanelEditCliente.setLayout(null);
+		add(subPanelEditCliente);
+		subPanelEditCliente.setVisible(false);	
+		
+		editCliente = new JLabel("update supplier");
+		editCliente.setBounds(20, 0, 710, 60);
+		editCliente.setBorder(null);
+		editCliente.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		editCliente.setForeground(color_azul);//Color del texto
+		editCliente.setHorizontalAlignment(JLabel.CENTER);
+		editCliente.setVerticalAlignment(JLabel.CENTER);
+		subPanelEditCliente.add(editCliente);
+		
+		//caja nif cliente editar
+		insertNIFUpdateCliente = new JTextField();//Creamos el componente
+		TextPrompt placeholder8 = new TextPrompt("Insert customer's NIF", insertNIFUpdateCliente);
+	    placeholder8.changeAlpha(0.75f);
+	    placeholder8.changeStyle(Font.ITALIC);
+	    insertNIFUpdateCliente.setBounds(20,70,200,30);//Posicionamos		
+	    insertNIFUpdateCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertNIFUpdateCliente.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertNIFUpdateCliente.setBackground(Color.WHITE); //Color de fondo
+	    insertNIFUpdateCliente.setForeground(color_azul);//Color del texto
+	    subPanelEditCliente.add(insertNIFUpdateCliente);//Anadimos
+	    
+	    labelPreguntaCambioCliente = new JLabel("What do you want to change?");
+	    labelPreguntaCambioCliente.setBounds(20, 120, 300, 30);
+	    labelPreguntaCambioCliente.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+	    labelPreguntaCambioCliente.setForeground(color_azul);//Color del texto
+	    subPanelEditCliente.add(labelPreguntaCambioCliente);//Anadimos
+		
+		//combo para elegir que campo editar
+	    comboUpdateCliente = new JComboBox<String>();
+	    comboUpdateCliente.addItem("dni_Cliente");
+	    comboUpdateCliente.addItem("nombre");
+		comboUpdateCliente.addItem("telefono");
+	    comboUpdateCliente.addItem("email");
+	    comboUpdateCliente.setBounds(340, 120, 300, 30);
+	    subPanelEditCliente.add(comboUpdateCliente);
+
+		labelNewDataCliente = new JLabel("Insert new data");
+		labelNewDataCliente.setBounds(20, 170, 300, 30);
+		labelNewDataCliente.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+		labelNewDataCliente.setForeground(color_azul);//Color del texto
+		subPanelEditCliente.add(labelNewDataCliente);//Anadimos
+		
+		//nueva info
+		insertNewDataCliente = new JTextField();//Creamos el componente
+		TextPrompt placeholder9 = new TextPrompt("Insert new data", insertNewDataCliente);
+	    placeholder9.changeAlpha(0.75f);
+	    placeholder9.changeStyle(Font.ITALIC);
+	    insertNewDataCliente.setBounds(340,170,300,30);//Posicionamos		
+	    insertNewDataCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertNewDataCliente.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertNewDataCliente.setBackground(Color.WHITE); //Color de fondo
+	    insertNewDataCliente.setForeground(color_azul);//Color del texto
+	    subPanelEditCliente.add(insertNewDataCliente);//Anadimos
+		
+			//boton actualizar
+	    Image imgBotonUpdateFinalCl = new ImageIcon("img\\update.png").getImage();
+		botonUpdateFinalCl = new JButton(new ImageIcon(imgBotonUpdateFinalCl.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonUpdateFinalCl.setBounds(20,220,110,42);
+		botonUpdateFinalCl.setBackground(new Color(186,236,247));
+		botonUpdateFinalCl.setBorder(null); //Eliminamos el borde
+		subPanelEditCliente.add(botonUpdateFinalCl);//Anadimos 
+		
+			//resultado de la actualizacion
+		resultUpdateCliente = new JLabel();//Creamos el componente
+		resultUpdateCliente.setBounds(150,222,500,30);//Posicionamos
+		resultUpdateCliente.setBorder(null); //Eliminamos el borde
+		resultUpdateCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		resultUpdateCliente.setForeground(color_azul);//Color del texto
+		subPanelEditCliente.add(resultUpdateCliente);//Anadimos
+		
+	//SUBPANEL ELIMINAR CLIENTE
+		
+		subPanelElimCliente = new JPanel();
+		subPanelElimCliente.setBounds(200, 270, 750, 268);
+		subPanelElimCliente.setBackground(color_panel);
+		subPanelElimCliente.setLayout(null);
+		add(subPanelElimCliente);
+		subPanelElimCliente.setVisible(false);	
+		
+		elimCliente = new JLabel("delete customer");
+		elimCliente.setBounds(20, 0, 710, 60);
+		elimCliente.setBorder(null);
+		elimCliente.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		elimCliente.setForeground(color_azul);//Color del texto
+		elimCliente.setHorizontalAlignment(JLabel.CENTER);
+		elimCliente.setVerticalAlignment(JLabel.CENTER);
+		subPanelElimCliente.add(elimCliente);
+		
+		//nif cliente a eliminar
+		insertNIFDeleteCli = new JTextField();//Creamos el componente
+		TextPrompt placeholder11 = new TextPrompt("Insert customer's NIF", insertNIFDeleteCli);
+	    placeholder11.changeAlpha(0.75f);
+	    placeholder11.changeStyle(Font.ITALIC);
+	    insertNIFDeleteCli.setBounds(20,70,200,30);//Posicionamos		
+	    insertNIFDeleteCli.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertNIFDeleteCli.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertNIFDeleteCli.setBackground(Color.WHITE); //Color de fondo
+	    insertNIFDeleteCli.setForeground(color_azul);//Color del texto
+	    subPanelElimCliente.add(insertNIFDeleteCli);//Anadimos
+		
+		   //boton busqueda
+	    Image imgBotonSearchCli = new ImageIcon("img\\search.png").getImage();
+		botonSearchCliente = new JButton(new ImageIcon(imgBotonSearchCli.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonSearchCliente.setBounds(20,130,110,42);
+		botonSearchCliente.setBackground(new Color(186,236,247));
+		botonSearchCliente.setBorder(null); //Eliminamos el borde
+		subPanelElimCliente.add(botonSearchCliente);//Anadimos 
+		
+			//resultado busqueda
+		resulBusquedaCli = new JLabel();//Creamos el componente
+		resulBusquedaCli.setBounds(150,130,500,30);//Posicionamos
+		resulBusquedaCli.setBorder(null); //Eliminamos el borde
+		resulBusquedaCli.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		resulBusquedaCli.setForeground(color_azul);//Color del texto
+		subPanelElimCliente.add(resulBusquedaCli);//Anadimos
+		
+			//boton borrar el cliente seleccionado
+		Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete.png").getImage();
+		botonDeleteClienteFinal = new JButton(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonDeleteClienteFinal.setBounds(20,190,110,42);
+		botonDeleteClienteFinal.setBackground(new Color(186,236,247));
+		botonDeleteClienteFinal.setBorder(null); //Eliminamos el borde
+		subPanelElimCliente.add(botonDeleteClienteFinal);//Anadimos 
+		botonDeleteClienteFinal.setVisible(false);
+		
+			//resultado del borrado
+		resulDeleteCliente = new JLabel();//Creamos el componente
+		resulDeleteCliente.setBounds(150,190,500,30);//Posicionamos
+		resulDeleteCliente.setBorder(null); //Eliminamos el borde
+		resulDeleteCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		resulDeleteCliente.setForeground(color_azul);//Color del texto
+		subPanelElimCliente.add(resulDeleteCliente);//Anadimos	
+		
+		//Panel botones CLIENTES
+	    
+		panelBotonesCliente = new JPanel();
+		panelBotonesCliente.setBounds(200, 538, 750, 82);
+		panelBotonesCliente.setBackground(color_panel);
+		panelBotonesCliente.setLayout(null);
+		add(panelBotonesCliente);
+		panelBotonesCliente.setVisible(false);		
+	    
+		//cambiar imagen boton
+		Image imgbotonActualizarCliente = new ImageIcon("img\\update supplier.png").getImage();
+		botonActualizarCliente = new JButton(new ImageIcon(imgbotonActualizarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonActualizarCliente.setBounds((int) 67.5, 20, 160, 42);
+		botonActualizarCliente.setBorder(null); //Eliminamos el borde
+		botonActualizarCliente.setBackground(color_panel);
+		panelBotonesCliente.add(botonActualizarCliente);//Anadimos 
+		
+		//cambiar imagen boton
+		Image imgbotonBorrarCliente = new ImageIcon("img\\delete supplier.png").getImage();
+		botonBorrarCliente = new JButton(new ImageIcon(imgbotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonBorrarCliente.setBounds(295, 20, 160, 42);
+		botonBorrarCliente.setBorder(null); //Eliminamos el borde
+		botonBorrarCliente.setBackground(color_panel);
+		panelBotonesCliente.add(botonBorrarCliente);//Anadimos 
+		
+/*		//cambiar imagen boton
+		Image imgbotonDeliveryNotes = new ImageIcon("img\\delivery notes.png").getImage();
+		botonDeliveryNotes = new JButton(new ImageIcon(imgbotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonDeliveryNotes.setBounds((int) 522.5, 20, 160, 42);
+		botonDeliveryNotes.setBorder(null); //Eliminamos el borde
+		botonDeliveryNotes.setBackground(color_panel);
+		panelBotonesCliente.add(botonDeliveryNotes);//Anadimos 
+*/
 	}
 	
 	//PANEL SERVICIOS
@@ -976,13 +1257,20 @@ public class Ventana extends JFrame{
 		
 		botonActualizarProveedor.addMouseListener(manejador);
 		botonBorrarProveedor.addMouseListener(manejador);
-		botonDeliveryNotes.addMouseListener(manejador);
-		
+		botonDeliveryNotes.addMouseListener(manejador);		
 		botonUpdateFinalPr.addMouseListener(manejador);
 		botonSearchProv.addMouseListener(manejador);
-		botonDeleteProvFinal.addMouseListener(manejador);
-		
+		botonDeleteProvFinal.addMouseListener(manejador);	
 		botonInsertProvOk.addMouseListener(manejador);
+		
+		botonInsertClienteok.addMouseListener(manejador);
+		botonActualizarCliente.addMouseListener(manejador);
+		botonBorrarCliente.addMouseListener(manejador);
+		botonUpdateFinalCl.addMouseListener(manejador);
+		botonSearchCliente.addMouseListener(manejador);
+		botonDeleteClienteFinal.addMouseListener(manejador);
+		
+		
 		
 	}
 	
@@ -1596,5 +1884,221 @@ public class Ventana extends JFrame{
 	}
 	public void setResulExportEmp(JLabel resulExportEmp) {
 		this.resulExportEmp = resulExportEmp;
+	}
+
+	public JPanel getSubPanelInsCliente() {
+		return subPanelInsCliente;
+	}
+
+	public void setSubPanelInsCliente(JPanel subPanelInsCliente) {
+		this.subPanelInsCliente = subPanelInsCliente;
+	}
+
+	public JPanel getPanelBotonesCliente() {
+		return panelBotonesCliente;
+	}
+
+	public void setPanelBotonesCliente(JPanel panelBotonesCliente) {
+		this.panelBotonesCliente = panelBotonesCliente;
+	}
+
+	public JPanel getSubPanelEditCliente() {
+		return subPanelEditCliente;
+	}
+
+	public void setSubPanelEditCliente(JPanel subPanelEditCliente) {
+		this.subPanelEditCliente = subPanelEditCliente;
+	}
+
+	public JPanel getSubPanelElimCliente() {
+		return subPanelElimCliente;
+	}
+
+	public void setSubPanelElimCliente(JPanel subPanelElimCliente) {
+		this.subPanelElimCliente = subPanelElimCliente;
+	}
+
+	public JScrollPane getBarraClientes() {
+		return barraClientes;
+	}
+
+	public void setBarraClientes(JScrollPane barraClientes) {
+		this.barraClientes = barraClientes;
+	}
+
+	public JTable getTablaClientes() {
+		return tablaClientes;
+	}
+
+	public void setTablaClientes(JTable tablaClientes) {
+		this.tablaClientes = tablaClientes;
+	}
+
+	public JLabel getNuevoCliente() {
+		return nuevoCliente;
+	}
+
+	public void setNuevoCliente(JLabel nuevoCliente) {
+		this.nuevoCliente = nuevoCliente;
+	}
+
+	public JLabel getResulInsertCliente() {
+		return resulInsertCliente;
+	}
+
+	public void setResulInsertCliente(JLabel resulInsertCliente) {
+		this.resulInsertCliente = resulInsertCliente;
+	}
+
+	public JLabel getEditCliente() {
+		return editCliente;
+	}
+
+	public void setEditCliente(JLabel editCliente) {
+		this.editCliente = editCliente;
+	}
+
+	public JLabel getResultUpdateCliente() {
+		return resultUpdateCliente;
+	}
+
+	public void setResultUpdateCliente(JLabel resultUpdateCliente) {
+		this.resultUpdateCliente = resultUpdateCliente;
+	}
+
+	public JLabel getElimCliente() {
+		return elimCliente;
+	}
+
+	public void setElimCliente(JLabel elimCliente) {
+		this.elimCliente = elimCliente;
+	}
+
+	public JLabel getResulBusquedaCli() {
+		return resulBusquedaCli;
+	}
+
+	public void setResulBusquedaCli(JLabel resulBusquedaCli) {
+		this.resulBusquedaCli = resulBusquedaCli;
+	}
+
+	public JLabel getResulDeleteCliente() {
+		return resulDeleteCliente;
+	}
+
+	public void setResulDeleteCliente(JLabel resulDeleteCliente) {
+		this.resulDeleteCliente = resulDeleteCliente;
+	}
+
+	public JTextField getInsertNIFCliente() {
+		return insertNIFCliente;
+	}
+
+	public void setInsertNIFCliente(JTextField insertNIFCliente) {
+		this.insertNIFCliente = insertNIFCliente;
+	}
+
+	public JTextField getInsertNomCliente() {
+		return insertNomCliente;
+	}
+
+	public void setInsertNomCliente(JTextField insertNomCliente) {
+		this.insertNomCliente = insertNomCliente;
+	}
+
+	public JTextField getInsertTelCliente() {
+		return insertTelCliente;
+	}
+
+	public void setInsertTelCliente(JTextField insertTelCliente) {
+		this.insertTelCliente = insertTelCliente;
+	}
+
+	public JTextField getInsertNIFUpdateCliente() {
+		return insertNIFUpdateCliente;
+	}
+
+	public void setInsertNIFUpdateCliente(JTextField insertNIFUpdateCliente) {
+		this.insertNIFUpdateCliente = insertNIFUpdateCliente;
+	}
+
+	public JTextField getInsertNIFDeleteCli() {
+		return insertNIFDeleteCli;
+	}
+
+	public void setInsertNIFDeleteCli(JTextField insertNIFDeleteCli) {
+		this.insertNIFDeleteCli = insertNIFDeleteCli;
+	}
+
+	public JTextField getInsertNewDataCliente() {
+		return insertNewDataCliente;
+	}
+
+	public void setInsertNewDataCliente(JTextField insertNewDataCliente) {
+		this.insertNewDataCliente = insertNewDataCliente;
+	}
+
+	public JButton getBotonInsertClienteok() {
+		return botonInsertClienteok;
+	}
+
+	public void setBotonInsertClienteok(JButton botonInsertClienteok) {
+		this.botonInsertClienteok = botonInsertClienteok;
+	}
+
+	public JButton getBotonActualizarCliente() {
+		return botonActualizarCliente;
+	}
+
+	public void setBotonActualizarCliente(JButton botonActualizarCliente) {
+		this.botonActualizarCliente = botonActualizarCliente;
+	}
+
+	public JButton getBotonBorrarCliente() {
+		return botonBorrarCliente;
+	}
+
+	public void setBotonBorrarCliente(JButton botonBorrarCliente) {
+		this.botonBorrarCliente = botonBorrarCliente;
+	}
+
+	public JButton getBotonUpdateFinalCl() {
+		return botonUpdateFinalCl;
+	}
+
+	public void setBotonUpdateFinalCl(JButton botonUpdateFinalCl) {
+		this.botonUpdateFinalCl = botonUpdateFinalCl;
+	}
+
+	public JButton getBotonSearchCliente() {
+		return botonSearchCliente;
+	}
+
+	public void setBotonSearchCliente(JButton botonSearchCliente) {
+		this.botonSearchCliente = botonSearchCliente;
+	}
+
+	public JButton getBotonDeleteClienteFinal() {
+		return botonDeleteClienteFinal;
+	}
+
+	public void setBotonDeleteClienteFinal(JButton botonDeleteClienteFinal) {
+		this.botonDeleteClienteFinal = botonDeleteClienteFinal;
+	}
+
+	public JComboBox<String> getComboUpdateCliente() {
+		return comboUpdateCliente;
+	}
+
+	public void setComboUpdateCliente(JComboBox<String> comboUpdateCliente) {
+		this.comboUpdateCliente = comboUpdateCliente;
+	}
+
+	public JTextField getInsertMailCliente() {
+		return insertMailCliente;
+	}
+
+	public void setInsertMailCliente(JTextField insertMailCliente) {
+		this.insertMailCliente = insertMailCliente;
 	}
 }
