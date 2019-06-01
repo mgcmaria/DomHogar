@@ -194,6 +194,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getInsertPerfilEmp().setText("");
 			ventana.getResulInsertEmp().setText("");
 			
+			
 			//Mostramos los paneles de recursos
 			ventana.getPanelEmpleado().setVisible(true);
 			ventana.getSubPanelEmpInsertar().setVisible(true);
@@ -254,9 +255,10 @@ public class Eventos implements ActionListener, MouseListener {
 				int afectados = AccesoDB.insertarEmpleado(nuevoEmpleado, conexion);
 				
 				if(afectados == 0) {
-					ventana.getResulInsertEmp().setText("Error to insert employee");
+					ventana.getResulInsertEmp().setText("Error adding new employee");
 				} else {
-					ventana.getResulInsertEmp().setText("Employee insert");
+					ventana.getResulInsertEmp().setText("Employee added");
+					
 					
 					//COMPROBACIONES QUE FALTAN PARA ACTUALIZAR LA JTABLE
 				
@@ -284,7 +286,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonUpdateEmpFinal()) {
 			
 			if(ventana.getInsertNIFUpdateEmp().getText().isEmpty() || ventana.getInsertNewDataEmp().getText().isEmpty()) {
-				ventana.getResultUpdateEmp().setText("Please, enter all the items");
+				ventana.getResultUpdateEmp().setText("Please, enter all the fields");
 			} else {
 				//Limpiamos la etiqueta de resultado final
 				ventana.getResultUpdateEmp().setText("");
@@ -297,9 +299,9 @@ public class Eventos implements ActionListener, MouseListener {
 				int afectados = AccesoDB.actualizarEmpleado(nif,campo,nuevoDato, conexion);
 				
 				if(afectados == 0) {
-					ventana.getResultUpdateEmp().setText("Error to update employee");
+					ventana.getResultUpdateEmp().setText("Error updating employee");
 				} else {
-					ventana.getResultUpdateEmp().setText("Employee update");
+					ventana.getResultUpdateEmp().setText("Employee updated");
 				}
 			}
 		}
@@ -349,9 +351,9 @@ public class Eventos implements ActionListener, MouseListener {
 			int afectados = AccesoDB.borrarEmpleado(nif, conexion);
 			
 			if(afectados == 0) {
-				ventana.getResulDeleteEmp().setText("Error to delete employee");
+				ventana.getResulDeleteEmp().setText("Error deleting employee");
 			} else {
-				ventana.getResulDeleteEmp().setText("Employee delete");
+				ventana.getResulDeleteEmp().setText("Employee deleted");
 			}
 		}
 		
@@ -494,7 +496,8 @@ public class Eventos implements ActionListener, MouseListener {
 				ventana.getResulInsertProv().setText("Error adding supplier");
 			} else {
 				ventana.getResulInsertProv().setText("Supplier added");
-				AccesoDB.obtenerMatrizProveedores();
+				//AccesoDB.obtenerMatrizProveedores();
+				//ventana.repaint();
 			}
 		}
 			

@@ -270,7 +270,7 @@ public class Ventana extends JFrame{
 		
 		panelCompras = new JPanel();
 		panelCompras.setBackground(color_panel);
-		panelCompras.setBounds(240, 0, 900, 500);
+		panelCompras.setBounds(200, 40, 750, 230);
 		panelCompras.setLayout(null);
 		add(panelCompras);
 		panelCompras.setVisible(false);
@@ -292,7 +292,7 @@ public class Ventana extends JFrame{
 	private void panelVentas() {
 		panelVentas = new JPanel();
 		panelVentas.setBackground(color_panel);
-		panelVentas.setBounds(240, 0, 900, 500);
+		panelVentas.setBounds(200, 40, 750, 230);
 		panelVentas.setLayout(null);
 		add(panelVentas);
 		panelVentas.setVisible(false);
