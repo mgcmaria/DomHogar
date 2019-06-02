@@ -341,6 +341,8 @@ public class AccesoDB {
 			matrizInfoCompras[i][1] = listaCompras.get(i).toString() + "";
 			matrizInfoCompras[i][2] = listaCompras.get(i).toString() + "";
 			matrizInfoCompras[i][3] = listaCompras.get(i).toString() + "";
+			
+			System.out.println(listaCompras.toString());
 		}
 		return matrizInfoCompras;		
 	}
