@@ -36,6 +36,7 @@ public class Ventana extends JFrame{
 	private JPanel panelCompras;
 	private JButton botonAlbaran;
 	private JScrollPane barraCompras;
+	private JTable tablaCompras;
 	
 	//Atributos de VENTAS
 	private JPanel panelVentas;
@@ -270,12 +271,12 @@ public class Ventana extends JFrame{
 		
 		panelCompras = new JPanel();
 		panelCompras.setBackground(color_panel);
-		panelCompras.setBounds(200, 40, 750, 230);
+		panelCompras.setBounds(200, 40, 750, 700);
 		panelCompras.setLayout(null);
 		add(panelCompras);
 		panelCompras.setVisible(false);
 		
-		botonAlbaran = new JButton("ALBAR�N");
+		botonAlbaran = new JButton("ALBARAN");
 		botonAlbaran.setBounds(400,350,110,42);
 		botonAlbaran.setBorder(null); //Eliminamos el borde
 		//Falta incluir la imagen del bot�n
@@ -283,8 +284,14 @@ public class Ventana extends JFrame{
 		panelCompras.add(botonAlbaran);//Anadimos 
 		
 		barraCompras = new JScrollPane();
-		barraCompras.setBounds(10, 400, 680, 300);
+		barraCompras.setBounds(10, 20, 680, 300);
 		panelCompras.add(barraCompras);		
+		
+		String titulosCompras[] = {"Codigo Producto", "Nombre producto", "importe compra", "cantidad"};
+		String infoCompras[][] = AccesoDB.obtenerMatrizCompras();
+		
+		tablaCompras = new JTable(infoCompras,titulosCompras);
+		barraCompras.setViewportView(tablaCompras);
 		
 	} 
 

@@ -329,20 +329,56 @@ public class AccesoDB {
 		
 		Connection conexion = AccesoDB.conexion();
 
-		ArrayList<Proveedor> listaProveedores = AccesoDB.datosProveedor(conexion);
+		ArrayList<String> listaCompras = AccesoDB.datosCompras(conexion);
+		System.out.println(listaCompras.size());
 
-		String matrizInfoPr[][] = new String[listaProveedores.size()][3];
+		String matrizInfoCompras[][] = new String[listaCompras.size()][4];
+		
+		System.out.println(matrizInfoCompras.toString());
 
-		for (int i = 0; i < listaProveedores.size(); i++) {
-			matrizInfoPr[i][0] = listaProveedores.get(i).getCodproveedor() + "";
-			matrizInfoPr[i][1] = listaProveedores.get(i).getNombreProveedor() + "";
-			matrizInfoPr[i][2] = listaProveedores.get(i).getMail() + "";
-
+		for (int i = 0; i < listaCompras.size(); i++) {
+			matrizInfoCompras[i][0] = listaCompras.get(i).toString() + "";
+			matrizInfoCompras[i][1] = listaCompras.get(i).toString() + "";
+			matrizInfoCompras[i][2] = listaCompras.get(i).toString() + "";
+			matrizInfoCompras[i][3] = listaCompras.get(i).toString() + "";
 		}
-		return matrizInfoPr;
+		return matrizInfoCompras;		
 	}
 	
 	
+
+	private static ArrayList<String> datosCompras(Connection conexion) {
+		
+		ArrayList<String> lista_compras = new ArrayList<String>();
+		
+		try {			
+
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT la.codproducto, pro.nombreProducto,pro.importeCompra, la.cantidad\r\n" + 
+					"FROM LINEA_ALBARAN la \r\n" + 
+					"JOIN PRODUCTO pro on la.codproducto = pro.cod_Producto ");
+
+			// Mientras haya registros anadimos al ArrayList
+			while (rs.next()) { 
+				
+				String cod_producto = rs.getString("codproducto");
+				String nombre_producto = rs.getString("nombreProducto");
+				String importe_compra = rs.getString("importeCompra");
+				String cantidad = rs.getString("cantidad");
+				
+				lista_compras.add(cod_producto);
+				lista_compras.add(nombre_producto);
+				lista_compras.add(importe_compra);
+				lista_compras.add(cantidad);
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+
+		return lista_compras;
+	}
 
 	public static int actualizarEmpleado(String nif, String campo, String nuevoDato, Connection conexion) {
 		

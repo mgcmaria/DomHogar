@@ -416,6 +416,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 		}		
 		
 		else if(e.getSource()==ventana.getBotonSales()) {
@@ -443,6 +444,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 			
 		}
 		
@@ -478,6 +480,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelElimCliente().setVisible(false);
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 			
 		}
 		
@@ -637,6 +640,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 			
 			
 		}
@@ -799,6 +803,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 			
 		}
 		
@@ -827,6 +832,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 			
 		}	
 		
@@ -856,6 +862,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
 					
 		}
 		
