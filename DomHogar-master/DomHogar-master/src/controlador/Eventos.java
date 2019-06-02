@@ -975,6 +975,37 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
+		//
+		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
+			Image imgBotonInsertClienteok = new ImageIcon("img\\insert hover.png").getImage();
+			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonActualizarCliente()) {
+			Image imgBotonActualizarCliente = new ImageIcon("img\\update customer hover.png").getImage();
+			ventana.getBotonActualizarCliente().setIcon(new ImageIcon(imgBotonActualizarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBorrarCliente()) {
+			Image imgBotonBorrarCliente = new ImageIcon("img\\delete customer hover.png").getImage();
+			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBills()) {
+			Image imgBotonBills = new ImageIcon("img\\bills hover.png").getImage();
+			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
+			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update hover.png").getImage();
+			ventana.getBotonUpdateFinalCl().setIcon(new ImageIcon(imgBotonUpdateFinalCl.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonSearchCliente()) {
+			Image imgBotonSearchCliente = new ImageIcon("img\\search hover.png").getImage();
+			ventana.getBotonSearchCliente().setIcon(new ImageIcon(imgBotonSearchCliente.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}	
+		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
+			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete hover.png").getImage();
+			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		
 		
 	}
 
@@ -1083,6 +1114,35 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
+		//
+		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
+			Image imgBotonInsertClienteok = new ImageIcon("img\\insert customer.png").getImage();
+			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonActualizarCliente()) {
+			Image imgBotonActualizarCliente = new ImageIcon("img\\update customer.png").getImage();
+			ventana.getBotonActualizarCliente().setIcon(new ImageIcon(imgBotonActualizarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBorrarCliente()) {
+			Image imgBotonBorrarCliente = new ImageIcon("img\\delete customer.png").getImage();
+			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBills()) {
+			Image imgBotonBills = new ImageIcon("img\\bills.png").getImage();
+			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
+			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update.png").getImage();
+			ventana.getBotonUpdateFinalCl().setIcon(new ImageIcon(imgBotonUpdateFinalCl.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonSearchCliente()) {
+			Image imgBotonSearchCliente = new ImageIcon("img\\search.png").getImage();
+			ventana.getBotonSearchCliente().setIcon(new ImageIcon(imgBotonSearchCliente.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}	
+		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
+			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete.png").getImage();
+			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
 	}
 
 	@Override
@@ -1199,21 +1259,58 @@ public class Eventos implements ActionListener, MouseListener {
 		}
 		
 		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
-			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update.png").getImage();
+			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update press.png").getImage();
 			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonUpdateFinalPr().setContentAreaFilled(false);
 		}
 		
 		else if (e.getSource()==ventana.getBotonSearchProv()) {
-			Image imgBotonSearchProv = new ImageIcon("img\\search.png").getImage();
+			Image imgBotonSearchProv = new ImageIcon("img\\search press.png").getImage();
 			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonSearchProv().setContentAreaFilled(false);
 		}
 		
 		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
-			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
+			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete press.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonDeleteProvFinal().setContentAreaFilled(false);
+		}
+		
+		//
+		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
+			Image imgBotonInsertClienteok = new ImageIcon("img\\insert customer press.png").getImage();
+			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertClienteok().setContentAreaFilled(false);
+		}		
+		else if (e.getSource()==ventana.getBotonActualizarCliente()) {
+			Image imgBotonActualizarCliente = new ImageIcon("img\\update customer press.png").getImage();
+			ventana.getBotonActualizarCliente().setIcon(new ImageIcon(imgBotonActualizarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonActualizarCliente().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonBorrarCliente()) {
+			Image imgBotonBorrarCliente = new ImageIcon("img\\delete customer press.png").getImage();
+			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonBorrarCliente().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonBills()) {
+			Image imgBotonBills = new ImageIcon("img\\bills press.png").getImage();
+			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonBills().setContentAreaFilled(false);
+		}		
+		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
+			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update press.png").getImage();
+			ventana.getBotonUpdateFinalCl().setIcon(new ImageIcon(imgBotonUpdateFinalCl.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonUpdateFinalCl().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonSearchCliente()) {
+			Image imgBotonSearchCliente = new ImageIcon("img\\search press.png").getImage();
+			ventana.getBotonSearchCliente().setIcon(new ImageIcon(imgBotonSearchCliente.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonSearchCliente().setContentAreaFilled(false);
+		}	
+		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
+			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete press.png").getImage();
+			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeleteClienteFinal().setContentAreaFilled(false);
 		}
 		
 	}
@@ -1321,6 +1418,37 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		
+		//
+		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
+			Image imgBotonInsertClienteok = new ImageIcon("img\\insert customer.png").getImage();
+			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonActualizarCliente()) {
+			Image imgBotonActualizarCliente = new ImageIcon("img\\update customer.png").getImage();
+			ventana.getBotonActualizarCliente().setIcon(new ImageIcon(imgBotonActualizarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBorrarCliente()) {
+			Image imgBotonBorrarCliente = new ImageIcon("img\\delete customer.png").getImage();
+			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonBills()) {
+			Image imgBotonBills = new ImageIcon("img\\bills.png").getImage();
+			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
+			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update.png").getImage();
+			ventana.getBotonUpdateFinalCl().setIcon(new ImageIcon(imgBotonUpdateFinalCl.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonSearchCliente()) {
+			Image imgBotonSearchCliente = new ImageIcon("img\\search.png").getImage();
+			ventana.getBotonSearchCliente().setIcon(new ImageIcon(imgBotonSearchCliente.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}	
+		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
+			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete.png").getImage();
+			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
 	}	
 }
 
