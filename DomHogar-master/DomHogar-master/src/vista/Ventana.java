@@ -67,7 +67,7 @@ public class Ventana extends JFrame{
 	private JTextField insertNIFCliente, insertNomCliente, insertTelCliente, insertNIFUpdateCliente, insertNIFDeleteCli,
 	insertNewDataCliente, insertMailCliente;
 	private JButton botonInsertClienteok, botonActualizarCliente, botonBorrarCliente, botonUpdateFinalCl,
-	botonSearchCliente, botonDeleteClienteFinal;
+	botonSearchCliente, botonDeleteClienteFinal, botonBills;
 	private JComboBox<String> comboUpdateCliente;
 	
 	//COLORES
@@ -276,16 +276,18 @@ public class Ventana extends JFrame{
 		add(panelCompras);
 		panelCompras.setVisible(false);
 		
+
 		botonAlbaran = new JButton("ALBARAN");
 		botonAlbaran.setBounds(400,350,110,42);
 		botonAlbaran.setBorder(null); //Eliminamos el borde
 		//Falta incluir la imagen del botï¿½n
 		botonAlbaran.setBackground(Color.BLUE);
 		panelCompras.add(botonAlbaran);//Anadimos 
-		
+
 		barraCompras = new JScrollPane();
-		barraCompras.setBounds(10, 20, 680, 300);
-		panelCompras.add(barraCompras);		
+		barraCompras.setBounds(20, 20, 710, 190);
+		panelCompras.add(barraCompras);
+
 		
 		String titulosCompras[] = {"Codigo Producto", "Nombre producto", "importe compra", "cantidad"};
 		String infoCompras[][] = AccesoDB.obtenerMatrizCompras();
@@ -590,7 +592,7 @@ public class Ventana extends JFrame{
 		barraClientes.setBounds(20, 20, 710, 190);
 		panelClientes.add(barraClientes);
 		
-		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Teléfono", "Email"};
+		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Teléfono"};
 		String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
 		
 		tablaClientes = new JTable(infoClientes,titulosClientes);
@@ -642,11 +644,11 @@ public class Ventana extends JFrame{
 	    subPanelInsCliente.add(insertNomCliente);//Anadimos
 				
 			//caja telefono nuevo cliente
-		insertTelCliente = new JTextField();//Creamos el componente
-		TextPrompt placeholder2 = new TextPrompt("phone", insertTelCliente);
+	    insertTelCliente = new JTextField();//Creamos el componente
+		TextPrompt placeholder2 = new TextPrompt("email", insertTelCliente);
 	    placeholder2.changeAlpha(0.75f);
 	    placeholder2.changeStyle(Font.ITALIC);
-	    insertTelCliente.setBounds(40,150,400,30);//Posicionamos
+	    insertTelCliente.setBounds(40,130,400,30);//Posicionamos
 	    insertTelCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
 	    insertTelCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 	    insertTelCliente.setBackground(Color.WHITE); //Color de fondo
@@ -655,10 +657,10 @@ public class Ventana extends JFrame{
 	    
 	    //insertMailCliente
 	    insertMailCliente = new JTextField();//Creamos el componente
-		TextPrompt placeholder3 = new TextPrompt("email", insertMailCliente);
+		TextPrompt placeholder3 = new TextPrompt("phone", insertMailCliente);
 	    placeholder3.changeAlpha(0.75f);
 	    placeholder3.changeStyle(Font.ITALIC);
-	    insertMailCliente.setBounds(170,120,120,30);//Posicionamos
+	    insertMailCliente.setBounds(40,170,120,30);//Posicionamos
 	    insertMailCliente.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
 	    insertMailCliente.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 	    insertMailCliente.setBackground(Color.WHITE); //Color de fondo
@@ -835,7 +837,7 @@ public class Ventana extends JFrame{
 		panelBotonesCliente.setVisible(false);		
 	    
 		//cambiar imagen boton
-		Image imgbotonActualizarCliente = new ImageIcon("img\\update supplier.png").getImage();
+		Image imgbotonActualizarCliente = new ImageIcon("img\\update customer.png").getImage();
 		botonActualizarCliente = new JButton(new ImageIcon(imgbotonActualizarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
 		botonActualizarCliente.setBounds((int) 67.5, 20, 160, 42);
 		botonActualizarCliente.setBorder(null); //Eliminamos el borde
@@ -843,21 +845,21 @@ public class Ventana extends JFrame{
 		panelBotonesCliente.add(botonActualizarCliente);//Anadimos 
 		
 		//cambiar imagen boton
-		Image imgbotonBorrarCliente = new ImageIcon("img\\delete supplier.png").getImage();
+		Image imgbotonBorrarCliente = new ImageIcon("img\\delete customer.png").getImage();
 		botonBorrarCliente = new JButton(new ImageIcon(imgbotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
 		botonBorrarCliente.setBounds(295, 20, 160, 42);
 		botonBorrarCliente.setBorder(null); //Eliminamos el borde
 		botonBorrarCliente.setBackground(color_panel);
 		panelBotonesCliente.add(botonBorrarCliente);//Anadimos 
 		
-/*		//cambiar imagen boton
-		Image imgbotonDeliveryNotes = new ImageIcon("img\\delivery notes.png").getImage();
-		botonDeliveryNotes = new JButton(new ImageIcon(imgbotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
-		botonDeliveryNotes.setBounds((int) 522.5, 20, 160, 42);
-		botonDeliveryNotes.setBorder(null); //Eliminamos el borde
-		botonDeliveryNotes.setBackground(color_panel);
-		panelBotonesCliente.add(botonDeliveryNotes);//Anadimos 
-*/
+		//cambiar imagen boton
+		Image imgbotonBills = new ImageIcon("img\\bills.png").getImage();
+		botonBills = new JButton(new ImageIcon(imgbotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));//Creamos el componente
+		botonBills.setBounds((int) 522.5, 20, 160, 42);
+		botonBills.setBorder(null); //Eliminamos el borde
+		botonBills.setBackground(color_panel);
+		panelBotonesCliente.add(botonBills);//Anadimos 
+
 	}
 	
 	//PANEL SERVICIOS
@@ -1284,6 +1286,7 @@ public class Ventana extends JFrame{
 		botonUpdateFinalCl.addMouseListener(manejador);
 		botonSearchCliente.addMouseListener(manejador);
 		botonDeleteClienteFinal.addMouseListener(manejador);		
+		botonBills.addMouseListener(manejador);	
 		
 	}
 
@@ -2049,6 +2052,14 @@ public class Ventana extends JFrame{
 	}
 	public void setInsertMailCliente(JTextField insertMailCliente) {
 		this.insertMailCliente = insertMailCliente;
+	}
+
+	public JButton getBotonBills() {
+		return botonBills;
+	}
+
+	public void setBotonBills(JButton botonBills) {
+		this.botonBills = botonBills;
 	}
 
 	public JTextField getInsertUsuarioPC() {
