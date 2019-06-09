@@ -289,7 +289,8 @@ public class Ventana extends JFrame{
 		panelCompras.add(barraCompras);
 
 		
-		String titulosCompras[] = {"Codigo Producto", "Nombre producto", "importe compra", "cantidad"};
+		String titulosCompras[] = {"N. Albarán", "Codigo Producto", "Nombre producto", "Cantidad", "Importe compra", "Importe Total", 
+				"Cód. Proveedor", "Proveedor", "Fecha"};
 		String infoCompras[][] = AccesoDB.obtenerMatrizCompras();
 		
 		tablaCompras = new JTable(infoCompras,titulosCompras);

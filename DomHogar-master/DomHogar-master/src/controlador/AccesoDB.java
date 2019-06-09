@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import tablas.Cliente;
+import tablas.Compras;
 import tablas.Empleado;
 import tablas.Proveedor;
 
@@ -189,6 +191,7 @@ public class AccesoDB {
 	}
 	
 	public static String[][] obtenerMatrizProveedores() {
+		
 		Connection conexion = AccesoDB.conexion();
 
 		ArrayList<Proveedor> listaProveedores = AccesoDB.datosProveedor(conexion);
@@ -329,56 +332,67 @@ public class AccesoDB {
 		
 		Connection conexion = AccesoDB.conexion();
 
-		ArrayList<String> listaCompras = AccesoDB.datosCompras(conexion);
+		ArrayList<Compras> listaCompras = AccesoDB.datosCompras(conexion);
 		System.out.println(listaCompras.size());
 
-		String matrizInfoCompras[][] = new String[listaCompras.size()][4];
-		
-		System.out.println(matrizInfoCompras.toString());
+		String matrizInfoCompras[][] = new String[listaCompras.size()][9];
 
 		for (int i = 0; i < listaCompras.size(); i++) {
-			matrizInfoCompras[i][0] = listaCompras.get(i).toString() + "";
-			matrizInfoCompras[i][1] = listaCompras.get(i).toString() + "";
-			matrizInfoCompras[i][2] = listaCompras.get(i).toString() + "";
-			matrizInfoCompras[i][3] = listaCompras.get(i).toString() + "";
-			
-			System.out.println(listaCompras.toString());
+			matrizInfoCompras[i][0] = listaCompras.get(i).getNumAlbaran()+"";
+			matrizInfoCompras[i][1] = listaCompras.get(i).getCodProducto()+"";
+			matrizInfoCompras[i][2] = listaCompras.get(i).getNomProducto()+"";
+			matrizInfoCompras[i][3] = listaCompras.get(i).getCantidad()+"";
+			matrizInfoCompras[i][4] = listaCompras.get(i).getImporteCompraProducto()+"";
+			matrizInfoCompras[i][5] = listaCompras.get(i).getImporteTotal()+"";
+			matrizInfoCompras[i][6] = listaCompras.get(i).getCodProveedor()+"";
+			matrizInfoCompras[i][7] = listaCompras.get(i).getNomProveedor()+"";
+			matrizInfoCompras[i][8] = listaCompras.get(i).getFechaAlbaran()+"";
 		}
 		return matrizInfoCompras;		
-	}
-	
+	}	
+
 	
 
-	private static ArrayList<String> datosCompras(Connection conexion) {
+	private static ArrayList<Compras> datosCompras(Connection conexion) {
 		
-		ArrayList<String> lista_compras = new ArrayList<String>();
+		ArrayList<Compras> lista_compras = new ArrayList<Compras>();
+		
+		Compras compras;
+		
+		//"N. Albarán", "Codigo Producto", "Nombre producto", "Cantidad", "Importe compra", "Cód. Proveedor", "Proveedor", "Fecha"
 		
 		try {			
 
 			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
 			// Consulta SQL con resulset
-			ResultSet rs = sentencia.executeQuery("SELECT la.codproducto, pro.nombreProducto,pro.importeCompra, la.cantidad\r\n" + 
-					"FROM LINEA_ALBARAN la \r\n" + 
-					"JOIN PRODUCTO pro on la.codproducto = pro.cod_Producto ");
+			ResultSet rs = sentencia.executeQuery("SELECT la.codproducto, pro.nombreProducto,pro.importeCompra, la.cantidad, "
+					+ "la.numAlbaran, a.fecha, a.codProveedor, p.nombreProveedor "
+					+ "FROM LINEA_ALBARAN la JOIN PRODUCTO pro on la.codproducto = pro.cod_Producto "
+					+ "JOIN ALBARAN a on la.numAlbaran = a.numAlbaran JOIN PROVEEDOR p on a.codProveedor = p.codproveedor");			
 
 			// Mientras haya registros anadimos al ArrayList
 			while (rs.next()) { 
 				
-				String cod_producto = rs.getString("codproducto");
-				String nombre_producto = rs.getString("nombreProducto");
-				String importe_compra = rs.getString("importeCompra");
-				String cantidad = rs.getString("cantidad");
+				String numAlbaran = rs.getString("numAlbaran");
+				String codProducto = rs.getString("codproducto");
+				String nomProducto = rs.getString("nombreProducto");
+				int importeCompraPro = rs.getInt("importeCompra");
+				int cantidad = rs.getInt("cantidad");
+				int cantidadTotal = importeCompraPro*cantidad;
+				String codProveedor = rs.getString("codProveedor");
+				String nomProveedor = rs.getString("nombreProveedor");
+				Date fecha = rs.getDate("fecha");
 				
-				lista_compras.add(cod_producto);
-				lista_compras.add(nombre_producto);
-				lista_compras.add(importe_compra);
-				lista_compras.add(cantidad);
+				compras = new Compras(numAlbaran, importeCompraPro, cantidadTotal, cantidad, codProveedor, codProducto, nomProducto, nomProveedor, fecha);
+				
+				lista_compras.add(compras);
+							
 			}
 			
 		} catch (SQLException e) {
 			e.getMessage();
-		}
-
+		}		
+		
 		return lista_compras;
 	}
 
