@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import tablas.Cliente;
@@ -330,10 +331,11 @@ public class AccesoDB {
 	//DATOS COMPRAS	
 	public static String[][] obtenerMatrizCompras() {
 		
+		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los números
+		
 		Connection conexion = AccesoDB.conexion();
 
 		ArrayList<Compras> listaCompras = AccesoDB.datosCompras(conexion);
-		System.out.println(listaCompras.size());
 
 		String matrizInfoCompras[][] = new String[listaCompras.size()][9];
 
@@ -341,9 +343,9 @@ public class AccesoDB {
 			matrizInfoCompras[i][0] = listaCompras.get(i).getNumAlbaran()+"";
 			matrizInfoCompras[i][1] = listaCompras.get(i).getCodProducto()+"";
 			matrizInfoCompras[i][2] = listaCompras.get(i).getNomProducto()+"";
-			matrizInfoCompras[i][3] = listaCompras.get(i).getCantidad()+"";
-			matrizInfoCompras[i][4] = listaCompras.get(i).getImporteCompraProducto()+"";
-			matrizInfoCompras[i][5] = listaCompras.get(i).getImporteTotal()+"";
+			matrizInfoCompras[i][3] = formatea.format(listaCompras.get(i).getCantidad())+"";
+			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" €";
+			matrizInfoCompras[i][5] = formatea.format(listaCompras.get(i).getImporteTotal())+" €";
 			matrizInfoCompras[i][6] = listaCompras.get(i).getCodProveedor()+"";
 			matrizInfoCompras[i][7] = listaCompras.get(i).getNomProveedor()+"";
 			matrizInfoCompras[i][8] = listaCompras.get(i).getFechaAlbaran()+"";
@@ -383,7 +385,7 @@ public class AccesoDB {
 				String nomProveedor = rs.getString("nombreProveedor");
 				Date fecha = rs.getDate("fecha");
 				
-				compras = new Compras(numAlbaran, importeCompraPro, cantidadTotal, cantidad, codProveedor, codProducto, nomProducto, nomProveedor, fecha);
+				compras = new Compras(numAlbaran,codProducto,nomProducto, cantidad, importeCompraPro, cantidadTotal, codProveedor,  nomProveedor, fecha);
 				
 				lista_compras.add(compras);
 							

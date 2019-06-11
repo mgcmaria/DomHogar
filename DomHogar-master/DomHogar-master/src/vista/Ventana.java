@@ -33,10 +33,11 @@ public class Ventana extends JFrame{
 	private JComboBox <String> comboUpdateEmp;
 	
 	//Atributos de COMPRAS
-	private JPanel panelCompras;
-	private JButton botonAlbaran;
+	private JPanel panelCompras, subPanelInsertCompras, subPanelBotonesCompras;
+	private JButton botonAlbaran, botonActualCompra, botonDeleteCompra, botonExportCompra;
 	private JScrollPane barraCompras;
 	private JTable tablaCompras;
+	private JLabel JLabelNuevaCompra;
 	
 	//Atributos de VENTAS
 	private JPanel panelVentas;
@@ -271,30 +272,77 @@ public class Ventana extends JFrame{
 		
 		panelCompras = new JPanel();
 		panelCompras.setBackground(color_panel);
-		panelCompras.setBounds(200, 40, 750, 700);
+		panelCompras.setBounds(200, 40, 750, 230);
 		panelCompras.setLayout(null);
 		add(panelCompras);
-		panelCompras.setVisible(false);
+		panelCompras.setVisible(false);		
+
+		/*
+		 * botonAlbaran = new JButton("ALBARAN");
+		 * botonAlbaran.setBounds(400,350,110,42); botonAlbaran.setBorder(null);
+		 * //Eliminamos el borde //Falta incluir la imagen del botï¿½n
+		 * botonAlbaran.setBackground(Color.BLUE);
+		 * panelCompras.add(botonAlbaran);//Anadimos
+		 */
 		
-
-		botonAlbaran = new JButton("ALBARAN");
-		botonAlbaran.setBounds(400,350,110,42);
-		botonAlbaran.setBorder(null); //Eliminamos el borde
-		//Falta incluir la imagen del botï¿½n
-		botonAlbaran.setBackground(Color.BLUE);
-		panelCompras.add(botonAlbaran);//Anadimos 
-
 		barraCompras = new JScrollPane();
 		barraCompras.setBounds(20, 20, 710, 190);
 		panelCompras.add(barraCompras);
-
 		
-		String titulosCompras[] = {"N. Albarán", "Codigo Producto", "Nombre producto", "Cantidad", "Importe compra", "Importe Total", 
-				"Cód. Proveedor", "Proveedor", "Fecha"};
+		String titulosCompras[] = {"N. Albarán", "Product's Code", "Product's Name", "Cantidad", "Importe compra", "Importe Total", 
+				"Cód. Proveedor", "Proveedor", "Date"};
 		String infoCompras[][] = AccesoDB.obtenerMatrizCompras();
 		
 		tablaCompras = new JTable(infoCompras,titulosCompras);
 		barraCompras.setViewportView(tablaCompras);
+		
+		//SUBPANEL INSERTAR COMPRAS
+		
+		subPanelInsertCompras = new JPanel();
+		subPanelInsertCompras.setBounds(200, 270, 750, 268);
+		subPanelInsertCompras.setBackground(color_panel);
+		subPanelInsertCompras.setLayout(null);
+		add(subPanelInsertCompras);
+		subPanelInsertCompras.setVisible(false);	
+		
+		JLabelNuevaCompra = new JLabel("new purchase");
+		JLabelNuevaCompra.setBounds(20, 0, 710, 60);
+		JLabelNuevaCompra.setBorder(null);
+		JLabelNuevaCompra.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		JLabelNuevaCompra.setForeground(color_azul);//Color del texto
+		JLabelNuevaCompra.setHorizontalAlignment(JLabel.CENTER);
+		JLabelNuevaCompra.setVerticalAlignment(JLabel.CENTER);
+		subPanelInsertCompras.add(JLabelNuevaCompra);
+		
+		//SUBPANEL BOTONES COMPRAS
+
+		subPanelBotonesCompras = new JPanel();
+		subPanelBotonesCompras.setBounds(200, 538, 750, 82);
+		subPanelBotonesCompras.setBackground(color_panel);
+		subPanelBotonesCompras.setLayout(null);
+		add(subPanelBotonesCompras);
+		subPanelBotonesCompras.setVisible(false);	
+		
+		Image imgBotonUpdateCompras = new ImageIcon("img\\update purchase.png").getImage();
+		botonActualCompra = new JButton(new ImageIcon(imgBotonUpdateCompras.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonActualCompra.setBounds((int) 67.5, 20, 160, 42);
+		botonActualCompra.setBorder(null); // Eliminamos el borde
+		botonActualCompra.setBackground(color_panel);
+		subPanelBotonesCompras.add(botonActualCompra);// Anadimos
+
+		Image imgBotonDeleteCompras = new ImageIcon("img\\delete purchase.png").getImage();
+		botonDeleteCompra = new JButton(new ImageIcon(imgBotonDeleteCompras.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonDeleteCompra.setBounds(295, 20, 160, 42);
+		botonDeleteCompra.setBorder(null); // Eliminamos el borde
+		botonDeleteCompra.setBackground(color_panel);
+		subPanelBotonesCompras.add(botonDeleteCompra);// Anadimos
+
+		Image imgBotonExportCompras = new ImageIcon("img\\export to file.png").getImage();
+		botonExportCompra = new JButton(new ImageIcon(imgBotonExportCompras.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonExportCompra.setBounds((int) 522.5, 20, 160, 42);
+		botonExportCompra.setBorder(null); // Eliminamos el borde
+		botonExportCompra.setBackground(color_panel);
+		subPanelBotonesCompras.add(botonExportCompra);// Anadimos
 		
 	} 
 
@@ -1031,7 +1079,7 @@ public class Ventana extends JFrame{
 		resulInsertEmp.setForeground(Color.gray);//Color del texto
 		subPanelEmpInsertar.add(resulInsertEmp);//Anadimos	
 		
-		//SUBPANEL BOTONES
+		//SUBPANEL BOTONES EMPLEADOS
 
 		subPanelBotonesEmp = new JPanel();
 		subPanelBotonesEmp.setBounds(200, 538, 750, 82);
@@ -2069,5 +2117,45 @@ public class Ventana extends JFrame{
 
 	public void setInsertUsuarioPC(JTextField insertUsuarioPC) {
 		this.insertUsuarioPC = insertUsuarioPC;
+	}
+
+	public JPanel getSubPanelInsertCompras() {
+		return subPanelInsertCompras;
+	}
+
+	public void setSubPanelInsertCompras(JPanel subPanelInsertCompras) {
+		this.subPanelInsertCompras = subPanelInsertCompras;
+	}
+
+	public JPanel getSubPanelBotonesCompras() {
+		return subPanelBotonesCompras;
+	}
+
+	public void setSubPanelBotonesCompras(JPanel subPanelBotonesCompras) {
+		this.subPanelBotonesCompras = subPanelBotonesCompras;
+	}
+
+	public JButton getBotonActualCompra() {
+		return botonActualCompra;
+	}
+
+	public void setBotonActualCompra(JButton botonActualCompra) {
+		this.botonActualCompra = botonActualCompra;
+	}
+
+	public JButton getBotonDeleteCompra() {
+		return botonDeleteCompra;
+	}
+
+	public void setBotonDeleteCompra(JButton botonDeleteCompra) {
+		this.botonDeleteCompra = botonDeleteCompra;
+	}
+
+	public JButton getBotonExportCompra() {
+		return botonExportCompra;
+	}
+
+	public void setBotonExportCompra(JButton botonExportCompra) {
+		this.botonExportCompra = botonExportCompra;
 	}
 }

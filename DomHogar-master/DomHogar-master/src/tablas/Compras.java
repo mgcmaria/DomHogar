@@ -9,8 +9,8 @@ public class Compras {
 	private Date fechaAlbaran;
 	
 	
-	public Compras(String numAlbaran, int importeCompraProducto, int cantidad, int importeTotal, String codProveedor, String codProducto,
-			String nomProducto, String nomProveedor, Date fechaAlbaran) {
+	public Compras(String numAlbaran, String codProducto, String nomProducto, int cantidad, int importeCompraProducto,  int importeTotal, 
+			String codProveedor, String nomProveedor, Date fechaAlbaran) {
 		super();
 		this.numAlbaran = numAlbaran;
 		this.importeCompraProducto = importeCompraProducto;
