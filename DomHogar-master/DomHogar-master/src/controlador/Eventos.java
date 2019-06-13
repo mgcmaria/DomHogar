@@ -9,6 +9,9 @@ import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import tablas.Cliente;
 import tablas.Empleado;
@@ -261,8 +264,7 @@ public class Eventos implements ActionListener, MouseListener {
 				} else {
 					ventana.getResulInsertEmp().setText("Employee added");
 					
-					
-					//COMPROBACIONES QUE FALTAN PARA ACTUALIZAR LA JTABLE
+					refreshJTableEmpleados();
 				
 				}
 			}			
@@ -304,6 +306,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getResultUpdateEmp().setText("Error updating employee");
 				} else {
 					ventana.getResultUpdateEmp().setText("Employee updated");
+					refreshJTableEmpleados();
 				}
 			}
 		}
@@ -356,6 +359,7 @@ public class Eventos implements ActionListener, MouseListener {
 				ventana.getResulDeleteEmp().setText("Error deleting employee");
 			} else {
 				ventana.getResulDeleteEmp().setText("Employee deleted");
+				refreshJTableEmpleados();
 			}
 		}
 		
@@ -421,7 +425,13 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
-		}		
+			
+		}
+		
+		else if(e.getSource() == ventana.getBotonVerificarCompra()) {
+			
+			//FALTA HACERLO!!!!!!!!!!!!!!!!!!
+		}
 		
 		else if(e.getSource()==ventana.getBotonSales()) {
 			
@@ -881,6 +891,19 @@ public class Eventos implements ActionListener, MouseListener {
 					
 		}
 		
+	}
+
+	private void refreshJTableEmpleados() {
+		//ACTUALIZAR JTABLE EMPLEADOS
+		
+		String titulosEmpleados[] = {"Nombre", "Apellidos", "e-mail", "NIF", "Telefono"};
+		String infoEmpleados[][] = AccesoDB.obtenerMatrizEmpleados();
+		
+		TableModel modelo = new DefaultTableModel(infoEmpleados, titulosEmpleados);
+		
+		ventana.getTablaEmpleados().setModel(modelo);
+		
+		((AbstractTableModel) modelo).fireTableDataChanged();
 	}
 
 	//FALTAN IMAGENES BOTONES CLIENTES

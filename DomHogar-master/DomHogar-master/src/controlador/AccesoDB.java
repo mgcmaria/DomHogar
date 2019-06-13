@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import tablas.Cliente;
 import tablas.Compras;
 import tablas.Empleado;
+import tablas.Producto;
 import tablas.Proveedor;
 
 public class AccesoDB {
@@ -92,7 +93,7 @@ public class AccesoDB {
 	}
 
 	public static String[][] obtenerMatrizEmpleados() {
-		Connection conexion = AccesoDB.conexion();				
+		Connection conexion = conexion();				
 		
 		ArrayList<Empleado> listaEmpleados = AccesoDB.datosEmpleado(conexion);
 		
@@ -355,7 +356,7 @@ public class AccesoDB {
 
 	
 
-	private static ArrayList<Compras> datosCompras(Connection conexion) {
+	public static ArrayList<Compras> datosCompras(Connection conexion) {
 		
 		ArrayList<Compras> lista_compras = new ArrayList<Compras>();
 		
@@ -538,6 +539,40 @@ public class AccesoDB {
 			return false;
 		}
 		return true;
+		
+	}
+
+	public static ArrayList<Producto> datosProducto(Connection conexion) {
+		
+		ArrayList<Producto> lista_productos = new ArrayList<Producto>();
+		
+		Producto p;
+		
+		try {			
+
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT * FROM PRODUCTO");
+
+			// Mientras haya registros anadimos al ArrayList
+			while (rs.next()) { 
+				
+				String cod_Producto = rs.getString("COD_PRODUCTO");
+				String nombreProducto = rs.getString("NOMBREPRODUCTO");
+				int stock = rs.getInt("STOCK");
+				int importeCompra = rs.getInt("IMPORTECOMPRA");
+				int importeVenta = rs.getInt("IMPORTEVENTA");
+				
+				p = new Producto(cod_Producto, nombreProducto, stock, importeCompra, importeVenta);
+				
+				lista_productos.add(p);				
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+
+		return lista_productos;
 		
 	}
 

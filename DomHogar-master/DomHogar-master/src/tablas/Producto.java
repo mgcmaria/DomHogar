@@ -3,14 +3,15 @@ package tablas;
 public class Producto {
 	
 	private String 	cod_Producto, nombreProducto;
-	private int stock, importeCompra;
+	private int stock, importeCompra, importeVenta;
 	
-	public Producto(String cod_Producto, String nombreProducto, int stock, int importeCompra) {
+	public Producto(String cod_Producto, String nombreProducto, int stock, int importeCompra, int importeVenta) {
 		super();
 		this.cod_Producto = cod_Producto;
 		this.nombreProducto = nombreProducto;
 		this.stock = stock;
 		this.importeCompra = importeCompra;
+		this.importeVenta = importeVenta;
 	}
 
 	public String getCod_Producto() {
@@ -43,6 +44,14 @@ public class Producto {
 
 	public void setImporteCompra(int importeCompra) {
 		this.importeCompra = importeCompra;
+	}
+
+	public int getImporteVenta() {
+		return importeVenta;
+	}
+
+	public void setImporteVenta(int importeVenta) {
+		this.importeVenta = importeVenta;
 	}
 	
 	

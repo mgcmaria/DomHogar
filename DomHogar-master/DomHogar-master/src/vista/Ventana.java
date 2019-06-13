@@ -1,11 +1,17 @@
 package vista;
 
 import java.awt.*;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
 import controlador.AccesoDB;
 import controlador.Eventos;
+import tablas.Producto;
+import tablas.Proveedor;
 
 public class Ventana extends JFrame{
 	
@@ -34,10 +40,13 @@ public class Ventana extends JFrame{
 	
 	//Atributos de COMPRAS
 	private JPanel panelCompras, subPanelInsertCompras, subPanelBotonesCompras;
-	private JButton botonAlbaran, botonActualCompra, botonDeleteCompra, botonExportCompra;
+	private JButton botonActualCompra, botonDeleteCompra, botonExportCompra, botonVerificarCompra, botonCompraFinal;
 	private JScrollPane barraCompras;
 	private JTable tablaCompras;
-	private JLabel JLabelNuevaCompra;
+	private JLabel JLabelNuevaCompra, JLresulComboProCompra, JLresulimporCompraPro, JLresulimporTotalPro,
+	JLresulComboProveedorCompra, JLdateCompra;
+	private JTextField JTFnumAlbaran, JTFcantidadCompra;
+	private JComboBox <String> comboProductoCompras, comboProveedorCompras;
 	
 	//Atributos de VENTAS
 	private JPanel panelVentas;
@@ -276,14 +285,6 @@ public class Ventana extends JFrame{
 		panelCompras.setLayout(null);
 		add(panelCompras);
 		panelCompras.setVisible(false);		
-
-		/*
-		 * botonAlbaran = new JButton("ALBARAN");
-		 * botonAlbaran.setBounds(400,350,110,42); botonAlbaran.setBorder(null);
-		 * //Eliminamos el borde //Falta incluir la imagen del botï¿½n
-		 * botonAlbaran.setBackground(Color.BLUE);
-		 * panelCompras.add(botonAlbaran);//Anadimos
-		 */
 		
 		barraCompras = new JScrollPane();
 		barraCompras.setBounds(20, 20, 710, 190);
@@ -314,6 +315,113 @@ public class Ventana extends JFrame{
 		JLabelNuevaCompra.setVerticalAlignment(JLabel.CENTER);
 		subPanelInsertCompras.add(JLabelNuevaCompra);
 		
+		JTFnumAlbaran = new JTextField();//Creamos el componente
+		TextPrompt placeholdernumal = new TextPrompt("Nº Albarán", JTFnumAlbaran);
+		placeholdernumal.changeAlpha(0.75f);
+		placeholdernumal.changeStyle(Font.ITALIC);
+	    JTFnumAlbaran.setBounds(20,70,150,30);//Posicionamos		
+	    JTFnumAlbaran.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    JTFnumAlbaran.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFnumAlbaran.setBackground(Color.WHITE); //Color de fondo
+	    JTFnumAlbaran.setForeground(color_azul);//Color del texto
+	    subPanelInsertCompras.add(JTFnumAlbaran);//Anadimos
+		
+	    comboProductoCompras = new JComboBox<String>();
+	    comboProductoCompras.addItem("Product's code");	    
+	    
+	    //Obtenemos los codigos de producto de la BBDD de la Tabla Compras	   
+	    Connection conexion = AccesoDB.conexion();		    
+	    ArrayList<Producto> lista_productos = AccesoDB.datosProducto(conexion);
+	    
+	    for (Producto p : lista_productos) {
+	    	comboProductoCompras.addItem(p.getCod_Producto());
+		}
+	    
+	    comboProductoCompras.setSelectedIndex(0); // Foco en el item 0
+	    comboProductoCompras.setBounds(200, 70, 220, 30);
+		subPanelInsertCompras.add(comboProductoCompras);
+		
+		JLresulComboProCompra = new JLabel();//Creamos el componente
+		JLresulComboProCompra.setBounds(450,70,280,30);//Posicionamos
+		JLresulComboProCompra.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+		JLresulComboProCompra.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JLresulComboProCompra.setForeground(new Color(000,000,000));//Color del texto
+		subPanelInsertCompras.add(JLresulComboProCompra);//Anadimos	
+		
+		JTFcantidadCompra = new JTextField();//Creamos el componente
+		TextPrompt placeholdercancom = new TextPrompt("Cantidad/Unidades", JTFcantidadCompra);
+		placeholdercancom.changeAlpha(0.75f);
+		placeholdercancom.changeStyle(Font.ITALIC);
+		JTFcantidadCompra.setBounds(20,120,150,30);//Posicionamos		
+		JTFcantidadCompra.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+		JTFcantidadCompra.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFcantidadCompra.setBackground(Color.WHITE); //Color de fondo
+		JTFcantidadCompra.setForeground(color_azul);//Color del texto
+	    subPanelInsertCompras.add(JTFcantidadCompra);//Anadimos
+	    
+	    JLresulimporCompraPro = new JLabel("");//Creamos el componente
+	    JLresulimporCompraPro.setBounds(200,120,220,30);//Posicionamos
+	    JLresulimporCompraPro.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    JLresulimporCompraPro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JLresulimporCompraPro.setForeground(new Color(000,000,000));//Color del texto
+		subPanelInsertCompras.add(JLresulimporCompraPro);//Anadimos	
+		
+		JLresulimporTotalPro = new JLabel("");// Creamos el componente
+		JLresulimporTotalPro.setBounds(450, 120, 280, 30);// Posicionamos
+		JLresulimporTotalPro.setBorder(BorderFactory.createLineBorder(color_azul, 2)); // Eliminamos el borde
+		JLresulimporTotalPro.setFont(new Font("Segoe UI", Font.BOLD, 16));// Damos formato al contenido
+		JLresulimporTotalPro.setForeground(new Color(000, 000, 000));// Color del texto
+		subPanelInsertCompras.add(JLresulimporTotalPro);// Anadimos
+		
+		comboProveedorCompras = new JComboBox<String>();
+		comboProveedorCompras.addItem("Supplier's code");	    
+	    
+	    //Obtenemos los codigos de producto de la BBDD de la Tabla Compras	   		    
+	    ArrayList<Proveedor> lista_proveedor = AccesoDB.datosProveedor(conexion);
+	    
+	    for (Proveedor p : lista_proveedor) {
+	    	comboProveedorCompras.addItem(p.getCodproveedor());
+		}
+	    
+	    comboProveedorCompras.setSelectedIndex(0); // Foco en el item 0
+	    comboProveedorCompras.setBounds(20, 170, 150, 30);
+		subPanelInsertCompras.add(comboProveedorCompras);
+		
+		JLresulComboProveedorCompra = new JLabel("");//Creamos el componente
+		JLresulComboProveedorCompra.setBounds(200,170,220,30);//Posicionamos
+		JLresulComboProveedorCompra.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+		JLresulComboProveedorCompra.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JLresulComboProveedorCompra.setForeground(new Color(000,000,000));//Color del texto
+		subPanelInsertCompras.add(JLresulComboProveedorCompra);//Anadimos	
+		
+		Calendar hoy = Calendar.getInstance(); //obtiene la fecha actual
+		//ahora accedes a los anios, meses, dias asi:
+		int anio = hoy.get(Calendar.YEAR);
+		int mes = hoy.get(Calendar.MONTH);
+		int dia = hoy. get(Calendar.DATE);
+		String fecha = anio +"-" + mes +"-"+dia;
+		
+		JLdateCompra = new JLabel(fecha);//Creamos el componente
+		JLdateCompra.setBounds(450, 170, 120, 30);//Posicionamos
+		JLdateCompra.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+		JLdateCompra.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JLdateCompra.setForeground(new Color(000,000,000));//Color del texto
+		subPanelInsertCompras.add(JLdateCompra);//Anadimos
+		
+		//Image imgBotonCompras = new ImageIcon("img\\purchases.png").getImage();
+		botonVerificarCompra = new JButton("VERIFICAR");
+		botonVerificarCompra.setBounds(600, 170, 110, 30);
+		botonVerificarCompra.setBorder(null); // Eliminamos el borde
+		botonVerificarCompra.setBackground(Color.gray);
+		subPanelInsertCompras.add(botonVerificarCompra);// Anadimos
+		
+		Image imgBotonCompra = new ImageIcon("img\\purchases.png").getImage();
+		botonCompraFinal = new JButton(new ImageIcon(imgBotonCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonCompraFinal.setBounds(20, 230, 110, 42);
+		botonCompraFinal.setBorder(null); // Eliminamos el borde
+		botonCompraFinal.setBackground(color_panel);
+		subPanelInsertCompras.add(botonCompraFinal);// Anadimos
+	    
 		//SUBPANEL BOTONES COMPRAS
 
 		subPanelBotonesCompras = new JPanel();
@@ -1648,12 +1756,6 @@ public class Ventana extends JFrame{
 	public void setPanelCompras(JPanel panelCompras) {
 		this.panelCompras = panelCompras;
 	}	
-	public JButton getBotonAlbaran() {
-		return botonAlbaran;
-	}
-	public void setBotonAlbaran(JButton botonAlbaran) {
-		this.botonAlbaran = botonAlbaran;
-	}
 	public JScrollPane getBarraCompras() {
 		return barraCompras;
 	}
@@ -2157,5 +2259,101 @@ public class Ventana extends JFrame{
 
 	public void setBotonExportCompra(JButton botonExportCompra) {
 		this.botonExportCompra = botonExportCompra;
+	}
+
+	public JLabel getJLresulComboProCompra() {
+		return JLresulComboProCompra;
+	}
+
+	public void setJLresulComboProCompra(JLabel jLresulComboProCompra) {
+		JLresulComboProCompra = jLresulComboProCompra;
+	}
+
+	public JTextField getJTFnumAlbaran() {
+		return JTFnumAlbaran;
+	}
+
+	public void setJTFnumAlbaran(JTextField jTFnumAlbaran) {
+		JTFnumAlbaran = jTFnumAlbaran;
+	}
+
+	public JComboBox<String> getComboProductoCompras() {
+		return comboProductoCompras;
+	}
+
+	public void setComboProductoCompras(JComboBox<String> comboProductoCompras) {
+		this.comboProductoCompras = comboProductoCompras;
+	}
+
+	public JButton getBotonVerificarCompra() {
+		return botonVerificarCompra;
+	}
+
+	public void setBotonVerificarCompra(JButton botonVerificarCompra) {
+		this.botonVerificarCompra = botonVerificarCompra;
+	}
+
+	public JButton getBotonCompraFinal() {
+		return botonCompraFinal;
+	}
+
+	public void setBotonCompraFinal(JButton botonCompraFinal) {
+		this.botonCompraFinal = botonCompraFinal;
+	}
+
+	public JTable getTablaCompras() {
+		return tablaCompras;
+	}
+
+	public void setTablaCompras(JTable tablaCompras) {
+		this.tablaCompras = tablaCompras;
+	}
+
+	public JLabel getJLresulimporCompraPro() {
+		return JLresulimporCompraPro;
+	}
+
+	public void setJLresulimporCompraPro(JLabel jLresulimporCompraPro) {
+		JLresulimporCompraPro = jLresulimporCompraPro;
+	}
+
+	public JLabel getJLresulimporTotalPro() {
+		return JLresulimporTotalPro;
+	}
+
+	public void setJLresulimporTotalPro(JLabel jLresulimporTotalPro) {
+		JLresulimporTotalPro = jLresulimporTotalPro;
+	}
+
+	public JLabel getJLresulComboProveedorCompra() {
+		return JLresulComboProveedorCompra;
+	}
+
+	public void setJLresulComboProveedorCompra(JLabel jLresulComboProveedorCompra) {
+		JLresulComboProveedorCompra = jLresulComboProveedorCompra;
+	}
+
+	public JLabel getJLdateCompra() {
+		return JLdateCompra;
+	}
+
+	public void setJLdateCompra(JLabel jLdateCompra) {
+		JLdateCompra = jLdateCompra;
+	}
+
+	public JTextField getJTFcantidadCompra() {
+		return JTFcantidadCompra;
+	}
+
+	public void setJTFcantidadCompra(JTextField jTFcantidadCompra) {
+		JTFcantidadCompra = jTFcantidadCompra;
+	}
+
+	public JComboBox<String> getComboProveedorCompras() {
+		return comboProveedorCompras;
+	}
+
+	public void setComboProveedorCompras(JComboBox<String> comboProveedorCompras) {
+		this.comboProveedorCompras = comboProveedorCompras;
 	}
 }
