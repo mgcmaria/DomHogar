@@ -7,21 +7,31 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import tablas.Cliente;
+import tablas.Compras;
 import tablas.Empleado;
+import tablas.Producto;
 import tablas.Proveedor;
 import vista.Ventana;
 
 public class Eventos implements ActionListener, MouseListener {
 	
+	Boolean ok_check = false;
 	private Ventana ventana;
 	Connection conexion;
+	ArrayList<Compras> nuevaCompra = new ArrayList<Compras>();
 
 	public Eventos(Ventana ventana) {
 		this.ventana = ventana;
@@ -388,7 +398,7 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			if (ok_fichero == true) {
 				
-				ventana.getResulExportEmp().setText("Fichero generado con �xito");
+				ventana.getResulExportEmp().setText("Fichero generado con �xito");
 				
 			} else {
 				
@@ -398,6 +408,17 @@ public class Eventos implements ActionListener, MouseListener {
 		}
 		
 		else if(e.getSource()==ventana.getBotonPurchases()) {
+			
+			//Limpiamos las etiquetas rellenas
+			ventana.getJTFnumAlbaran().setText("");
+			ventana.getComboProductoCompras().setSelectedIndex(0);
+			ventana.getJLresulComboProCompra().setText("");
+			ventana.getJTFcantidadCompra().setText("");
+			ventana.getJLresulimporCompraPro().setText("");
+			ventana.getJLresulimporTotalPro().setText("");
+			ventana.getComboProveedorCompras().setSelectedIndex(0);
+			ventana.getJLresulComboProveedorCompra().setText("");
+			ventana.getJLresulinsertComprafinal().setText("");
 			
 			//Mostramos paneles de compras
 			ventana.getPanelCompras().setVisible(true);
@@ -428,10 +449,136 @@ public class Eventos implements ActionListener, MouseListener {
 			
 		}
 		
-		else if(e.getSource() == ventana.getBotonVerificarCompra()) {
+		else if(e.getSource() == ventana.getBotonVerificarCompra()) {			
 			
-			//FALTA HACERLO!!!!!!!!!!!!!!!!!!
+			//Recogemos en un Array los productos y Proveedores
+			ArrayList<Producto> lista_productos = AccesoDB.datosProducto(conexion);
+			ArrayList<Proveedor> lista_proveedores = AccesoDB.datosProveedor(conexion);
+			
+			//Recogemos en variables los datos introducidos por el usuario
+			String codProducto = ventana.getComboProductoCompras().getSelectedItem().toString();
+			String codproveedor = ventana.getComboProveedorCompras().getSelectedItem().toString();
+			String numAlbaran = ventana.getJTFnumAlbaran().getText();
+			String nomProducto = null;
+			String nomProveedor = null;
+			int cantidad = 0;
+			int importeCompra = 0;
+			int importeTotal = 0;
+			
+			Calendar hoy = new GregorianCalendar(); //obtiene la fecha actual
+			//ahora accedemos a los anios, meses, dias:
+			int anio = hoy.get(Calendar.YEAR);
+			int mes = hoy.get(Calendar.MONTH)+1;
+			int dia = hoy. get(Calendar.DAY_OF_MONTH)+1;
+			String f = anio +"-" + mes +"-"+dia;
+			
+			Date fecha = Date.valueOf(f);
+			
+			try {
+				cantidad = Integer.parseInt(ventana.getJTFcantidadCompra().getText());
+				if(cantidad <= 0) {
+					//Mostramos Dialog 
+					JOptionPane.showMessageDialog(new JFrame(), 
+							"Please, insert a correct number for quantity",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (NumberFormatException g) {
+				g.getMessage();
+				//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"Please, insert a quantity",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
+			}			
+			
+			//Comprobamos los datos de producto
+			for (Producto producto : lista_productos) {
+				if(codProducto.equalsIgnoreCase(producto.getCod_Producto())) {
+					importeCompra = producto.getImporteCompra();
+					importeTotal = cantidad * producto.getImporteCompra();
+					nomProducto = producto.getNombreProducto().toString();
+					ventana.getJLresulComboProCompra().setText(nomProducto);
+					ventana.getJLresulimporCompraPro().setText(Integer.toString(producto.getImporteCompra()).toString()+" € unity");
+					ventana.getJLresulimporTotalPro().setText(Integer.toString(importeTotal).toString()+" € total amount");
+				} 
+			}
+			
+			//Comprobamos los datos de proveedor
+			for (Proveedor proveedor : lista_proveedores) {
+				if(codproveedor.equalsIgnoreCase(proveedor.getCodproveedor())) {	
+					nomProveedor = proveedor.getNombreProveedor().toString();
+					ventana.getJLresulComboProveedorCompra().setText(nomProveedor);
+				} 
+			}
+			
+			//Si algun componente de la los valores del Insert está vacío
+			if(ventana.getJTFnumAlbaran().getText().isEmpty() || ventana.getComboProductoCompras().getSelectedItem().toString().contains("Product's code") ||
+				    ventana.getComboProveedorCompras().getSelectedItem().toString().contains("Supplier's code"))
+				{
+				//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"Please, insert all the items",
+						"Check",
+						JOptionPane.ERROR_MESSAGE);				
+				} else {
+					//Mostramos Dialog 
+					JOptionPane.showMessageDialog(new JFrame(), 
+							"Yo can insert a new Purchase",
+							"Check",
+							JOptionPane.INFORMATION_MESSAGE);	
+					
+					ok_check =true;					
+													
+					Compras c = new Compras(numAlbaran, codProducto, nomProducto, cantidad, importeCompra, importeTotal, codproveedor, nomProveedor, fecha);				
+					nuevaCompra.add(c);
+				}	
 		}
+		
+		else if(e.getSource() == ventana.getBotonInsertCompraFinal()) {
+			
+			if(ok_check == true) {
+				
+				String numAlbaran = ventana.getJTFnumAlbaran().getText();
+				
+				for (Compras compras : nuevaCompra) {
+					if(compras.getNumAlbaran().contains(numAlbaran)) {
+						//Mostramos Dialog 
+						JOptionPane.showMessageDialog(new JFrame(), 
+								"Delivery note exits. Will be insert a new line of delivery note",
+								"Check",
+								JOptionPane.INFORMATION_MESSAGE);	
+						
+						int afectados1 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
+						
+						if (afectados1 == 0) {
+							ventana.getJLresulinsertComprafinal().setText("Error adding delivery Note line");
+						} else {
+							ventana.getJLresulinsertComprafinal().setText("Delivery Note line added");
+							
+							refreshJTableCompras();
+						}		
+					} else {
+						int afectados = AccesoDB.insertarCompra(nuevaCompra, conexion);
+						int afectados2 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
+						
+						if (afectados == 0 || afectados2 == 0) {
+							ventana.getJLresulinsertComprafinal().setText("Error adding delivery Note");
+						} else {
+							ventana.getJLresulinsertComprafinal().setText("Delivery Note added");
+							
+							refreshJTableCompras();
+						}		
+					}
+				}				
+			} else {
+				ventana.getJLresulinsertComprafinal().setText("Check all items first");
+			}
+			
+		}
+		
+		
+		//INSERT INTO LINEA_ALBARAN (cantidad, codproducto, numAlbaran) VALUES (35, 'AMPL002', '002');
 		
 		else if(e.getSource()==ventana.getBotonSales()) {
 			
@@ -513,31 +660,27 @@ public class Eventos implements ActionListener, MouseListener {
 				ventana.getResulInsertProv().setText("Please, enter all the fields");
 				
 			} else {
-				//Limpiamos la etiqueta de resultado final y devolvemos el color
-				ventana.getResulInsertProv().setText("");
-				ventana.getResulInsertProv().setForeground(new Color(0,157,233));
+				//Limpiamos la etiqueta de resultado final
+				ventana.getResulInsertProv().setText("");				
 				
-				
-			ArrayList<Proveedor> nuevoProveedor = new ArrayList<Proveedor>();
-
-			// Recogemos los datos del nuevo empleado
-			String codigo = ventana.getInsertCodProv().getText();
-			String nombre = ventana.getInsertNomProv().getText();
-			String mail = ventana.getInsertContProv().getText();
-
-			Proveedor prov = new Proveedor(codigo, nombre, mail);
-
-			nuevoProveedor.add(prov);
-
-			int afectados = AccesoDB.insertarProveedor(nuevoProveedor, conexion);
-
-			if (afectados == 0) {
-				ventana.getResulInsertProv().setText("Error adding supplier");
-			} else {
-				ventana.getResulInsertProv().setText("Supplier added");
-				//AccesoDB.obtenerMatrizProveedores();
-				//ventana.repaint();
-			}
+				ArrayList<Proveedor> nuevoProveedor = new ArrayList<Proveedor>();
+	
+				// Recogemos los datos del nuevo empleado
+				String codigo = ventana.getInsertCodProv().getText();
+				String nombre = ventana.getInsertNomProv().getText();
+				String mail = ventana.getInsertContProv().getText();
+	
+				Proveedor prov = new Proveedor(codigo, nombre, mail);
+	
+				nuevoProveedor.add(prov);
+	
+				int afectados = AccesoDB.insertarProveedor(nuevoProveedor, conexion);
+	
+				if (afectados == 0) {
+					ventana.getResulInsertProv().setText("Error adding supplier");
+				} else {
+					ventana.getResulInsertProv().setText("Supplier added");
+				}
 		}
 			
 		}
@@ -891,6 +1034,18 @@ public class Eventos implements ActionListener, MouseListener {
 					
 		}
 		
+	}
+
+	private void refreshJTableCompras() {
+		String titulosCompras[] = {"Delivery Note's Code", "Product's Code", "Product's Name", "Quantity", "Purchase amount", "Total Account", 
+				"Supplier's code", "Supplier", "Date"};
+		String infoCompras[][] = AccesoDB.obtenerMatrizCompras();
+		
+		TableModel modelo = new DefaultTableModel(infoCompras, titulosCompras);
+		
+		ventana.getTablaCompras().setModel(modelo);
+		
+		((AbstractTableModel) modelo).fireTableDataChanged();
 	}
 
 	private void refreshJTableEmpleados() {

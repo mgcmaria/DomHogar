@@ -332,7 +332,7 @@ public class AccesoDB {
 	//DATOS COMPRAS	
 	public static String[][] obtenerMatrizCompras() {
 		
-		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los números
+		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
 		
 		Connection conexion = AccesoDB.conexion();
 
@@ -345,8 +345,8 @@ public class AccesoDB {
 			matrizInfoCompras[i][1] = listaCompras.get(i).getCodProducto()+"";
 			matrizInfoCompras[i][2] = listaCompras.get(i).getNomProducto()+"";
 			matrizInfoCompras[i][3] = formatea.format(listaCompras.get(i).getCantidad())+"";
-			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" €";
-			matrizInfoCompras[i][5] = formatea.format(listaCompras.get(i).getImporteTotal())+" €";
+			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" â‚¬";
+			matrizInfoCompras[i][5] = formatea.format(listaCompras.get(i).getImporteTotal())+" â‚¬";
 			matrizInfoCompras[i][6] = listaCompras.get(i).getCodProveedor()+"";
 			matrizInfoCompras[i][7] = listaCompras.get(i).getNomProveedor()+"";
 			matrizInfoCompras[i][8] = listaCompras.get(i).getFechaAlbaran()+"";
@@ -362,7 +362,7 @@ public class AccesoDB {
 		
 		Compras compras;
 		
-		//"N. Albarán", "Codigo Producto", "Nombre producto", "Cantidad", "Importe compra", "Cód. Proveedor", "Proveedor", "Fecha"
+		//"N. Albarï¿½n", "Codigo Producto", "Nombre producto", "Cantidad", "Importe compra", "Cï¿½d. Proveedor", "Proveedor", "Fecha"
 		
 		try {			
 
@@ -371,7 +371,7 @@ public class AccesoDB {
 			ResultSet rs = sentencia.executeQuery("SELECT la.codproducto, pro.nombreProducto,pro.importeCompra, la.cantidad, "
 					+ "la.numAlbaran, a.fecha, a.codProveedor, p.nombreProveedor "
 					+ "FROM LINEA_ALBARAN la JOIN PRODUCTO pro on la.codproducto = pro.cod_Producto "
-					+ "JOIN ALBARAN a on la.numAlbaran = a.numAlbaran JOIN PROVEEDOR p on a.codProveedor = p.codproveedor");			
+					+ "JOIN ALBARAN a on la.numAlbaran = a.numAlbaran JOIN PROVEEDOR p on a.codProveedor = p.codproveedor ORDER BY la.numAlbaran");			
 
 			// Mientras haya registros anadimos al ArrayList
 			while (rs.next()) { 
@@ -508,7 +508,7 @@ public class AccesoDB {
 		try {
 			FileWriter ficheroEmp = new FileWriter(f);
 			
-			ficheroEmp.write("NIF,Nombre,Apellidos,Email,Telefono,Usuario,Contraseña,Perfil");
+			ficheroEmp.write("NIF,Nombre,Apellidos,Email,Telefono,Usuario,Contraseï¿½a,Perfil");
 			ficheroEmp.write("\n");
 			
 			for (Empleado empleado : lista_empleados) {
@@ -574,6 +574,72 @@ public class AccesoDB {
 
 		return lista_productos;
 		
+	}
+
+	public static int insertarCompra(ArrayList<Compras> nuevaCompra, Connection conexion) {
+		
+		int afectados = 0;
+		
+		try {
+			// Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO ALBARAN (CODPROVEEDOR, FECHA, NUMALBARAN) " + "VALUES (?, ?, ?)";
+
+			String codigoProveedor = null;
+			Date fecha = null;
+			String numAlbaran = null;
+
+			for (Compras c : nuevaCompra) {
+				codigoProveedor = c.getCodProveedor();
+				fecha = c.getFechaAlbaran();
+				numAlbaran = c.getNumAlbaran();
+			}
+
+			// Con PreparedStatement recogemos los valores introducidos
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setString(1, codigoProveedor);
+			sentencia.setDate(2, fecha);
+			sentencia.setString(3, numAlbaran);
+
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
+
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;
+	}
+
+	public static int insertarLineaAlbaran(ArrayList<Compras> nuevaCompra, Connection conexion) {
+		
+		int afectados = 0;
+		
+		try {
+			// Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO LINEA_ALBARAN (CANTIDAD, CODPRODUCTO, NUMALBARAN) " + "VALUES (?, ?, ?)";
+
+			int cantidad = 0;
+			String codProducto = null;
+			String numAlbaran = null;
+
+			for (Compras c : nuevaCompra) {
+				cantidad = c.getCantidad();
+				codProducto = c.getCodProducto();
+				numAlbaran = c.getNumAlbaran();
+			}
+
+			// Con PreparedStatement recogemos los valores introducidos
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setInt(1, cantidad);
+			sentencia.setString(2, codProducto);
+			sentencia.setString(3, numAlbaran);
+
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
+
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;
 	}
 
 	
