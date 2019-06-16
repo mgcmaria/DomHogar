@@ -8,8 +8,10 @@ import javax.swing.border.MatteBorder;
 
 import controlador.AccesoDB;
 import controlador.Eventos;
+import tablas.Cliente;
 import tablas.Producto;
 import tablas.Proveedor;
+import tablas.Servicio;
 
 public class Ventana extends JFrame{
 	
@@ -47,7 +49,14 @@ public class Ventana extends JFrame{
 	private JComboBox <String> comboProductoCompras, comboProveedorCompras;
 	
 	//Atributos de VENTAS
-	private JPanel panelVentas;
+	private JPanel panelVentas, subPanelInsertVentas, subPanelBotonesVentas;
+	private JScrollPane barraVentas;
+	private JTable tablaVentas;
+	private JLabel JLabelNuevaVenta, JLresulComboSerVenta, JLresulimporVentaServ, JLresulimporTotalServ,
+	JLresulComboClienteVentas, JLresulinsertVentafinal;
+	private JTextField JTFnumFactura, JTFcantidadVenta;
+	private JComboBox<String> comboServicioVentas, comboClienteVentas;
+	private JButton botonVerificarVenta, botonInsertVentaFinal, botonActualVenta, botonDeleteVenta, botonExportVenta;
 	
 	//Atributos de SERVICIOS
 	private JPanel panelServicios;
@@ -453,7 +462,171 @@ public class Ventana extends JFrame{
 		panelVentas.setBounds(200, 40, 750, 230);
 		panelVentas.setLayout(null);
 		add(panelVentas);
-		panelVentas.setVisible(false);
+		panelVentas.setVisible(false);		
+		
+		barraVentas = new JScrollPane();
+		barraVentas.setBounds(20, 20, 710, 190);
+		panelVentas.add(barraVentas);
+		
+		String titulosVentas[] = {"Bill's Code", "Service Code", "Service Name", "Quantity", "Sale amount", "Total", 
+				"Customer's dni", "Customer's Name", "Date"};
+		String[][] infoVentas = AccesoDB.obtenerMatrizVentas();
+		
+		tablaVentas = new JTable(infoVentas,titulosVentas);
+		barraVentas.setViewportView(tablaVentas);
+		
+		//SUBPANEL INSERTAR Ventas
+		
+		subPanelInsertVentas = new JPanel();
+		subPanelInsertVentas.setBounds(200, 270, 750, 268);
+		subPanelInsertVentas.setBackground(color_panel);
+		subPanelInsertVentas.setLayout(null);
+		add(subPanelInsertVentas);
+		subPanelInsertVentas.setVisible(false);	
+		
+		JLabelNuevaVenta = new JLabel("new sale");
+		JLabelNuevaVenta.setBounds(20, 0, 710, 60);
+		JLabelNuevaVenta.setBorder(null);
+		JLabelNuevaVenta.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		JLabelNuevaVenta.setForeground(color_azul);//Color del texto
+		JLabelNuevaVenta.setHorizontalAlignment(JLabel.CENTER);
+		JLabelNuevaVenta.setVerticalAlignment(JLabel.CENTER);
+		subPanelInsertVentas.add(JLabelNuevaVenta);
+		
+		JTFnumFactura = new JTextField();//Creamos el componente
+		TextPrompt placeholdernumal = new TextPrompt("Bill's Code", JTFnumFactura);
+		placeholdernumal.changeAlpha(0.75f);
+		placeholdernumal.changeStyle(Font.ITALIC);
+	    JTFnumFactura.setBounds(20,70,150,30);//Posicionamos		
+	    JTFnumFactura.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    JTFnumFactura.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFnumFactura.setBackground(Color.WHITE); //Color de fondo
+	    JTFnumFactura.setForeground(color_azul);//Color del texto
+	    subPanelInsertVentas.add(JTFnumFactura);//Anadimos
+		
+	    comboServicioVentas = new JComboBox<String>();
+	    comboServicioVentas.addItem("Service code");	   
+
+	  //Obtenemos los codigos de servicio de la BBDD de la Tabla Ventas	   
+	    Connection conexion = AccesoDB.conexion();		    
+	    ArrayList<Servicio> lista_servicios = AccesoDB.datosServicio(conexion);
+	    
+	    for (Servicio s : lista_servicios) {
+	    	comboServicioVentas.addItem(s.getCodServicio());
+		}
+	    
+	    comboServicioVentas.setSelectedIndex(0); // Foco en el item 0
+	    comboServicioVentas.setBounds(200, 70, 220, 30);
+		subPanelInsertVentas.add(comboServicioVentas);
+		
+		JLresulComboSerVenta = new JLabel();//Creamos el componente
+		JLresulComboSerVenta.setBounds(450,70,280,30);//Posicionamos
+		JLresulComboSerVenta.setBorder(null); //Eliminamos el borde
+		JLresulComboSerVenta.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JLresulComboSerVenta.setForeground(color_azul);//Color del texto
+		subPanelInsertVentas.add(JLresulComboSerVenta);//Anadimos	
+		
+		JTFcantidadVenta = new JTextField();//Creamos el componente
+		TextPrompt placeholdercancom = new TextPrompt("Quantity", JTFcantidadVenta);
+		placeholdercancom.changeAlpha(0.75f);
+		placeholdercancom.changeStyle(Font.ITALIC);
+		JTFcantidadVenta.setBounds(20,120,150,30);//Posicionamos		
+		JTFcantidadVenta.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+		JTFcantidadVenta.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFcantidadVenta.setBackground(Color.WHITE); //Color de fondo
+		JTFcantidadVenta.setForeground(color_azul);//Color del texto
+	    subPanelInsertVentas.add(JTFcantidadVenta);//Anadimos
+	    
+	    JLresulimporVentaServ = new JLabel("");//Creamos el componente
+	    JLresulimporVentaServ.setBounds(200,120,220,30);//Posicionamos
+	    JLresulimporVentaServ.setBorder(null); //Eliminamos el borde
+	    JLresulimporVentaServ.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JLresulimporVentaServ.setForeground(color_azul);//Color del texto
+		subPanelInsertVentas.add(JLresulimporVentaServ);//Anadimos	
+		
+		JLresulimporTotalServ = new JLabel("");// Creamos el componente
+		JLresulimporTotalServ.setBounds(450, 120, 280, 30);// Posicionamos
+		JLresulimporTotalServ.setBorder(null); // Eliminamos el borde
+		JLresulimporTotalServ.setFont(new Font("Segoe UI", Font.BOLD, 16));// Damos formato al contenido
+		JLresulimporTotalServ.setForeground(color_azul);// Color del texto
+		subPanelInsertVentas.add(JLresulimporTotalServ);// Anadimos
+		
+		comboClienteVentas = new JComboBox<String>();
+		comboClienteVentas.addItem("Customer's code");	    
+	    		
+		//Obtenemos los codigos de producto de la BBDD de la Tabla Compras	   		    
+	    ArrayList<Cliente> lista_cliente = AccesoDB.datosCliente(conexion);
+	    
+	    for (Cliente c : lista_cliente) {
+	    	comboClienteVentas.addItem(c.getDni_Cliente());
+		}
+	    
+	    comboClienteVentas.setSelectedIndex(0); // Foco en el item 0
+	    comboClienteVentas.setBounds(20, 170, 150, 30);
+		subPanelInsertVentas.add(comboClienteVentas);
+		
+		JLresulComboClienteVentas = new JLabel("");//Creamos el componente
+		JLresulComboClienteVentas.setBounds(200,170,220,30);//Posicionamos
+		JLresulComboClienteVentas.setBorder(null); //Eliminamos el borde
+		JLresulComboClienteVentas.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JLresulComboClienteVentas.setForeground(color_azul);//Color del texto
+		subPanelInsertVentas.add(JLresulComboClienteVentas);//Anadimos	
+		
+		//Image imgBotonVentas = new ImageIcon("img\\sales.png").getImage();
+		botonVerificarVenta = new JButton("CHECK");
+		botonVerificarVenta.setBounds(600, 170, 110, 30);
+		botonVerificarVenta.setBorder(null); // Eliminamos el borde
+		botonVerificarVenta.setBackground(Color.gray);
+		subPanelInsertVentas.add(botonVerificarVenta);// Anadimos
+		
+		Image imgBotonVentas = new ImageIcon("img\\sales.png").getImage();
+		botonInsertVentaFinal = new JButton(new ImageIcon(imgBotonVentas.getScaledInstance(110,50, Image.SCALE_SMOOTH)));
+		botonInsertVentaFinal.setBounds(20, 215, 110, 50);
+		botonInsertVentaFinal.setBorder(null); // Eliminamos el borde
+		botonInsertVentaFinal.setBackground(color_panel);
+		subPanelInsertVentas.add(botonInsertVentaFinal);// Anadimos
+		
+		JLresulinsertVentafinal = new JLabel();//Creamos el componente
+		JLresulinsertVentafinal.setBounds(150, 215, 500, 50);//Posicionamos
+		JLresulinsertVentafinal.setBorder(null); //Eliminamos el borde
+		JLresulinsertVentafinal.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JLresulinsertVentafinal.setForeground(Color.gray);//Color del text
+		JLresulinsertVentafinal.setVerticalAlignment(JLabel.CENTER);
+		subPanelInsertVentas.add(JLresulinsertVentafinal);//Anadimos
+		
+		//SUBPANEL BOTONES VENTAS
+
+		subPanelBotonesVentas = new JPanel();
+		subPanelBotonesVentas.setBounds(200, 538, 750, 82);
+		subPanelBotonesVentas.setBackground(color_panel);
+		subPanelBotonesVentas.setLayout(null);
+		add(subPanelBotonesVentas);
+		subPanelBotonesVentas.setVisible(false);	
+		
+		//faltan imágenes botones
+		/*Image imgBotonUpdateVentas = new ImageIcon("img\\update sales.png").getImage();
+		botonActualVenta = new JButton(new ImageIcon(imgBotonUpdateVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));*/
+		botonActualVenta = new JButton();
+		botonActualVenta.setBounds((int) 67.5, 20, 160, 42);
+		botonActualVenta.setBorder(null); // Eliminamos el borde
+		botonActualVenta.setBackground(color_panel);
+		subPanelBotonesVentas.add(botonActualVenta);// Anadimos
+
+		/*Image imgBotonDeleteVentas = new ImageIcon("img\\delete sales.png").getImage();
+		botonDeleteVenta = new JButton(new ImageIcon(imgBotonDeleteVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));*/
+		botonDeleteVenta = new JButton();
+		botonDeleteVenta.setBounds(295, 20, 160, 42);
+		botonDeleteVenta.setBorder(null); // Eliminamos el borde
+		botonDeleteVenta.setBackground(color_panel);
+		subPanelBotonesVentas.add(botonDeleteVenta);// Anadimos
+
+		Image imgBotonExportVentas = new ImageIcon("img\\export to file.png").getImage();
+		botonExportVenta = new JButton(new ImageIcon(imgBotonExportVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonExportVenta.setBounds((int) 522.5, 20, 160, 42);
+		botonExportVenta.setBorder(null); // Eliminamos el borde
+		botonExportVenta.setBackground(color_panel);
+		subPanelBotonesVentas.add(botonExportVenta);// Anadimos
+		
 	}
 
 	//PANEL PROVEEDORES
@@ -689,10 +862,7 @@ public class Ventana extends JFrame{
 		resulDeleteProv.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 		resulDeleteProv.setForeground(color_azul);//Color del texto
 		subPanelEmpDelete.add(resulDeleteProv);//Anadimos	
-	
 
-		 
-		
 	    
 		//Panel botones PROVEEDORES
 	    
@@ -741,7 +911,7 @@ public class Ventana extends JFrame{
 		barraClientes.setBounds(20, 20, 710, 190);
 		panelClientes.add(barraClientes);
 		
-		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Telï¿½fono"};
+		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Teléfono"};
 		String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
 		
 		tablaClientes = new JTable(infoClientes,titulosClientes);
@@ -1089,7 +1259,7 @@ public class Ventana extends JFrame{
 		subPanelEmpInsertar.add(insertNomEmpl);//Anadimos
 		
 		insertApelEmpl = new JTextField();//Creamos el componente
-		TextPrompt placeholder1 = new TextPrompt("Employee's surname", insertApelEmpl);
+		TextPrompt placeholder1 = new TextPrompt("Employee's last name", insertApelEmpl);
 	    placeholder1.changeAlpha(0.75f);
 	    placeholder1.changeStyle(Font.ITALIC);
 	    insertApelEmpl.setBounds(250,70,480,30);//Posicionamos
@@ -1439,6 +1609,12 @@ public class Ventana extends JFrame{
 		
 		botonVerificarCompra.addMouseListener(manejador);
 		botonInsertCompraFinal.addMouseListener(manejador);
+		
+		botonVerificarVenta.addMouseListener(manejador);
+		botonInsertVentaFinal.addMouseListener(manejador);
+		botonActualVenta.addMouseListener(manejador);
+		botonDeleteVenta.addMouseListener(manejador);
+		botonExportVenta.addMouseListener(manejador);
 		
 		
 	}
@@ -2351,5 +2527,173 @@ public class Ventana extends JFrame{
 
 	public void setJLresulinsertComprafinal(JLabel jLresulinsertComprafinal) {
 		JLresulinsertComprafinal = jLresulinsertComprafinal;
+	}
+
+	public JLabel getLabelNewDataEmp() {
+		return labelNewDataEmp;
+	}
+
+	public void setLabelNewDataEmp(JLabel labelNewDataEmp) {
+		this.labelNewDataEmp = labelNewDataEmp;
+	}
+
+	public JPanel getSubPanelInsertVentas() {
+		return subPanelInsertVentas;
+	}
+
+	public void setSubPanelInsertVentas(JPanel subPanelInsertVentas) {
+		this.subPanelInsertVentas = subPanelInsertVentas;
+	}
+
+	public JPanel getSubPanelBotonesVentas() {
+		return subPanelBotonesVentas;
+	}
+
+	public void setSubPanelBotonesVentas(JPanel subPanelBotonesVentas) {
+		this.subPanelBotonesVentas = subPanelBotonesVentas;
+	}
+
+	public JScrollPane getBarraVentas() {
+		return barraVentas;
+	}
+
+	public void setBarraVentas(JScrollPane barraVentas) {
+		this.barraVentas = barraVentas;
+	}
+
+	public JTable getTablaVentas() {
+		return tablaVentas;
+	}
+
+	public void setTablaVentas(JTable tablaVentas) {
+		this.tablaVentas = tablaVentas;
+	}
+
+	public JLabel getJLresulComboSerVenta() {
+		return JLresulComboSerVenta;
+	}
+
+	public void setJLresulComboSerVenta(JLabel jLresulComboSerVenta) {
+		JLresulComboSerVenta = jLresulComboSerVenta;
+	}
+
+	public JLabel getJLresulimporVentaServ() {
+		return JLresulimporVentaServ;
+	}
+
+	public void setJLresulimporVentaServ(JLabel jLresulimporVentaServ) {
+		JLresulimporVentaServ = jLresulimporVentaServ;
+	}
+
+	public JLabel getJLresulimporTotalServ() {
+		return JLresulimporTotalServ;
+	}
+
+	public void setJLresulimporTotalServ(JLabel jLresulimporTotalServ) {
+		JLresulimporTotalServ = jLresulimporTotalServ;
+	}
+
+	public JLabel getJLresulComboClienteVentas() {
+		return JLresulComboClienteVentas;
+	}
+
+	public void setJLresulComboClienteVentas(JLabel jLresulComboClienteVentas) {
+		JLresulComboClienteVentas = jLresulComboClienteVentas;
+	}
+
+	public JLabel getJLresulinsertVentafinal() {
+		return JLresulinsertVentafinal;
+	}
+
+	public void setJLresulinsertVentafinal(JLabel jLresulinsertVentafinal) {
+		JLresulinsertVentafinal = jLresulinsertVentafinal;
+	}
+
+	public JTextField getJTFnumFactura() {
+		return JTFnumFactura;
+	}
+
+	public void setJTFnumFactura(JTextField jTFnumFactura) {
+		JTFnumFactura = jTFnumFactura;
+	}
+
+	public JTextField getJTFcantidadVenta() {
+		return JTFcantidadVenta;
+	}
+
+	public void setJTFcantidadVenta(JTextField jTFcantidadVenta) {
+		JTFcantidadVenta = jTFcantidadVenta;
+	}
+
+	public JComboBox<String> getComboServicioVentas() {
+		return comboServicioVentas;
+	}
+
+	public void setComboServicioVentas(JComboBox<String> comboServicioVentas) {
+		this.comboServicioVentas = comboServicioVentas;
+	}
+
+	public JComboBox<String> getComboClienteVentas() {
+		return comboClienteVentas;
+	}
+
+	public void setComboClienteVentas(JComboBox<String> comboClienteVentas) {
+		this.comboClienteVentas = comboClienteVentas;
+	}
+
+	public JButton getBotonVerificarVenta() {
+		return botonVerificarVenta;
+	}
+
+	public void setBotonVerificarVenta(JButton botonVerificarVenta) {
+		this.botonVerificarVenta = botonVerificarVenta;
+	}
+
+	public JButton getBotonInsertVentaFinal() {
+		return botonInsertVentaFinal;
+	}
+
+	public void setBotonInsertVentaFinal(JButton botonInsertVentaFinal) {
+		this.botonInsertVentaFinal = botonInsertVentaFinal;
+	}
+
+	public JButton getBotonActualVenta() {
+		return botonActualVenta;
+	}
+
+	public void setBotonActualVenta(JButton botonActualVenta) {
+		this.botonActualVenta = botonActualVenta;
+	}
+
+	public JButton getBotonDeleteVenta() {
+		return botonDeleteVenta;
+	}
+
+	public void setBotonDeleteVenta(JButton botonDeleteVenta) {
+		this.botonDeleteVenta = botonDeleteVenta;
+	}
+
+	public JButton getBotonExportVenta() {
+		return botonExportVenta;
+	}
+
+	public void setBotonExportVenta(JButton botonExportVenta) {
+		this.botonExportVenta = botonExportVenta;
+	}
+
+	public JLabel getLabelNewDataProv() {
+		return labelNewDataProv;
+	}
+
+	public void setLabelNewDataProv(JLabel labelNewDataProv) {
+		this.labelNewDataProv = labelNewDataProv;
+	}
+
+	public JLabel getLabelNewDataCliente() {
+		return labelNewDataCliente;
+	}
+
+	public void setLabelNewDataCliente(JLabel labelNewDataCliente) {
+		this.labelNewDataCliente = labelNewDataCliente;
 	}
 }

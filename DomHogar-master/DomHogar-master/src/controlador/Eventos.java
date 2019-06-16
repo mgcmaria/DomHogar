@@ -156,6 +156,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getSubPanelInsCliente().setVisible(false);
@@ -170,7 +172,6 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
-			ventana.getBotonDeleteEmpFinal().setVisible(false);
 			ventana.getSubPanelEmpUpdate().setVisible(false);
 			
 			ventana.setSize(400,520);
@@ -219,6 +220,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getSubPanelInsCliente().setVisible(false);
@@ -433,6 +436,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);			
 			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getSubPanelInsCliente().setVisible(false);
@@ -584,6 +589,8 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Mostramos el panel de ventas
 			ventana.getPanelVentas().setVisible(true);
+			ventana.getSubPanelInsertVentas().setVisible(true);
+			ventana.getSubPanelBotonesVentas().setVisible(true);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -608,6 +615,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
+			
 			
 		}
 		
@@ -637,7 +645,9 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
-			ventana.getPanelVentas().setVisible(false);			
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);			
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getSubPanelInsCliente().setVisible(false);
 			ventana.getPanelBotonesCliente().setVisible(false);
@@ -680,6 +690,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getResulInsertProv().setText("Error adding supplier");
 				} else {
 					ventana.getResulInsertProv().setText("Supplier added");
+					refreshJTableProveedores();
 				}
 		}
 			
@@ -721,6 +732,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getResultUpdateProv().setText("Error to update supplier");
 				} else {
 					ventana.getResultUpdateProv().setText("Supplier updated");
+					refreshJTableProveedores();
 				}
 			}
 		}
@@ -772,6 +784,7 @@ public class Eventos implements ActionListener, MouseListener {
 				ventana.getResulDeleteProv().setText("Error deleting supplier");
 			} else {
 				ventana.getResulDeleteProv().setText("Supplier deleted");
+				refreshJTableProveedores();
 			}
 		}
 		
@@ -796,6 +809,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);			
 			ventana.getPanelServicios().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
@@ -841,7 +856,8 @@ public class Eventos implements ActionListener, MouseListener {
 				ventana.getResulInsertCliente().setText("Error adding customer");
 			} else {
 				ventana.getResulInsertCliente().setText("Customer added");
-				AccesoDB.obtenerMatrizClientes();
+				//AccesoDB.obtenerMatrizClientes();
+				refreshJTableClientes();
 			}
 		}
 		
@@ -884,6 +900,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getResultUpdateCliente().setText("Error updating customer");
 				} else {
 					ventana.getResultUpdateCliente().setText("Customer updated");
+					refreshJTableClientes();
 				}
 			}
 		}
@@ -935,6 +952,7 @@ public class Eventos implements ActionListener, MouseListener {
 				ventana.getResulDeleteCliente().setText("Error deleting customer");
 			} else {
 				ventana.getResulDeleteCliente().setText("Customer deleted");
+				refreshJTableClientes();
 			}
 		}
 		
@@ -957,6 +975,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getSubPanelInsCliente().setVisible(false);
@@ -988,6 +1008,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getSubPanelInsCliente().setVisible(false);
@@ -1018,6 +1040,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
 			ventana.getSubPanelInsCliente().setVisible(false);
@@ -1060,9 +1084,36 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		((AbstractTableModel) modelo).fireTableDataChanged();
 	}
-
-	//FALTAN IMAGENES BOTONES CLIENTES
 	
+	private void refreshJTableProveedores() {
+		//ACTUALIZAR JTABLE PROVEEDORES
+		
+		String titulosProveedores[] = {"Codigo proveedor", "Nombre proveedor", "contacto"};
+		String infoProveedores[][] = AccesoDB.obtenerMatrizProveedores();
+		
+		TableModel modelo = new DefaultTableModel(infoProveedores,titulosProveedores);
+		
+		ventana.getTablaProveedores().setModel(modelo);
+		
+		((AbstractTableModel) modelo).fireTableDataChanged();
+	}
+	
+	private void refreshJTableClientes() {
+		//ACTUALIZAR JTABLE CLIENTES
+		
+		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Teléfono"};
+		String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
+		
+		TableModel modelo = new DefaultTableModel(infoClientes,titulosClientes);
+		
+		ventana.getTablaProveedores().setModel(modelo);
+		
+		((AbstractTableModel) modelo).fireTableDataChanged();
+	}
+	
+	
+
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if(e.getSource()==ventana.getBotonLogin()) {			

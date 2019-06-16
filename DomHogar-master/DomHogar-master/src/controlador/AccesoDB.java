@@ -18,6 +18,8 @@ import tablas.Compras;
 import tablas.Empleado;
 import tablas.Producto;
 import tablas.Proveedor;
+import tablas.Servicio;
+import tablas.Ventas;
 
 public class AccesoDB {
 	
@@ -398,6 +400,119 @@ public class AccesoDB {
 		
 		return lista_compras;
 	}
+	
+	
+	//DATOS Ventas
+		public static String[][] obtenerMatrizVentas() {
+			
+			DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
+			
+			Connection conexion = AccesoDB.conexion();
+
+			ArrayList<Ventas> listaVentas = AccesoDB.datosVentas(conexion);
+
+			String matrizInfoVentas[][] = new String[listaVentas.size()][9];
+
+			for (int i = 0; i < listaVentas.size(); i++) {
+				matrizInfoVentas[i][0] = listaVentas.get(i).getNumFactura()+"";
+				matrizInfoVentas[i][1] = listaVentas.get(i).getCodServicio()+"";
+				matrizInfoVentas[i][2] = listaVentas.get(i).getNombreServicio()+"";
+				matrizInfoVentas[i][3] = formatea.format(listaVentas.get(i).getCantidad())+"";
+				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaProducto())+"€";
+				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteFactura())+" €";
+				matrizInfoVentas[i][6] = listaVentas.get(i).getDni_Cliente()+"";
+				matrizInfoVentas[i][7] = listaVentas.get(i).getNombre()+"";
+				matrizInfoVentas[i][8] = listaVentas.get(i).getFecha()+"";
+			}
+			return matrizInfoVentas;		
+		}	
+		
+		
+		public static ArrayList<Ventas> datosVentas(Connection conexion) {
+			
+			ArrayList<Ventas> lista_ventas = new ArrayList<Ventas>();
+			
+			Ventas ventas;
+			
+			//"N. Factura", "Codigo Servicio", "Nombre servicio", "Cantidad", "Importe venta", "DNI Cliente", "Nombre Cliente", "Fecha"
+			
+			try {			
+
+				Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+				// Consulta SQL con resulset
+				ResultSet rs = sentencia.executeQuery("SELECT lf.codServicio, s.nombreServicio, f.ImporteFactura, lf.cantidad, "
+						+ "f.numFactura, f.fecha, c.dni_Cliente, c.nombre "
+						+ "FROM LINEA_FACTURA lf JOIN SERVICIO s on s.codServicio = lf.codServicio "
+						+ "JOIN FACTURA f on f.numFactura = lf.numFactura JOIN CLIENTE c on c.dni_Cliente = f.dni_Cliente");			
+
+				// Mientras haya registros anadimos al ArrayList
+				while (rs.next()) { 
+					
+					String numFactura = rs.getString("numFactura");
+					String codServicio = rs.getString("codServicio");
+					String nomServicio = rs.getString("nombreServicio");
+					int importeVentaSer = rs.getInt("ImporteVenta");
+					int cantidad = rs.getInt("cantidad");
+					int cantidadTotal = importeVentaSer*cantidad;
+					String dni_Cliente = rs.getString("dni_Cliente");
+					String nomCliente = rs.getString("nombre");
+					Date fecha = rs.getDate("fecha");
+					
+					ventas = new Ventas(importeVentaSer,cantidad,cantidadTotal, numFactura, codServicio, nomServicio, dni_Cliente, nomCliente, fecha);
+					
+					//int importeVentaProducto, int cantidad, int importeFactura, String numFactura, String codServicio,
+					//String nombreServicio, String nombre, String dni_Cliente, Date fecha
+					
+					//compras = new Compras(numAlbaran,codProducto,nomProducto, cantidad, importeCompraPro, cantidadTotal, codProveedor,  nomProveedor, fecha);
+					
+					lista_ventas.add(ventas);
+								
+				}
+				
+			} catch (SQLException e) {
+				e.getMessage();
+			}		
+			
+			return lista_ventas;
+		}
+		
+		public static ArrayList<Servicio> datosServicio(Connection conexion) {
+			
+			ArrayList<Servicio> lista_Servicios = new ArrayList<Servicio>();
+			
+			Servicio s;
+			
+			try {			
+
+				Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+				// Consulta SQL con resulset
+				ResultSet rs = sentencia.executeQuery("SELECT * FROM Servicio");
+
+				// Mientras haya registros anadimos al ArrayList
+				while (rs.next()) { 
+					
+					String cod_Servicio = rs.getString("codServicio");
+					String nombreServicio = rs.getString("nombreServicio");
+					String cod_Producto = rs.getString("codproducto");
+					String nif_Empleado = rs.getString("nif_Empleado");
+					int importeVenta = rs.getInt("importeServicio");
+					
+					s = new Servicio(cod_Servicio, cod_Producto, nif_Empleado, nombreServicio, importeVenta);
+					
+					/*String codServicio, String codproducto, String nif_Empleado, String nombreServicio,
+					int importeServicio*/
+					
+					lista_Servicios.add(s);				
+				}
+				
+			} catch (SQLException e) {
+				e.getMessage();
+			}
+
+			return lista_Servicios;
+			
+		}
+		
 
 	public static int actualizarEmpleado(String nif, String campo, String nuevoDato, Connection conexion) {
 		
