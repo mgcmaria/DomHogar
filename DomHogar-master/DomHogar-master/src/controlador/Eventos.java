@@ -164,7 +164,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
@@ -173,6 +173,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpDelete().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 			
 			ventana.setSize(400,520);
 			ventana.setResizable(false);
@@ -228,7 +229,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
@@ -238,7 +239,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getBotonDeleteEmpFinal().setVisible(false);
 			ventana.getSubPanelEmpUpdate().setVisible(false);
-			
+			ventana.getSubPanelVentasExport().setVisible(false);
 		}
 		
 		else if (e.getSource() == ventana.getBotonInsertEmpFinal()) {
@@ -427,6 +428,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(true);
 			ventana.getSubPanelInsertCompras().setVisible(true);
 			ventana.getSubPanelBotonesCompras().setVisible(true);
+			ventana.getSubPanelComprasExport().setVisible(true);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -444,14 +446,14 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
-			
+			ventana.getSubPanelVentasExport().setVisible(false);
 		}
 		
 		else if(e.getSource() == ventana.getBotonVerificarCompra()) {			
@@ -623,6 +625,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelVentas().setVisible(true);
 			ventana.getSubPanelInsertVentas().setVisible(true);
 			ventana.getSubPanelBotonesVentas().setVisible(true);
+			ventana.getSubPanelVentasExport().setVisible(true);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -640,14 +643,46 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 			
+		}
+		
+		else if(e.getSource() == ventana.getBotonExportVenta()) {
+			
+			//Limpiamos la etiqueta usuario
+			ventana.getInsertUsuarioPC().setText("");
+			
+			//Ocultamos los paneles de insert, update empleado y boton delete
+			ventana.getSubPanelInsertVentas().setVisible(false);
+
+			//Mostramos el panel de Export
+			ventana.getSubPanelVentasExport().setVisible(true);
+			
+		}
+		
+		else if(e.getSource() == ventana.getBotonExportVenFinal()) {
+			
+			//Recojemos el usuario del PC
+			String user = ventana.getInsertUsuarioPC().getText();
+			
+			Boolean ok_fichero = AccesoDB.exportarFicheroVentas(user);
+			
+			if (ok_fichero == true) {
+				
+				ventana.getResulExportVen().setText("Fichero generado con �xito");
+				
+			} else {
+				
+				ventana.getResulExportCom().setText("Error al generar fichero");
+			}
 			
 		}
 		
@@ -685,10 +720,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
-			
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 		}
 		
 		
@@ -844,13 +880,15 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);			
-			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 			
 			
 		}
@@ -991,10 +1029,10 @@ public class Eventos implements ActionListener, MouseListener {
 		
 
 		
-		else if(e.getSource()==ventana.getBotonServices()) {
+		else if(e.getSource()==ventana.getBotonCRM()) {
 			
 			//Mostramos panel Servicios
-			ventana.getPanelServicios().setVisible(true);
+			ventana.getPanelCRM().setVisible(true);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -1021,6 +1059,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 			
 		}
 		
@@ -1048,12 +1088,14 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);			
+			ventana.getPanelCRM().setVisible(false);			
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 			
 		}	
 		
@@ -1078,12 +1120,14 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);			
+			ventana.getPanelCRM().setVisible(false);			
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 			
 		}	
 		
@@ -1110,13 +1154,15 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(false);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
-			ventana.getPanelServicios().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
 			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getSubPanelInsProv().setVisible(false);
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
 					
 		}
 		
@@ -1201,8 +1247,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonCustomers().setIcon(new ImageIcon("img/customers hover.png"));
 		}
 		
-		else if (e.getSource()==ventana.getBotonServices()) {
-			ventana.getBotonServices().setIcon(new ImageIcon("img/services hover.png"));
+		else if (e.getSource()==ventana.getBotonCRM()) {
+			ventana.getBotonCRM().setIcon(new ImageIcon("img/crm hover.png"));
 		}
 		
 		else if (e.getSource()==ventana.getBotonStock()) {
@@ -1318,6 +1364,31 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
+		else if (e.getSource()==ventana.getBotonActualCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\update purchase hover.png").getImage();
+			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
+			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase hover.png").getImage();
+			ventana.getBotonDeleteCompra().setIcon(new ImageIcon(imgBotonDeleteCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonActualVenta()) {
+			Image imgBotonActualVenta = new ImageIcon("img\\update sale hover.png").getImage();
+			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
+			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale hover.png").getImage();
+			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 		
 		
 	}
@@ -1342,8 +1413,8 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonCustomers()) {
 			ventana.getBotonCustomers().setIcon(new ImageIcon("img/customers.png"));
 		}		
-		else if (e.getSource()==ventana.getBotonServices()) {
-			ventana.getBotonServices().setIcon(new ImageIcon("img/services.png"));
+		else if (e.getSource()==ventana.getBotonCRM()) {
+			ventana.getBotonCRM().setIcon(new ImageIcon("img/crm.png"));
 		}		
 		else if (e.getSource()==ventana.getBotonStock()) {
 			ventana.getBotonStock().setIcon(new ImageIcon("img/stock.png"));
@@ -1456,6 +1527,32 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		
+		else if (e.getSource()==ventana.getBotonActualCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\update purchase.png").getImage();
+			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
+			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase.png").getImage();
+			ventana.getBotonDeleteCompra().setIcon(new ImageIcon(imgBotonDeleteCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonActualVenta()) {
+			Image imgBotonActualVenta = new ImageIcon("img\\update sale.png").getImage();
+			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
+			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale.png").getImage();
+			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 	}
 
 	@Override
@@ -1484,9 +1581,9 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonCustomers().setIcon(new ImageIcon("img/customers press.png"));			
 			ventana.getBotonCustomers().setContentAreaFilled(false);
 		}		
-		else if (e.getSource()==ventana.getBotonServices()) {
-			ventana.getBotonServices().setIcon(new ImageIcon("img/services press.png"));			
-			ventana.getBotonServices().setContentAreaFilled(false);
+		else if (e.getSource()==ventana.getBotonCRM()) {
+			ventana.getBotonCRM().setIcon(new ImageIcon("img/crm press.png"));			
+			ventana.getBotonCRM().setContentAreaFilled(false);
 		}		
 		else if (e.getSource()==ventana.getBotonStock()) {
 			ventana.getBotonStock().setIcon(new ImageIcon("img/stock press.png"));			
@@ -1625,6 +1722,43 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonDeleteClienteFinal().setContentAreaFilled(false);
 		}
+		else if (e.getSource()==ventana.getBotonVerificarCompra()) {
+			Image imgBotonVerificarCompra = new ImageIcon("img\\check press.png").getImage();
+			ventana.getBotonVerificarCompra().setIcon(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonVerificarCompra().setContentAreaFilled(false);
+		}
+		
+		else if (e.getSource()==ventana.getBotonActualCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\update purchase press.png").getImage();
+			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonActualCompra().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
+			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase press.png").getImage();
+			ventana.getBotonDeleteCompra().setIcon(new ImageIcon(imgBotonDeleteCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeleteCompra().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportCompra().setContentAreaFilled(false);
+		}
+		
+		else if (e.getSource()==ventana.getBotonActualVenta()) {
+			Image imgBotonActualVenta = new ImageIcon("img\\update sale press.png").getImage();
+			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonActualVenta().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
+			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale press.png").getImage();
+			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeleteVenta().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportCompra().setContentAreaFilled(false);
+		}
 		
 	}
 
@@ -1648,8 +1782,8 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonCustomers()) {
 			ventana.getBotonCustomers().setIcon(new ImageIcon("img/customers.png"));
 		}		
-		else if (e.getSource()==ventana.getBotonServices()) {
-			ventana.getBotonServices().setIcon(new ImageIcon("img/services.png"));
+		else if (e.getSource()==ventana.getBotonCRM()) {
+			ventana.getBotonCRM().setIcon(new ImageIcon("img/crm.png"));
 		}		
 		else if (e.getSource()==ventana.getBotonStock()) {
 			ventana.getBotonStock().setIcon(new ImageIcon("img/stock.png"));
@@ -1760,6 +1894,32 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
 			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonActualCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\update purchase.png").getImage();
+			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
+			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase.png").getImage();
+			ventana.getBotonDeleteCompra().setIcon(new ImageIcon(imgBotonDeleteCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		
+		else if (e.getSource()==ventana.getBotonActualVenta()) {
+			Image imgBotonActualVenta = new ImageIcon("img\\update sale.png").getImage();
+			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
+			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale.png").getImage();
+			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportCompra()) {
+			Image imgBotonExportCompra = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		
 	}	

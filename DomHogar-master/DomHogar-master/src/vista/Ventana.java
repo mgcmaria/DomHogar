@@ -22,7 +22,7 @@ public class Ventana extends JFrame{
 	private JLabel etiquetaUser, etiquetaPass, etiquetaResulLogin, imagenInicio, imagenLogin, imageLogo;
 	private JTextField cajaUser;
 	private JPasswordField cajaPass;
-	private JButton botonLogin, botonExit, botonPurchases, botonSales, botonSuppliers, botonCustomers, botonServices, botonStock,
+	private JButton botonLogin, botonExit, botonPurchases, botonSales, botonSuppliers, botonCustomers, botonCRM, botonStock,
 	botonHR, botonUser, botonLogout, botonExitInit;
 	private JPanel panelIzq, panelDer;	
 	
@@ -61,7 +61,7 @@ public class Ventana extends JFrame{
 	botonExportVenFinal;
 	
 	//Atributos de SERVICIOS
-	private JPanel panelServicios;
+	private JPanel panelCRM;
 	
 	//Atributos de PROVEEDORES
 	private JPanel panelProveedores, subPanelInsProv, subPanelEditProv, subPanelElimProv, panelBotonesProv;
@@ -225,12 +225,12 @@ public class Ventana extends JFrame{
 		botonCustomers.setBorder(null);
 		panelIzq.add(botonCustomers);
 		
-		Image imgBotonServices = new ImageIcon("img\\services.png").getImage();
-		botonServices = new JButton(new ImageIcon(imgBotonServices.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
-		botonServices.setBounds(30,440,125,80);
-		botonServices.setBackground(color_blanco);
-		botonServices.setBorder(null);
-		panelIzq.add(botonServices);
+		Image imgBotonCRM = new ImageIcon("img\\crm.png").getImage();
+		botonCRM = new JButton(new ImageIcon(imgBotonCRM.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
+		botonCRM.setBounds(30,440,125,80);
+		botonCRM.setBackground(color_blanco);
+		botonCRM.setBorder(null);
+		panelIzq.add(botonCRM);
 		
 		Image imgBotonStock = new ImageIcon("img\\stock.png").getImage();
 		botonStock = new JButton(new ImageIcon(imgBotonStock.getScaledInstance(125,80, Image.SCALE_SMOOTH)));
@@ -280,7 +280,7 @@ public class Ventana extends JFrame{
 		panelVentas();
 		panelProveedores();
 		panelClientes();
-		panelServicios();
+		panelCRM();
 		panelAlmacen();
 		
 	}
@@ -706,16 +706,16 @@ public class Ventana extends JFrame{
 		subPanelBotonesVentas.setVisible(false);	
 		
 		//faltan imágenes botones
-		/*Image imgBotonUpdateVentas = new ImageIcon("img\\update sales.png").getImage();
-		botonActualVenta = new JButton(new ImageIcon(imgBotonUpdateVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));*/
+		Image imgBotonUpdateVentas = new ImageIcon("img\\update sale.png").getImage();
+		botonActualVenta = new JButton(new ImageIcon(imgBotonUpdateVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		botonActualVenta = new JButton();
 		botonActualVenta.setBounds((int) 67.5, 20, 160, 42);
 		botonActualVenta.setBorder(null); // Eliminamos el borde
 		botonActualVenta.setBackground(color_panel);
 		subPanelBotonesVentas.add(botonActualVenta);// Anadimos
 
-		/*Image imgBotonDeleteVentas = new ImageIcon("img\\delete sales.png").getImage();
-		botonDeleteVenta = new JButton(new ImageIcon(imgBotonDeleteVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));*/
+		Image imgBotonDeleteVentas = new ImageIcon("img\\delete sale.png").getImage();
+		botonDeleteVenta = new JButton(new ImageIcon(imgBotonDeleteVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		botonDeleteVenta = new JButton();
 		botonDeleteVenta.setBounds(295, 20, 160, 42);
 		botonDeleteVenta.setBorder(null); // Eliminamos el borde
@@ -1284,13 +1284,13 @@ public class Ventana extends JFrame{
 	}
 	
 	//PANEL SERVICIOS
-	private void panelServicios() {
-		panelServicios = new JPanel();
-		panelServicios.setBackground(Color.white);
-		panelServicios.setBounds(240, 0, 900, 500);
-		panelServicios.setLayout(null);
-		add(panelServicios);
-		panelServicios.setVisible(false);
+	private void panelCRM() {
+		panelCRM = new JPanel();
+		panelCRM.setBackground(Color.white);
+		panelCRM.setBounds(240, 0, 900, 500);
+		panelCRM.setLayout(null);
+		add(panelCRM);
+		panelCRM.setVisible(false);
 	}
 
 	//PANEL ALMACï¿½N
@@ -1676,7 +1676,7 @@ public class Ventana extends JFrame{
 		botonPurchases.addMouseListener(manejador);
 		botonSuppliers.addMouseListener(manejador);
 		botonCustomers.addMouseListener(manejador);
-		botonServices.addMouseListener(manejador);
+		botonCRM.addMouseListener(manejador);
 		botonStock.addMouseListener(manejador);
 		botonHR.addMouseListener(manejador);
 		botonUser.addMouseListener(manejador);
@@ -1711,6 +1711,10 @@ public class Ventana extends JFrame{
 		
 		botonVerificarCompra.addMouseListener(manejador);
 		botonInsertCompraFinal.addMouseListener(manejador);
+		botonActualCompra.addMouseListener(manejador);
+		botonDeleteCompra.addMouseListener(manejador);
+		botonExportCompra.addMouseListener(manejador);
+		
 		
 		botonVerificarVenta.addMouseListener(manejador);
 		botonInsertVentaFinal.addMouseListener(manejador);
@@ -1880,12 +1884,7 @@ public class Ventana extends JFrame{
 	public void setBotonCustomers(JButton botonCustomers) {
 		this.botonCustomers = botonCustomers;
 	}
-	public JButton getBotonServices() {
-		return botonServices;
-	}
-	public void setBotonServices(JButton botonServices) {
-		this.botonServices = botonServices;
-	}
+
 	public JButton getBotonStock() {
 		return botonStock;
 	}
@@ -2053,12 +2052,6 @@ public class Ventana extends JFrame{
 	}
 	public void setPanelClientes(JPanel panelClientes) {
 		this.panelClientes = panelClientes;
-	}
-	public JPanel getPanelServicios() {
-		return panelServicios;
-	}
-	public void setPanelServicios(JPanel panelServicios) {
-		this.panelServicios = panelServicios;
 	}
 	public JPanel getPanelAlmacen() {
 		return panelAlmacen;
@@ -2837,5 +2830,47 @@ public class Ventana extends JFrame{
 
 	public void setResulExportCom(JLabel resulExportCom) {
 		this.resulExportCom = resulExportCom;
+	}
+
+	public JButton getBotonCRM() {
+		return botonCRM;
+	}
+
+	public void setBotonCRM(JButton botonCRM) {
+		this.botonCRM = botonCRM;
+	}
+
+	public JPanel getPanelCRM() {
+		return panelCRM;
+	}
+
+	public void setPanelCRM(JPanel panelCRM) {
+		this.panelCRM = panelCRM;
+	}
+
+	public JPanel getSubPanelVentasExport() {
+		return subPanelVentasExport;
+	}
+
+	public void setSubPanelVentasExport(JPanel subPanelVentasExport) {
+		this.subPanelVentasExport = subPanelVentasExport;
+	}
+
+	public JLabel getResulExportVen() {
+		return resulExportVen;
+	}
+
+	public void setResulExportVen(JLabel resulExportVen) {
+		
+		
+		this.resulExportVen = resulExportVen;
+	}
+
+	public JButton getBotonExportVenFinal() {
+		return botonExportVenFinal;
+	}
+
+	public void setBotonExportVenFinal(JButton botonExportVenFinal) {
+		this.botonExportVenFinal = botonExportVenFinal;
 	}
 }
