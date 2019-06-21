@@ -582,6 +582,38 @@ public class Eventos implements ActionListener, MouseListener {
 			
 		}
 		
+		else if(e.getSource() == ventana.getBotonExportCompra()) {
+			
+			//Limpiamos la etiqueta usuario
+			ventana.getInsertUsuarioPC().setText("");
+			
+			//Ocultamos los paneles de insert, update empleado y boton delete
+			ventana.getSubPanelInsertCompras().setVisible(false);
+
+			//Mostramos el panel de Export
+			ventana.getSubPanelComprasExport().setVisible(true);
+			
+		}
+		
+		else if(e.getSource() == ventana.getBotonExportComFinal()) {
+			
+			//Recojemos el usuario del PC
+			String user = ventana.getInsertUsuarioPC().getText();
+			
+			Boolean ok_fichero = AccesoDB.exportarFicheroCompras(user);
+			
+			if (ok_fichero == true) {
+				
+				ventana.getResulExportCom().setText("Fichero generado con �xito");
+				
+			} else {
+				
+				ventana.getResulExportCom().setText("Error al generar fichero");
+			}
+			
+		}
+		
+		
 		
 		//INSERT INTO LINEA_ALBARAN (cantidad, codproducto, numAlbaran) VALUES (35, 'AMPL002', '002');
 		
@@ -998,6 +1030,36 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelAlmacen().setVisible(true);
 			
 			//Ocultamos el resto
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelBotonesEmp().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelBotonesCompras().setVisible(false);
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+			ventana.getPanelServicios().setVisible(false);			
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			
+		}	
+		
+		else if(e.getSource()==ventana.getBotonUser()) {
+			
+			ventana.getPanelAlmacen().setVisible(false);
 			ventana.getPanelEmpleado().setVisible(false);
 			ventana.getSubPanelEmpInsertar().setVisible(false);
 			ventana.getSubPanelEmpUpdate().setVisible(false);

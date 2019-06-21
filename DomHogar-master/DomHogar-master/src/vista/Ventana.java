@@ -39,24 +39,26 @@ public class Ventana extends JFrame{
 	private JComboBox <String> comboUpdateEmp;
 	
 	//Atributos de COMPRAS
-	private JPanel panelCompras, subPanelInsertCompras, subPanelBotonesCompras;
-	private JButton botonActualCompra, botonDeleteCompra, botonExportCompra, botonVerificarCompra, botonInsertCompraFinal;
+	private JPanel panelCompras, subPanelInsertCompras, subPanelBotonesCompras, subPanelComprasExport;
+	private JButton botonActualCompra, botonDeleteCompra, botonExportCompra, botonVerificarCompra, botonInsertCompraFinal,
+	botonExportComFinal;
 	private JScrollPane barraCompras;
 	private JTable tablaCompras;
 	private JLabel JLabelNuevaCompra, JLresulComboProCompra, JLresulimporCompraPro, JLresulimporTotalPro,
-	JLresulComboProveedorCompra, JLresulinsertComprafinal;
+	JLresulComboProveedorCompra, JLresulinsertComprafinal, exportCompras, insertRutaExportCompras, resulExportCom;
 	private JTextField JTFnumAlbaran, JTFcantidadCompra;
 	private JComboBox <String> comboProductoCompras, comboProveedorCompras;
 	
 	//Atributos de VENTAS
-	private JPanel panelVentas, subPanelInsertVentas, subPanelBotonesVentas;
+	private JPanel panelVentas, subPanelInsertVentas, subPanelBotonesVentas, subPanelVentasExport;
 	private JScrollPane barraVentas;
 	private JTable tablaVentas;
 	private JLabel JLabelNuevaVenta, JLresulComboSerVenta, JLresulimporVentaServ, JLresulimporTotalServ,
-	JLresulComboClienteVentas, JLresulinsertVentafinal;
+	JLresulComboClienteVentas, JLresulinsertVentafinal, exportVentas, insertRutaexportVentas, resulExportVen;
 	private JTextField JTFnumFactura, JTFcantidadVenta;
 	private JComboBox<String> comboServicioVentas, comboClienteVentas;
-	private JButton botonVerificarVenta, botonInsertVentaFinal, botonActualVenta, botonDeleteVenta, botonExportVenta;
+	private JButton botonVerificarVenta, botonInsertVentaFinal, botonActualVenta, botonDeleteVenta, botonExportVenta,
+	botonExportVenFinal;
 	
 	//Atributos de SERVICIOS
 	private JPanel panelServicios;
@@ -422,6 +424,55 @@ public class Ventana extends JFrame{
 		JLresulinsertComprafinal.setForeground(Color.gray);//Color del text
 		JLresulinsertComprafinal.setVerticalAlignment(JLabel.CENTER);
 		subPanelInsertCompras.add(JLresulinsertComprafinal);//Anadimos
+		
+		//SUBPANEL EXPORT COMPRAS
+		
+		subPanelComprasExport = new JPanel();
+		subPanelComprasExport.setBounds(200, 270, 750, 268);
+		subPanelComprasExport.setBackground(color_panel);
+		subPanelComprasExport.setLayout(null);
+		add(subPanelComprasExport);
+		subPanelComprasExport.setVisible(false);
+		
+		exportCompras = new JLabel("export purchases to file");
+		exportCompras.setBounds(20, 0, 710, 60);
+		exportCompras.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		exportCompras.setForeground(color_azul);//Color del texto
+		exportCompras.setHorizontalAlignment(JLabel.CENTER);
+		exportCompras.setVerticalAlignment(JLabel.CENTER);
+		subPanelComprasExport.add(exportCompras);//Anadimos al panel
+				
+		insertUsuarioPC = new JTextField();//Creamos el componente
+		TextPrompt placeholder12 = new TextPrompt("Insert user PC. Ej. ejemplo", insertUsuarioPC);
+		placeholder12.changeAlpha(0.75f);
+		placeholder12.changeStyle(Font.ITALIC);
+	    insertUsuarioPC.setBounds(20,70,200,30);//Posicionamos		
+	    insertUsuarioPC.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertUsuarioPC.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertUsuarioPC.setBackground(Color.WHITE); //Color de fondo
+	    insertUsuarioPC.setForeground(color_azul);//Color del texto
+	    subPanelComprasExport.add(insertUsuarioPC);//Anadimos	
+		
+		insertRutaExportCompras = new JLabel("You'll find the file in C:\\Users\\youruser. Name of file: empleados.csv ");//Creamos el componente
+	    insertRutaExportCompras.setBounds(20,120,670,30);//Posicionamos		
+	    insertRutaExportCompras.setBorder(null); //Eliminamos el borde
+	    insertRutaExportCompras.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+	    insertRutaExportCompras.setForeground(color_azul);//Color del texto
+	    subPanelComprasExport.add(insertRutaExportCompras);//Anadimos
+			    
+	    Image imgBotonExportComFinal = new ImageIcon("img\\export to file.png").getImage();
+		botonExportComFinal = new JButton(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonExportComFinal.setBounds(20,180,160,42);
+		botonExportComFinal.setBackground(new Color(186,236,247));
+		botonExportComFinal.setBorder(null); //Eliminamos el borde
+		subPanelComprasExport.add(botonExportComFinal);//Anadimos 
+				
+	    resulExportCom = new JLabel();//Creamos el componente
+	    resulExportCom.setBounds(200,180,500,30);//Posicionamos
+	    resulExportCom.setBorder(null); //Eliminamos el borde
+	    resulExportCom.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    resulExportCom.setForeground(Color.GRAY);//Color del texto
+	    subPanelComprasExport.add(resulExportCom);//Anadimos	
 	    
 		//SUBPANEL BOTONES COMPRAS
 
@@ -452,6 +503,8 @@ public class Ventana extends JFrame{
 		botonExportCompra.setBorder(null); // Eliminamos el borde
 		botonExportCompra.setBackground(color_panel);
 		subPanelBotonesCompras.add(botonExportCompra);// Anadimos
+		
+		
 		
 	} 
 
@@ -593,6 +646,55 @@ public class Ventana extends JFrame{
 		JLresulinsertVentafinal.setForeground(Color.gray);//Color del text
 		JLresulinsertVentafinal.setVerticalAlignment(JLabel.CENTER);
 		subPanelInsertVentas.add(JLresulinsertVentafinal);//Anadimos
+		
+		//SUBPANEL EXPORT VENTAS
+		
+		subPanelVentasExport = new JPanel();
+		subPanelVentasExport.setBounds(200, 270, 750, 268);
+		subPanelVentasExport.setBackground(color_panel);
+		subPanelVentasExport.setLayout(null);
+		add(subPanelVentasExport);
+		subPanelVentasExport.setVisible(false);
+		
+		exportVentas = new JLabel("export sales to file");
+		exportVentas.setBounds(20, 0, 710, 60);
+		exportVentas.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		exportVentas.setForeground(color_azul);//Color del texto
+		exportVentas.setHorizontalAlignment(JLabel.CENTER);
+		exportVentas.setVerticalAlignment(JLabel.CENTER);
+		subPanelVentasExport.add(exportVentas);//Anadimos al panel
+		
+		insertUsuarioPC = new JTextField();//Creamos el componente
+		TextPrompt placeholder12 = new TextPrompt("Insert user PC. Ej. ejemplo", insertUsuarioPC);
+		placeholder12.changeAlpha(0.75f);
+		placeholder12.changeStyle(Font.ITALIC);
+	    insertUsuarioPC.setBounds(20,70,200,30);//Posicionamos		
+	    insertUsuarioPC.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertUsuarioPC.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertUsuarioPC.setBackground(Color.WHITE); //Color de fondo
+	    insertUsuarioPC.setForeground(color_azul);//Color del texto
+	    subPanelVentasExport.add(insertUsuarioPC);//Anadimos	
+		
+		insertRutaexportVentas = new JLabel("You'll find the file in C:\\Users\\youruser. Name of file: empleados.csv ");//Creamos el componente
+	    insertRutaexportVentas.setBounds(20,120,670,30);//Posicionamos		
+	    insertRutaexportVentas.setBorder(null); //Eliminamos el borde
+	    insertRutaexportVentas.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+	    insertRutaexportVentas.setForeground(color_azul);//Color del texto
+	    subPanelVentasExport.add(insertRutaexportVentas);//Anadimos
+			    
+	    Image imgBotonExportVentFinal = new ImageIcon("img\\export to file.png").getImage();
+		botonExportVenFinal = new JButton(new ImageIcon(imgBotonExportVentFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonExportVenFinal .setBounds(20,180,160,42);
+		botonExportVenFinal .setBackground(new Color(186,236,247));
+		botonExportVenFinal .setBorder(null); //Eliminamos el borde
+		subPanelVentasExport.add(botonExportVenFinal );//Anadimos 
+				
+	    resulExportVen = new JLabel();//Creamos el componente
+	    resulExportVen.setBounds(200,180,500,30);//Posicionamos
+	    resulExportVen.setBorder(null); //Eliminamos el borde
+	    resulExportVen.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    resulExportVen.setForeground(Color.GRAY);//Color del texto
+	    subPanelVentasExport.add(resulExportVen);//Anadimos	
 		
 		//SUBPANEL BOTONES VENTAS
 
@@ -2695,5 +2797,45 @@ public class Ventana extends JFrame{
 
 	public void setLabelNewDataCliente(JLabel labelNewDataCliente) {
 		this.labelNewDataCliente = labelNewDataCliente;
+	}
+
+	public JPanel getSubPanelComprasExport() {
+		return subPanelComprasExport;
+	}
+
+	public void setSubPanelComprasExport(JPanel subPanelComprasExport) {
+		this.subPanelComprasExport = subPanelComprasExport;
+	}
+
+	public JButton getBotonExportComFinal() {
+		return botonExportComFinal;
+	}
+
+	public void setBotonExportComFinal(JButton botonExportComFinal) {
+		this.botonExportComFinal = botonExportComFinal;
+	}
+
+	public JLabel getExportCompras() {
+		return exportCompras;
+	}
+
+	public void setExportCompras(JLabel exportCompras) {
+		this.exportCompras = exportCompras;
+	}
+
+	public JLabel getInsertRutaExportCompras() {
+		return insertRutaExportCompras;
+	}
+
+	public void setInsertRutaExportCompras(JLabel insertRutaExportCompras) {
+		this.insertRutaExportCompras = insertRutaExportCompras;
+	}
+
+	public JLabel getResulExportCom() {
+		return resulExportCom;
+	}
+
+	public void setResulExportCom(JLabel resulExportCom) {
+		this.resulExportCom = resulExportCom;
 	}
 }

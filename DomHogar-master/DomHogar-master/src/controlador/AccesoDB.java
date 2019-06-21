@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import tablas.Cliente;
@@ -418,7 +420,7 @@ public class AccesoDB {
 				matrizInfoVentas[i][1] = listaVentas.get(i).getCodServicio()+"";
 				matrizInfoVentas[i][2] = listaVentas.get(i).getNombreServicio()+"";
 				matrizInfoVentas[i][3] = formatea.format(listaVentas.get(i).getCantidad())+"";
-				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaProducto())+"€";
+				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+"€";
 				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteFactura())+" €";
 				matrizInfoVentas[i][6] = listaVentas.get(i).getDni_Cliente()+"";
 				matrizInfoVentas[i][7] = listaVentas.get(i).getNombre()+"";
@@ -450,20 +452,16 @@ public class AccesoDB {
 					
 					String numFactura = rs.getString("numFactura");
 					String codServicio = rs.getString("codServicio");
-					String nomServicio = rs.getString("nombreServicio");
-					int importeVentaSer = rs.getInt("ImporteVenta");
+					String nombreServicio = rs.getString("nombreServicio");
 					int cantidad = rs.getInt("cantidad");
-					int cantidadTotal = importeVentaSer*cantidad;
+					int importeVentaServicio = rs.getInt("ImporteFactura");
+					int cantidadTotal = importeVentaServicio*cantidad;
 					String dni_Cliente = rs.getString("dni_Cliente");
-					String nomCliente = rs.getString("nombre");
+					String nombre = rs.getString("nombre");
 					Date fecha = rs.getDate("fecha");
 					
-					ventas = new Ventas(importeVentaSer,cantidad,cantidadTotal, numFactura, codServicio, nomServicio, dni_Cliente, nomCliente, fecha);
-					
-					//int importeVentaProducto, int cantidad, int importeFactura, String numFactura, String codServicio,
-					//String nombreServicio, String nombre, String dni_Cliente, Date fecha
-					
-					//compras = new Compras(numAlbaran,codProducto,nomProducto, cantidad, importeCompraPro, cantidadTotal, codProveedor,  nomProveedor, fecha);
+					ventas = new Ventas(numFactura,codServicio,nombreServicio, cantidad, importeVentaServicio, cantidadTotal, nombre, dni_Cliente, fecha);
+
 					
 					lista_ventas.add(ventas);
 								
@@ -486,21 +484,19 @@ public class AccesoDB {
 
 				Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
 				// Consulta SQL con resulset
-				ResultSet rs = sentencia.executeQuery("SELECT * FROM Servicio");
+				ResultSet rs = sentencia.executeQuery("SELECT * FROM SERVICIO");
 
 				// Mientras haya registros anadimos al ArrayList
 				while (rs.next()) { 
 					
 					String cod_Servicio = rs.getString("codServicio");
-					String nombreServicio = rs.getString("nombreServicio");
 					String cod_Producto = rs.getString("codproducto");
 					String nif_Empleado = rs.getString("nif_Empleado");
+					String nombreServicio = rs.getString("nombreServicio");
 					int importeVenta = rs.getInt("importeServicio");
 					
 					s = new Servicio(cod_Servicio, cod_Producto, nif_Empleado, nombreServicio, importeVenta);
 					
-					/*String codServicio, String codproducto, String nif_Empleado, String nombreServicio,
-					int importeServicio*/
 					
 					lista_Servicios.add(s);				
 				}
@@ -656,6 +652,105 @@ public class AccesoDB {
 		return true;
 		
 	}
+	
+public static Boolean exportarFicheroCompras(String user) {
+		
+		File f = new File("C:\\Users\\"+user+"\\compras.csv");
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Compras> lista_compras = datosCompras(conexion);
+		
+		try {
+			FileWriter ficheroCompras = new FileWriter(f);
+			
+			ficheroCompras.write("Número Albarán,Nombre,Importe Producto,Cantidad,Código Proveedor" +
+			"Código Producto,Nombre Producto,Fecha, Nombre Proveedor, Importe Total");
+			ficheroCompras.write("\n");
+			
+			for (Compras compras : lista_compras) {
+				
+				ficheroCompras.write(compras.getNumAlbaran());
+				ficheroCompras.write(",");
+				ficheroCompras.write(Integer.toString(compras.getImporteCompraProducto()));
+				ficheroCompras.write(",");
+				ficheroCompras.write(Integer.toString(compras.getCantidad()));
+				ficheroCompras.write(",");
+				ficheroCompras.write(compras.getCodProveedor());
+				ficheroCompras.write(",");
+				ficheroCompras.write(compras.getCodProducto());
+				ficheroCompras.write(",");
+				ficheroCompras.write(compras.getNomProducto());
+				ficheroCompras.write(",");
+				DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
+				ficheroCompras.write(fecha.format(compras.getFechaAlbaran()));
+				ficheroCompras.write(",");
+				ficheroCompras.write(compras.getNomProveedor());
+				ficheroCompras.write(",");
+				ficheroCompras.write(Integer.toString(compras.getImporteTotal()));
+				ficheroCompras.write("\n");
+			
+			}
+			
+			ficheroCompras.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+	}
+
+	public static Boolean exportarFicheroVentas(String user) {
+		
+		File f = new File("C:\\Users\\"+user+"\\ventas.csv");
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Ventas> lista_ventas = datosVentas(conexion);
+		
+		try {
+			FileWriter ficheroVentas = new FileWriter(f);
+			
+			ficheroVentas.write("Número Factura,Importe Venta Servicio,Cantidad Total,DNI Cliente,Código Servicio" +
+			"Nombre Servicio,Fecha,Nombre, Importe Factura");
+			ficheroVentas.write("\n");
+			
+			for (Ventas ventas : lista_ventas) {
+				
+				ficheroVentas.write(ventas.getNumFactura());
+				ficheroVentas.write(",");
+				ficheroVentas.write(Integer.toString(ventas.getImporteVentaServicio()));
+				ficheroVentas.write(",");
+				ficheroVentas.write(Integer.toString(ventas.getCantidadTotal()));
+				ficheroVentas.write(",");
+				ficheroVentas.write(ventas.getDni_Cliente());
+				ficheroVentas.write(",");
+				ficheroVentas.write(ventas.getCodServicio());
+				ficheroVentas.write(",");
+				ficheroVentas.write(ventas.getNombreServicio());
+				ficheroVentas.write(",");
+				DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
+				ficheroVentas.write(fecha.format(ventas.getFecha()));
+				ficheroVentas.write(",");
+				ficheroVentas.write(ventas.getNombre());
+				ficheroVentas.write(",");
+				ficheroVentas.write(Integer.toString(ventas.getImporteFactura()));
+				ficheroVentas.write("\n");
+			
+			}
+			
+			ficheroVentas.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+	}
+	
 
 	public static ArrayList<Producto> datosProducto(Connection conexion) {
 		
@@ -757,6 +852,72 @@ public class AccesoDB {
 		return afectados;
 	}
 
+	
+	public static int insertarVenta(ArrayList<Ventas> nuevaVenta, Connection conexion) {
+		
+		int afectados = 0;
+		
+		try {
+			// Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO FACTURA (DNI_CLIENTE, FECHA, NUMFACTURA) " + "VALUES (?, ?, ?)";
+
+			String dniCliente = null;
+			Date fecha = null;
+			String numFactura = null;
+
+			for (Ventas v : nuevaVenta) {
+				dniCliente = v.getDni_Cliente();
+				fecha = v.getFecha();
+				numFactura = v.getNumFactura();	
+			}
+
+			// Con PreparedStatement recogemos los valores introducidos
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setString(1, dniCliente);
+			sentencia.setDate(2, fecha);
+			sentencia.setString(3, numFactura);
+
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
+
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;
+	}
+
+	public static int insertarLineaFactura(ArrayList<Ventas> nuevaVenta, Connection conexion) {
+		
+		int afectados = 0;
+		
+		try {
+			// Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO LINEA_FACTURA (CANTIDAD, CODSERVICIO, NUMFACTURA) " + "VALUES (?, ?, ?)";
+
+			int cantidad = 0;
+			String codServicio = null;
+			String numFactura = null;
+
+			for (Ventas v : nuevaVenta) {
+				cantidad = v.getCantidad();
+				codServicio = v.getCodServicio();
+				numFactura = v.getNumFactura();
+			}
+
+			// Con PreparedStatement recogemos los valores introducidos
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setInt(1, cantidad);
+			sentencia.setString(2, codServicio);
+			sentencia.setString(3, numFactura);
+
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
+
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;
+	}
 	
 
 }
