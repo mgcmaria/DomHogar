@@ -403,11 +403,11 @@ public class Ventana extends JFrame{
 		JLresulComboProveedorCompra.setForeground(color_azul);//Color del texto
 		subPanelInsertCompras.add(JLresulComboProveedorCompra);//Anadimos	
 		
-		//Image imgBotonCompras = new ImageIcon("img\\purchases.png").getImage();
-		botonVerificarCompra = new JButton("CHECK");
-		botonVerificarCompra.setBounds(600, 170, 110, 30);
+		Image imgBotonVerificarCompra = new ImageIcon("img\\check.png").getImage();
+		botonVerificarCompra = new JButton(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,50, Image.SCALE_SMOOTH)));
+		botonVerificarCompra.setBounds(600, 170, 110, 50);
 		botonVerificarCompra.setBorder(null); // Eliminamos el borde
-		botonVerificarCompra.setBackground(Color.gray);
+		botonVerificarCompra.setBackground(color_panel);
 		subPanelInsertCompras.add(botonVerificarCompra);// Anadimos
 		
 		Image imgBotonCompra = new ImageIcon("img\\purchases.png").getImage();
@@ -625,11 +625,11 @@ public class Ventana extends JFrame{
 		JLresulComboClienteVentas.setForeground(color_azul);//Color del texto
 		subPanelInsertVentas.add(JLresulComboClienteVentas);//Anadimos	
 		
-		//Image imgBotonVentas = new ImageIcon("img\\sales.png").getImage();
-		botonVerificarVenta = new JButton("CHECK");
-		botonVerificarVenta.setBounds(600, 170, 110, 30);
+		Image imgBotonVerificarVenta = new ImageIcon("img\\check.png").getImage();
+		botonVerificarVenta = new JButton(new ImageIcon(imgBotonVerificarVenta.getScaledInstance(110,50, Image.SCALE_SMOOTH)));
+		botonVerificarVenta.setBounds(600, 170, 110, 50);
 		botonVerificarVenta.setBorder(null); // Eliminamos el borde
-		botonVerificarVenta.setBackground(Color.gray);
+		botonVerificarVenta.setBackground(color_panel);
 		subPanelInsertVentas.add(botonVerificarVenta);// Anadimos
 		
 		Image imgBotonVentas = new ImageIcon("img\\sales.png").getImage();
@@ -708,7 +708,6 @@ public class Ventana extends JFrame{
 		//faltan imágenes botones
 		Image imgBotonUpdateVentas = new ImageIcon("img\\update sale.png").getImage();
 		botonActualVenta = new JButton(new ImageIcon(imgBotonUpdateVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		botonActualVenta = new JButton();
 		botonActualVenta.setBounds((int) 67.5, 20, 160, 42);
 		botonActualVenta.setBorder(null); // Eliminamos el borde
 		botonActualVenta.setBackground(color_panel);
@@ -716,7 +715,6 @@ public class Ventana extends JFrame{
 
 		Image imgBotonDeleteVentas = new ImageIcon("img\\delete sale.png").getImage();
 		botonDeleteVenta = new JButton(new ImageIcon(imgBotonDeleteVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		botonDeleteVenta = new JButton();
 		botonDeleteVenta.setBounds(295, 20, 160, 42);
 		botonDeleteVenta.setBorder(null); // Eliminamos el borde
 		botonDeleteVenta.setBackground(color_panel);

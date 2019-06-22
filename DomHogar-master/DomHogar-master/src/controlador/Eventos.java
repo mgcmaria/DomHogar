@@ -24,6 +24,8 @@ import tablas.Compras;
 import tablas.Empleado;
 import tablas.Producto;
 import tablas.Proveedor;
+import tablas.Servicio;
+import tablas.Ventas;
 import vista.Ventana;
 
 public class Eventos implements ActionListener, MouseListener {
@@ -32,6 +34,7 @@ public class Eventos implements ActionListener, MouseListener {
 	private Ventana ventana;
 	Connection conexion;
 	ArrayList<Compras> nuevaCompra = new ArrayList<Compras>();
+	ArrayList<Ventas> nuevaVenta = new ArrayList<Ventas>();
 
 	public Eventos(Ventana ventana) {
 		this.ventana = ventana;
@@ -249,7 +252,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getInsertEmailEmp().getText().isEmpty() || ventana.getInsertUserEmp().getText().isEmpty() ||
 					ventana.getInsertPassEmp().getText().isEmpty() || ventana.getInsertPerfilEmp().getText().isEmpty())
 			{
-				ventana.getResulInsertEmp().setText("Please, enter all the items");
+				ventana.getResulInsertEmp().setText("Please, complete all the fields");
 				
 			} else {
 				//Limpiamos la etiqueta de resultado final
@@ -304,7 +307,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonUpdateEmpFinal()) {
 			
 			if(ventana.getInsertNIFUpdateEmp().getText().isEmpty() || ventana.getInsertNewDataEmp().getText().isEmpty()) {
-				ventana.getResultUpdateEmp().setText("Please, enter all the fields");
+				ventana.getResultUpdateEmp().setText("Please, complete all the fields");
 			} else {
 				//Limpiamos la etiqueta de resultado final
 				ventana.getResultUpdateEmp().setText("");
@@ -357,7 +360,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getBotonDeleteEmpFinal().setVisible(true);
 					return;
 				} else {
-					ventana.getResulBusquedaEmp().setText("Employee doesn't exist");
+					ventana.getResulBusquedaEmp().setText("Employee doesn't exists");
 				}
 			}
 		}
@@ -402,11 +405,11 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			if (ok_fichero == true) {
 				
-				ventana.getResulExportEmp().setText("Fichero generado con ï¿½xito");
+				ventana.getResulExportEmp().setText("File created");
 				
 			} else {
 				
-				ventana.getResulExportEmp().setText("Error al generar fichero");
+				ventana.getResulExportEmp().setText("Error creating file");
 			}
 			
 		}
@@ -428,7 +431,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(true);
 			ventana.getSubPanelInsertCompras().setVisible(true);
 			ventana.getSubPanelBotonesCompras().setVisible(true);
-			ventana.getSubPanelComprasExport().setVisible(true);
+			ventana.getSubPanelComprasExport().setVisible(false);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -494,7 +497,7 @@ public class Eventos implements ActionListener, MouseListener {
 				g.getMessage();
 				//Mostramos Dialog 
 				JOptionPane.showMessageDialog(new JFrame(), 
-						"Please, insert a quantity",
+						"Please, insert quantity",
 						"Error",
 						JOptionPane.ERROR_MESSAGE);
 			}			
@@ -506,8 +509,8 @@ public class Eventos implements ActionListener, MouseListener {
 					importeTotal = cantidad * producto.getImporteCompra();
 					nomProducto = producto.getNombreProducto().toString();
 					ventana.getJLresulComboProCompra().setText(nomProducto);
-					ventana.getJLresulimporCompraPro().setText(Integer.toString(producto.getImporteCompra()).toString()+" â‚¬ unity");
-					ventana.getJLresulimporTotalPro().setText(Integer.toString(importeTotal).toString()+" â‚¬ total amount");
+					ventana.getJLresulimporCompraPro().setText(Integer.toString(producto.getImporteCompra()).toString()+" € unity");
+					ventana.getJLresulimporTotalPro().setText(Integer.toString(importeTotal).toString()+" € total amount");
 				} 
 			}
 			
@@ -525,13 +528,13 @@ public class Eventos implements ActionListener, MouseListener {
 				{
 				//Mostramos Dialog 
 				JOptionPane.showMessageDialog(new JFrame(), 
-						"Please, insert all the items",
+						"Please, complete all the fields",
 						"Check",
 						JOptionPane.ERROR_MESSAGE);				
 				} else {
 					//Mostramos Dialog 
 					JOptionPane.showMessageDialog(new JFrame(), 
-							"Yo can insert a new Purchase",
+							"You can insert a new Purchase",
 							"Check",
 							JOptionPane.INFORMATION_MESSAGE);	
 					
@@ -552,14 +555,14 @@ public class Eventos implements ActionListener, MouseListener {
 					if(compras.getNumAlbaran().contains(numAlbaran)) {
 						//Mostramos Dialog 
 						JOptionPane.showMessageDialog(new JFrame(), 
-								"Delivery note exits. Will be insert a new line of delivery note",
+								"Delivery Note exists. New line will be inserted",
 								"Check",
 								JOptionPane.INFORMATION_MESSAGE);	
 						
 						int afectados1 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
 						
 						if (afectados1 == 0) {
-							ventana.getJLresulinsertComprafinal().setText("Error adding delivery Note line");
+							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note line");
 						} else {
 							ventana.getJLresulinsertComprafinal().setText("Delivery Note line added");
 							
@@ -570,7 +573,7 @@ public class Eventos implements ActionListener, MouseListener {
 						int afectados2 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
 						
 						if (afectados == 0 || afectados2 == 0) {
-							ventana.getJLresulinsertComprafinal().setText("Error adding delivery Note");
+							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
 						} else {
 							ventana.getJLresulinsertComprafinal().setText("Delivery Note added");
 							
@@ -579,7 +582,7 @@ public class Eventos implements ActionListener, MouseListener {
 					}
 				}				
 			} else {
-				ventana.getJLresulinsertComprafinal().setText("Check all items first");
+				ventana.getJLresulinsertComprafinal().setText("Check all items");
 			}
 			
 		}
@@ -589,7 +592,7 @@ public class Eventos implements ActionListener, MouseListener {
 			//Limpiamos la etiqueta usuario
 			ventana.getInsertUsuarioPC().setText("");
 			
-			//Ocultamos los paneles de insert, update empleado y boton delete
+			
 			ventana.getSubPanelInsertCompras().setVisible(false);
 
 			//Mostramos el panel de Export
@@ -606,11 +609,11 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			if (ok_fichero == true) {
 				
-				ventana.getResulExportCom().setText("Fichero generado con ï¿½xito");
+				ventana.getResulExportCom().setText("File Created");
 				
 			} else {
 				
-				ventana.getResulExportCom().setText("Error al generar fichero");
+				ventana.getResulExportCom().setText("Error creating file");
 			}
 			
 		}
@@ -625,7 +628,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelVentas().setVisible(true);
 			ventana.getSubPanelInsertVentas().setVisible(true);
 			ventana.getSubPanelBotonesVentas().setVisible(true);
-			ventana.getSubPanelVentasExport().setVisible(true);
+			ventana.getSubPanelVentasExport().setVisible(false);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -655,6 +658,137 @@ public class Eventos implements ActionListener, MouseListener {
 			
 		}
 		
+		//EN PRUEBAS
+		else if(e.getSource() == ventana.getBotonVerificarVenta()) {			
+			
+			//Recogemos en un Array los servicios y clientes
+			ArrayList<Servicio> lista_servicios = AccesoDB.datosServicio(conexion);
+			ArrayList<Cliente> lista_clientes = AccesoDB.datosCliente(conexion);
+			
+			//Recogemos en variables los datos introducidos por el usuario
+			String codServicio = ventana.getComboServicioVentas().getSelectedItem().toString();
+			String dni_Cliente = ventana.getComboClienteVentas().getSelectedItem().toString();
+			String numFactura = ventana.getJTFnumFactura().getText();
+			String nombreServicio = null;
+			String nombre = null;
+			int cantidad = 0;
+			int importeVentaServicio = 0;
+			int cantidadTotal = 0;
+			
+			Calendar hoy = new GregorianCalendar(); //obtiene la fecha actual
+			//ahora accedemos a los anios, meses, dias:
+			int anio = hoy.get(Calendar.YEAR);
+			int mes = hoy.get(Calendar.MONTH)+1;
+			int dia = hoy. get(Calendar.DAY_OF_MONTH)+1;
+			String f = anio +"-" + mes +"-"+dia;
+			
+			Date fecha = Date.valueOf(f);
+			
+			try {
+				cantidad = Integer.parseInt(ventana.getJTFcantidadVenta().getText());
+				if(cantidad <= 0) {
+					//Mostramos Dialog 
+					JOptionPane.showMessageDialog(new JFrame(), 
+							"Please, insert a correct number for quantity",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (NumberFormatException g) {
+				g.getMessage();
+				//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"Please, insert quantity",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
+			}			
+			
+			//Comprobamos los datos de servicio
+			for (Servicio servicio : lista_servicios) {
+				if(codServicio.equalsIgnoreCase(servicio.getCodServicio())) {
+					importeVentaServicio = servicio.getImporteServicio();
+					cantidadTotal = cantidad * servicio.getImporteServicio();
+					nombreServicio = servicio.getNombreServicio().toString();
+					ventana.getJLresulComboSerVenta().setText(nombreServicio);
+					ventana.getJLresulimporVentaServ().setText(Integer.toString(servicio.getImporteServicio()).toString()+" € unity");
+					ventana.getJLresulimporTotalServ().setText(Integer.toString(cantidadTotal).toString()+" € total amount");
+				} 
+			}
+			
+			//Comprobamos los datos de clientes
+			for (Cliente cliente : lista_clientes) {
+				if(dni_Cliente.equalsIgnoreCase(cliente.getDni_Cliente())) {	
+					nombre = cliente.getNombre().toString();
+					ventana.getJLresulComboClienteVentas().setText(nombre);
+				} 
+			}
+			
+			//Si algun componente de la los valores del Insert está vacío
+			if(ventana.getJTFnumFactura().getText().isEmpty() || ventana.getComboServicioVentas().getSelectedItem().toString().contains("Service code") ||
+				    ventana.getComboClienteVentas().getSelectedItem().toString().contains("Customer's code"))
+				{
+				//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"Please, complete all the fields",
+						"Check",
+						JOptionPane.ERROR_MESSAGE);				
+				} else {
+					//Mostramos Dialog 
+					JOptionPane.showMessageDialog(new JFrame(), 
+							"You can insert a new Sale",
+							"Check",
+							JOptionPane.INFORMATION_MESSAGE);	
+					
+					ok_check =true;					
+													
+					Ventas v = new Ventas(numFactura, codServicio, nombreServicio, cantidad, importeVentaServicio, cantidadTotal, dni_Cliente, nombre, fecha);				
+					nuevaVenta.add(v);
+				}	
+		}
+		
+		//EN PRUEBAS
+		else if(e.getSource() == ventana.getBotonInsertVentaFinal()) {
+			
+			if(ok_check == true) {
+				
+				String numFactura = ventana.getJTFnumFactura().getText();
+				
+				for (Ventas ventas : nuevaVenta) {
+					if(ventas.getNumFactura().contains(numFactura)) {
+						//Mostramos Dialog 
+						JOptionPane.showMessageDialog(new JFrame(), 
+								"Delivery note exists. New line will be inserted",
+								"Check",
+								JOptionPane.INFORMATION_MESSAGE);	
+						
+						int afectados1 = AccesoDB.insertarLineaFactura(nuevaVenta, conexion);
+						
+						if (afectados1 == 0) {
+							ventana.getJLresulinsertVentafinal().setText("Error adding Bill line");
+						} else {
+							ventana.getJLresulinsertVentafinal().setText("Bill line added");
+							
+							refreshJTableVentas();
+						}		
+					} else {
+						int afectados = AccesoDB.insertarVenta(nuevaVenta, conexion);
+						int afectados2 = AccesoDB.insertarLineaFactura(nuevaVenta, conexion);
+						
+						if (afectados == 0 || afectados2 == 0) {
+							ventana.getJLresulinsertVentafinal().setText("Error adding Bill");
+						} else {
+							ventana.getJLresulinsertVentafinal().setText("Bill added");
+							
+							refreshJTableVentas();
+						}		
+					}
+				}				
+			} else {
+				ventana.getJLresulinsertVentafinal().setText("Check all items");
+			}
+			
+		}
+		
+		
 		else if(e.getSource() == ventana.getBotonExportVenta()) {
 			
 			//Limpiamos la etiqueta usuario
@@ -677,11 +811,11 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			if (ok_fichero == true) {
 				
-				ventana.getResulExportVen().setText("Fichero generado con ï¿½xito");
+				ventana.getResulExportVen().setText("File Created");
 				
 			} else {
 				
-				ventana.getResulExportCom().setText("Error al generar fichero");
+				ventana.getResulExportCom().setText("Error creating file");
 			}
 			
 		}
@@ -735,7 +869,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getInsertContProv().getText().isEmpty())
 			{
 				ventana.getResulInsertProv().setForeground(Color.GRAY);
-				ventana.getResulInsertProv().setText("Please, enter all the fields");
+				ventana.getResulInsertProv().setText("Please, complete all the fields");
 				
 			} else {
 				//Limpiamos la etiqueta de resultado final
@@ -783,7 +917,7 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			if(ventana.getInsertCODUpdateProv().getText().isEmpty() || ventana.getInsertNewDataProv().getText().isEmpty()) {
 				ventana.getResultUpdateProv().setForeground(Color.RED);
-				ventana.getResultUpdateProv().setText("Please, enter all the items");
+				ventana.getResultUpdateProv().setText("Please, complete all the fields");
 			} else {
 				//Limpiamos la etiqueta de resultado final y devolvemos el color
 				ventana.getResultUpdateProv().setText("");
@@ -797,7 +931,7 @@ public class Eventos implements ActionListener, MouseListener {
 				int afectados = AccesoDB.actualizarProveedor(cod, campo, nuevoDato, conexion);
 				
 				if(afectados == 0) {
-					ventana.getResultUpdateProv().setText("Error to update supplier");
+					ventana.getResultUpdateProv().setText("Error updating supplier");
 				} else {
 					ventana.getResultUpdateProv().setText("Supplier updated");
 					refreshJTableProveedores();
@@ -836,7 +970,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getBotonDeleteProvFinal().setVisible(true);
 					return;
 				} else {
-					ventana.getResulBusquedaProv().setText("Supplier doesn't exist");
+					ventana.getResulBusquedaProv().setText("Supplier doesn't exists");
 				}
 			}
 		}
@@ -900,7 +1034,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getInsertContProv().getText().isEmpty())
 			{
 				ventana.getResulInsertCliente().setForeground(Color.GRAY);
-				ventana.getResulInsertCliente().setText("Please, enter all the fields");
+				ventana.getResulInsertCliente().setText("Please, complete all the fields");
 				
 			} else {
 				//Limpiamos la etiqueta de resultado final y devolvemos el color
@@ -953,7 +1087,7 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			if(ventana.getInsertNIFUpdateCliente().getText().isEmpty() || ventana.getInsertNewDataCliente().getText().isEmpty()) {
 				ventana.getResultUpdateProv().setForeground(Color.RED);
-				ventana.getResultUpdateCliente().setText("Please, enter all the items");
+				ventana.getResultUpdateCliente().setText("Please, complete all the fields");
 			} else {
 				//Limpiamos la etiqueta de resultado final y devolvemos el color
 				ventana.getResultUpdateCliente().setText("");
@@ -1006,7 +1140,7 @@ public class Eventos implements ActionListener, MouseListener {
 					ventana.getBotonDeleteClienteFinal().setVisible(true);
 					return;
 				} else {
-					ventana.getResulBusquedaCli().setText("Customer doesn't exist");
+					ventana.getResulBusquedaCli().setText("Customer doesn't exists");
 				}
 			}
 		}
@@ -1168,57 +1302,70 @@ public class Eventos implements ActionListener, MouseListener {
 		
 	}
 
-	private void refreshJTableCompras() {
-		String titulosCompras[] = {"Delivery Note's Code", "Product's Code", "Product's Name", "Quantity", "Purchase amount", "Total Account", 
-				"Supplier's code", "Supplier", "Date"};
-		String infoCompras[][] = AccesoDB.obtenerMatrizCompras();
-		
-		TableModel modelo = new DefaultTableModel(infoCompras, titulosCompras);
-		
-		ventana.getTablaCompras().setModel(modelo);
-		
-		((AbstractTableModel) modelo).fireTableDataChanged();
-	}
-
-	private void refreshJTableEmpleados() {
-		//ACTUALIZAR JTABLE EMPLEADOS
-		
-		String titulosEmpleados[] = {"Nombre", "Apellidos", "e-mail", "NIF", "Telefono"};
-		String infoEmpleados[][] = AccesoDB.obtenerMatrizEmpleados();
-		
-		TableModel modelo = new DefaultTableModel(infoEmpleados, titulosEmpleados);
-		
-		ventana.getTablaEmpleados().setModel(modelo);
-		
-		((AbstractTableModel) modelo).fireTableDataChanged();
-	}
+		private void refreshJTableCompras() {
+			String titulosCompras[] = {"Delivery Note's Code", "Product's Code", "Product's Name", "Quantity", "Purchase amount", "Total Account", 
+					"Supplier's code", "Supplier", "Date"};
+			String infoCompras[][] = AccesoDB.obtenerMatrizCompras();
+			
+			TableModel modelo = new DefaultTableModel(infoCompras, titulosCompras);
+			
+			ventana.getTablaCompras().setModel(modelo);
+			
+			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
 	
-	private void refreshJTableProveedores() {
-		//ACTUALIZAR JTABLE PROVEEDORES
+		private void refreshJTableEmpleados() {
+			//ACTUALIZAR JTABLE EMPLEADOS
+			
+			String titulosEmpleados[] = {"Nombre", "Apellidos", "e-mail", "NIF", "Telefono"};
+			String infoEmpleados[][] = AccesoDB.obtenerMatrizEmpleados();
+			
+			TableModel modelo = new DefaultTableModel(infoEmpleados, titulosEmpleados);
+			
+			ventana.getTablaEmpleados().setModel(modelo);
+			
+			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
 		
-		String titulosProveedores[] = {"Codigo proveedor", "Nombre proveedor", "contacto"};
-		String infoProveedores[][] = AccesoDB.obtenerMatrizProveedores();
+		private void refreshJTableProveedores() {
+			//ACTUALIZAR JTABLE PROVEEDORES
+			
+			String titulosProveedores[] = {"Codigo proveedor", "Nombre proveedor", "contacto"};
+			String infoProveedores[][] = AccesoDB.obtenerMatrizProveedores();
+			
+			TableModel modelo = new DefaultTableModel(infoProveedores,titulosProveedores);
+			
+			ventana.getTablaProveedores().setModel(modelo);
+			
+			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
 		
-		TableModel modelo = new DefaultTableModel(infoProveedores,titulosProveedores);
+		private void refreshJTableClientes() {
+			//ACTUALIZAR JTABLE CLIENTES
+			
+			String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Teléfono"};
+			String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
+			
+			TableModel modelo = new DefaultTableModel(infoClientes,titulosClientes);
+			
+			ventana.getTablaClientes().setModel(modelo);
+			
+			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
 		
-		ventana.getTablaProveedores().setModel(modelo);
-		
-		((AbstractTableModel) modelo).fireTableDataChanged();
-	}
-	
-	private void refreshJTableClientes() {
-		//ACTUALIZAR JTABLE CLIENTES
-		
-		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Teléfono"};
-		String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
-		
-		TableModel modelo = new DefaultTableModel(infoClientes,titulosClientes);
-		
-		ventana.getTablaProveedores().setModel(modelo);
-		
-		((AbstractTableModel) modelo).fireTableDataChanged();
-	}
-	
+		private void refreshJTableVentas() {
+			//ACTUALIZAR JTABLE VENTAS
+			
+			String titulosVentas[] = {"Bill's Code", "Service Code", "Service Name", "Quantity", "Sale amount", "Total", 
+					"Customer's DNI", "Customer", "Date"};
+			String infoVentas[][] = AccesoDB.obtenerMatrizVentas();
+			
+			TableModel modelo = new DefaultTableModel(infoVentas,titulosVentas);
+			
+			ventana.getTablaVentas().setModel(modelo);
+			
+			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
 	
 
 
@@ -1385,9 +1532,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale hover.png").getImage();
 			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonExportCompra()) {
-			Image imgBotonExportCompra = new ImageIcon("img\\export to file hover.png").getImage();
-			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonExportVenta()) {
+			Image imgBotonExportVenta = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportVenta().setIcon(new ImageIcon(imgBotonExportVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		
 		
@@ -1549,9 +1696,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale.png").getImage();
 			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonExportCompra()) {
-			Image imgBotonExportCompra = new ImageIcon("img\\export to file.png").getImage();
-			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonExportVenta()) {
+			Image imgBotonExportVenta = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportVenta().setIcon(new ImageIcon(imgBotonExportVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 	}
 
@@ -1754,10 +1901,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonDeleteVenta().setContentAreaFilled(false);
 		}
-		else if (e.getSource()==ventana.getBotonExportCompra()) {
-			Image imgBotonExportCompra = new ImageIcon("img\\export to file press.png").getImage();
-			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-			ventana.getBotonExportCompra().setContentAreaFilled(false);
+		else if (e.getSource()==ventana.getBotonExportVenta()) {
+			Image imgBotonExportVenta = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportVenta().setIcon(new ImageIcon(imgBotonExportVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportVenta().setContentAreaFilled(false);
 		}
 		
 	}
@@ -1917,9 +2064,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale.png").getImage();
 			ventana.getBotonDeleteVenta().setIcon(new ImageIcon(imgBotonDeleteVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonExportCompra()) {
-			Image imgBotonExportCompra = new ImageIcon("img\\export to file.png").getImage();
-			ventana.getBotonExportCompra().setIcon(new ImageIcon(imgBotonExportCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonExportVenta()) {
+			Image imgBotonExportVenta = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportVenta().setIcon(new ImageIcon(imgBotonExportVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		
 	}	
