@@ -420,8 +420,8 @@ public class AccesoDB {
 				matrizInfoVentas[i][1] = listaVentas.get(i).getCodServicio()+"";
 				matrizInfoVentas[i][2] = listaVentas.get(i).getNombreServicio()+"";
 				matrizInfoVentas[i][3] = formatea.format(listaVentas.get(i).getCantidad())+"";
-				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+"€";
-				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteFactura())+" €";
+				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+"ï¿½";
+				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteFactura())+" ï¿½";
 				matrizInfoVentas[i][6] = listaVentas.get(i).getDni_Cliente()+"";
 				matrizInfoVentas[i][7] = listaVentas.get(i).getNombre()+"";
 				matrizInfoVentas[i][8] = listaVentas.get(i).getFecha()+"";
@@ -664,8 +664,8 @@ public static Boolean exportarFicheroCompras(String user) {
 		try {
 			FileWriter ficheroCompras = new FileWriter(f);
 			
-			ficheroCompras.write("Número Albarán,Nombre,Importe Producto,Cantidad,Código Proveedor" +
-			"Código Producto,Nombre Producto,Fecha, Nombre Proveedor, Importe Total");
+			ficheroCompras.write("Nï¿½mero Albarï¿½n,Nombre,Importe Producto,Cantidad,Cï¿½digo Proveedor" +
+			"Cï¿½digo Producto,Nombre Producto,Fecha, Nombre Proveedor, Importe Total");
 			ficheroCompras.write("\n");
 			
 			for (Compras compras : lista_compras) {
@@ -713,7 +713,7 @@ public static Boolean exportarFicheroCompras(String user) {
 		try {
 			FileWriter ficheroVentas = new FileWriter(f);
 			
-			ficheroVentas.write("Número Factura,Importe Venta Servicio,Cantidad Total,DNI Cliente,Código Servicio" +
+			ficheroVentas.write("Nï¿½mero Factura,Importe Venta Servicio,Cantidad Total,DNI Cliente,Cï¿½digo Servicio" +
 			"Nombre Servicio,Fecha,Nombre, Importe Factura");
 			ficheroVentas.write("\n");
 			
@@ -788,7 +788,7 @@ public static Boolean exportarFicheroCompras(String user) {
 
 	public static int insertarCompra(ArrayList<Compras> nuevaCompra, Connection conexion) {
 		
-		int afectados = 0;
+		int afectados1 = 0;
 		
 		try {
 			// Almacenamos en un String la Sentencia SQL
@@ -803,20 +803,22 @@ public static Boolean exportarFicheroCompras(String user) {
 				fecha = c.getFechaAlbaran();
 				numAlbaran = c.getNumAlbaran();
 			}
-
+			System.out.println(codigoProveedor);
+			System.out.println(fecha);
+			System.out.println(numAlbaran);
 			// Con PreparedStatement recogemos los valores introducidos
-			PreparedStatement sentencia;
-			sentencia = conexion.prepareStatement(sql);
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
 			sentencia.setString(1, codigoProveedor);
 			sentencia.setDate(2, fecha);
 			sentencia.setString(3, numAlbaran);
 
-			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
+			afectados1 = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
+			System.out.println("Insercion albaran: " + afectados1);
 
 		} catch (SQLException e) {
 			e.getMessage();
 		}
-		return afectados;
+		return afectados1;
 	}
 
 	public static int insertarLineaAlbaran(ArrayList<Compras> nuevaCompra, Connection conexion) {
@@ -845,7 +847,7 @@ public static Boolean exportarFicheroCompras(String user) {
 			sentencia.setString(3, numAlbaran);
 
 			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
-
+			System.out.println("Insercion linea albaran: " + afectados);
 		} catch (SQLException e) {
 			e.getMessage();
 		}

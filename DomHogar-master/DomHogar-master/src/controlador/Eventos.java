@@ -459,7 +459,11 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelVentasExport().setVisible(false);
 		}
 		
-		else if(e.getSource() == ventana.getBotonVerificarCompra()) {			
+		else if(e.getSource() == ventana.getBotonVerificarCompra()) {	
+			
+			for (int i = 0; i < nuevaCompra.size(); i++) {
+				nuevaCompra.remove(i);
+			}
 			
 			//Recogemos en un Array los productos y Proveedores
 			ArrayList<Producto> lista_productos = AccesoDB.datosProducto(conexion);
@@ -509,8 +513,8 @@ public class Eventos implements ActionListener, MouseListener {
 					importeTotal = cantidad * producto.getImporteCompra();
 					nomProducto = producto.getNombreProducto().toString();
 					ventana.getJLresulComboProCompra().setText(nomProducto);
-					ventana.getJLresulimporCompraPro().setText(Integer.toString(producto.getImporteCompra()).toString()+" € unity");
-					ventana.getJLresulimporTotalPro().setText(Integer.toString(importeTotal).toString()+" € total amount");
+					ventana.getJLresulimporCompraPro().setText(Integer.toString(producto.getImporteCompra()).toString()+" ï¿½ unity");
+					ventana.getJLresulimporTotalPro().setText(Integer.toString(importeTotal).toString()+" ï¿½ total amount");
 				} 
 			}
 			
@@ -547,44 +551,72 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		else if(e.getSource() == ventana.getBotonInsertCompraFinal()) {
 			
-			if(ok_check == true) {
+			ArrayList<Compras> lista_compras = AccesoDB.datosCompras(conexion);
+			String numAlbaran = ventana.getJTFnumAlbaran().getText();
+			int coincide = 0;
+			System.out.println("Coincide inicial: "+coincide);
+			
+			for (Compras compras : lista_compras) {
+				if(compras.getNumAlbaran().equals(numAlbaran)) {
+					coincide = 1;
+					System.out.println("Coincide OK: "+coincide+" Num Albaran: " + numAlbaran);
+					//return;
+				}
+			}
+		
+			System.out.println("TamaÃ±o array: "+ nuevaCompra.size());
+			
+			if(ok_check == true && coincide==1) {				
 				
-				String numAlbaran = ventana.getJTFnumAlbaran().getText();
-				
-				for (Compras compras : nuevaCompra) {
-					if(compras.getNumAlbaran().contains(numAlbaran)) {
 						//Mostramos Dialog 
 						JOptionPane.showMessageDialog(new JFrame(), 
 								"Delivery Note exists. New line will be inserted",
 								"Check",
 								JOptionPane.INFORMATION_MESSAGE);	
 						
-						int afectados1 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
+						int afectados = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
 						
-						if (afectados1 == 0) {
+						if (afectados == 0) {
 							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note line");
 						} else {
 							ventana.getJLresulinsertComprafinal().setText("Delivery Note line added");
 							
 							refreshJTableCompras();
-						}		
-					} else {
-						int afectados = AccesoDB.insertarCompra(nuevaCompra, conexion);
-						int afectados2 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
-						
-						if (afectados == 0 || afectados2 == 0) {
-							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
-						} else {
-							ventana.getJLresulinsertComprafinal().setText("Delivery Note added");
 							
-							refreshJTableCompras();
+							for (int i = 0; i < nuevaCompra.size(); i++) {
+								nuevaCompra.remove(i);
+							}				
+							System.out.println("TamaÃ±o array: "+ nuevaCompra.size());
 						}		
-					}
-				}				
-			} else {
-				ventana.getJLresulinsertComprafinal().setText("Check all items");
 			}
 			
+			else if(ok_check == true && coincide == 0) {
+				System.out.println("** NO Coincide: "+coincide);
+				
+						int afectados1 = AccesoDB.insertarCompra(nuevaCompra, conexion);
+						int afectados2 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
+						
+						if (afectados1 == 0 && afectados2 == 0) {
+							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
+						} 
+						else if (afectados1 == 1 && afectados2 == 0) {
+							ventana.getJLresulinsertComprafinal().setText("Error linea albaran // albaran Ok");
+						}
+						else if (afectados1 == 0 && afectados2 == 1) {
+							ventana.getJLresulinsertComprafinal().setText("linea albaran OK// ERROR albaran ");
+						}
+						else if (afectados1 == 1 && afectados2 == 1) {
+							ventana.getJLresulinsertComprafinal().setText("Delivery Note added");
+						}
+						System.out.println(afectados1);
+						System.out.println(afectados2);
+						refreshJTableCompras();
+						
+						for (int i = 0; i < nuevaCompra.size(); i++) {
+							nuevaCompra.remove(i);
+						}	
+						System.out.println("TamaÃ±o array: "+ nuevaCompra.size());
+					}
 		}
 		
 		else if(e.getSource() == ventana.getBotonExportCompra()) {
@@ -709,8 +741,8 @@ public class Eventos implements ActionListener, MouseListener {
 					cantidadTotal = cantidad * servicio.getImporteServicio();
 					nombreServicio = servicio.getNombreServicio().toString();
 					ventana.getJLresulComboSerVenta().setText(nombreServicio);
-					ventana.getJLresulimporVentaServ().setText(Integer.toString(servicio.getImporteServicio()).toString()+" € unity");
-					ventana.getJLresulimporTotalServ().setText(Integer.toString(cantidadTotal).toString()+" € total amount");
+					ventana.getJLresulimporVentaServ().setText(Integer.toString(servicio.getImporteServicio()).toString()+" ï¿½ unity");
+					ventana.getJLresulimporTotalServ().setText(Integer.toString(cantidadTotal).toString()+" ï¿½ total amount");
 				} 
 			}
 			
@@ -722,7 +754,7 @@ public class Eventos implements ActionListener, MouseListener {
 				} 
 			}
 			
-			//Si algun componente de la los valores del Insert está vacío
+			//Si algun componente de la los valores del Insert estï¿½ vacï¿½o
 			if(ventana.getJTFnumFactura().getText().isEmpty() || ventana.getComboServicioVentas().getSelectedItem().toString().contains("Service code") ||
 				    ventana.getComboClienteVentas().getSelectedItem().toString().contains("Customer's code"))
 				{
@@ -1343,7 +1375,7 @@ public class Eventos implements ActionListener, MouseListener {
 		private void refreshJTableClientes() {
 			//ACTUALIZAR JTABLE CLIENTES
 			
-			String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Teléfono"};
+			String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Telï¿½fono"};
 			String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
 			
 			TableModel modelo = new DefaultTableModel(infoClientes,titulosClientes);

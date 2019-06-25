@@ -335,23 +335,22 @@ public class Ventana extends JFrame{
 	    JTFnumAlbaran.setForeground(color_azul);//Color del texto
 	    subPanelInsertCompras.add(JTFnumAlbaran);//Anadimos
 		
+	    //Combo producto
 	    comboProductoCompras = new JComboBox<String>();
 	    comboProductoCompras.addItem("Product's code");	    
-	    
-	    //Obtenemos los codigos de producto de la BBDD de la Tabla Compras	   
+	    //Obtenemos los codigos de producto de la BBDD de la Tabla Compras   
 	    Connection conexion = AccesoDB.conexion();		    
-	    ArrayList<Producto> lista_productos = AccesoDB.datosProducto(conexion);
-	    
+	    ArrayList<Producto> lista_productos = AccesoDB.datosProducto(conexion);	    
 	    for (Producto p : lista_productos) {
 	    	comboProductoCompras.addItem(p.getCod_Producto());
-		}
-	    
+		}	    
 	    comboProductoCompras.setSelectedIndex(0); // Foco en el item 0
-	    comboProductoCompras.setBounds(200, 70, 220, 30);
-		subPanelInsertCompras.add(comboProductoCompras);
+	    comboProductoCompras.setBounds(20, 170, 150, 30);
+		subPanelInsertCompras.add(comboProductoCompras);		
+		
 		
 		JLresulComboProCompra = new JLabel();//Creamos el componente
-		JLresulComboProCompra.setBounds(450,70,280,30);//Posicionamos
+		JLresulComboProCompra.setBounds(200,170,220,30);//Posicionamos
 		JLresulComboProCompra.setBorder(null); //Eliminamos el borde
 		JLresulComboProCompra.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 		JLresulComboProCompra.setForeground(color_azul);//Color del texto
@@ -382,22 +381,23 @@ public class Ventana extends JFrame{
 		JLresulimporTotalPro.setForeground(color_azul);// Color del texto
 		subPanelInsertCompras.add(JLresulimporTotalPro);// Anadimos
 		
+		//Combo compras
 		comboProveedorCompras = new JComboBox<String>();
-		comboProveedorCompras.addItem("Supplier's code");	    
-	    
+		comboProveedorCompras.addItem("Supplier's code");
 	    //Obtenemos los codigos de producto de la BBDD de la Tabla Compras	   		    
-	    ArrayList<Proveedor> lista_proveedor = AccesoDB.datosProveedor(conexion);
-	    
+	    ArrayList<Proveedor> lista_proveedor = AccesoDB.datosProveedor(conexion);	    
 	    for (Proveedor p : lista_proveedor) {
 	    	comboProveedorCompras.addItem(p.getCodproveedor());
-		}
-	    
+		}	    
 	    comboProveedorCompras.setSelectedIndex(0); // Foco en el item 0
-	    comboProveedorCompras.setBounds(20, 170, 150, 30);
+	    comboProveedorCompras.setBounds(200, 70, 220, 30);
 		subPanelInsertCompras.add(comboProveedorCompras);
 		
+		//20, 170, 150, 30		
+		//200,170,220,30
+		
 		JLresulComboProveedorCompra = new JLabel("");//Creamos el componente
-		JLresulComboProveedorCompra.setBounds(200,170,220,30);//Posicionamos
+		JLresulComboProveedorCompra.setBounds(450,70,280,30);//Posicionamos
 		JLresulComboProveedorCompra.setBorder(null); //Eliminamos el borde
 		JLresulComboProveedorCompra.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 		JLresulComboProveedorCompra.setForeground(color_azul);//Color del texto
@@ -705,7 +705,7 @@ public class Ventana extends JFrame{
 		add(subPanelBotonesVentas);
 		subPanelBotonesVentas.setVisible(false);	
 		
-		//faltan imágenes botones
+		//faltan imï¿½genes botones
 		Image imgBotonUpdateVentas = new ImageIcon("img\\update sale.png").getImage();
 		botonActualVenta = new JButton(new ImageIcon(imgBotonUpdateVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		botonActualVenta.setBounds((int) 67.5, 20, 160, 42);
@@ -1011,7 +1011,7 @@ public class Ventana extends JFrame{
 		barraClientes.setBounds(20, 20, 710, 190);
 		panelClientes.add(barraClientes);
 		
-		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Teléfono"};
+		String titulosClientes[] = {"DNI Cliente", "Nombre Cliente", "Email", "Telï¿½fono"};
 		String infoClientes[][] = AccesoDB.obtenerMatrizClientes();
 		
 		tablaClientes = new JTable(infoClientes,titulosClientes);
