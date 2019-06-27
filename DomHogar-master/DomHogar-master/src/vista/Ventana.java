@@ -39,13 +39,15 @@ public class Ventana extends JFrame{
 	private JComboBox <String> comboUpdateEmp;
 	
 	//Atributos de COMPRAS
-	private JPanel panelCompras, subPanelInsertCompras, subPanelBotonesCompras, subPanelComprasExport;
-	private JButton botonActualCompra, botonDeleteCompra, botonExportCompra, botonVerificarCompra, botonInsertCompraFinal,
-	botonExportComFinal;
+	private JPanel panelCompras, subPanelInsertCompras, subPanelBotonesCompras, subPanelComprasExport, subPanelDeliveryNoteCompras;
+	private JButton botonDeliveryNoteCompra, botonDeleteCompra, botonExportCompra, botonVerificarCompra, botonInsertCompraFinal,
+		botonExportComFinal, botonCheckDeliNoteCom;
 	private JScrollPane barraCompras;
 	private JTable tablaCompras;
 	private JLabel JLabelNuevaCompra, JLresulComboProCompra, JLresulimporCompraPro, JLresulimporTotalPro,
-	JLresulComboProveedorCompra, JLresulinsertComprafinal, exportCompras, insertRutaExportCompras, resulExportCom;
+		JLresulComboProveedorCompra, JLresulinsertComprafinal, exportCompras, insertRutaExportCompras, resulExportCom, JLDeliveryNoteCompras,
+		JLslectorJTableCom, JLnumAlbaranCom, JLCustomerDomCom, JLDomohogarCom, JLDateCom, JLDateComRow, JLSuplierCom, JLSuplierComRow,
+		JLSuplierCode, JLSuplierCodeRow, JLTotalAccountCom, JLTotalAccountComSuma;
 	private JTextField JTFnumAlbaran, JTFcantidadCompra;
 	private JComboBox <String> comboProductoCompras, comboProveedorCompras;
 	
@@ -54,11 +56,11 @@ public class Ventana extends JFrame{
 	private JScrollPane barraVentas;
 	private JTable tablaVentas;
 	private JLabel JLabelNuevaVenta, JLresulComboSerVenta, JLresulimporVentaServ, JLresulimporTotalServ,
-	JLresulComboClienteVentas, JLresulinsertVentafinal, exportVentas, insertRutaexportVentas, resulExportVen;
+		JLresulComboClienteVentas, JLresulinsertVentafinal, exportVentas, insertRutaexportVentas, resulExportVen;
 	private JTextField JTFnumFactura, JTFcantidadVenta;
 	private JComboBox<String> comboServicioVentas, comboClienteVentas;
 	private JButton botonVerificarVenta, botonInsertVentaFinal, botonActualVenta, botonDeleteVenta, botonExportVenta,
-	botonExportVenFinal;
+		botonExportVenFinal;
 	
 	//Atributos de SERVICIOS
 	private JPanel panelCRM;
@@ -350,8 +352,7 @@ public class Ventana extends JFrame{
 		}	    
 	    comboProductoCompras.setSelectedIndex(0); // Foco en el item 0
 	    comboProductoCompras.setBounds(20, 170, 150, 30);
-		subPanelInsertCompras.add(comboProductoCompras);		
-		
+		subPanelInsertCompras.add(comboProductoCompras);			
 		
 		JLresulComboProCompra = new JLabel();//Creamos el componente
 		JLresulComboProCompra.setBounds(200,170,220,30);//Posicionamos
@@ -397,9 +398,6 @@ public class Ventana extends JFrame{
 	    comboProveedorCompras.setBounds(200, 70, 220, 30);
 		subPanelInsertCompras.add(comboProveedorCompras);
 		
-		//20, 170, 150, 30		
-		//200,170,220,30
-		
 		JLresulComboProveedorCompra = new JLabel("");//Creamos el componente
 		JLresulComboProveedorCompra.setBounds(450,70,280,30);//Posicionamos
 		JLresulComboProveedorCompra.setBorder(null); //Eliminamos el borde
@@ -408,15 +406,15 @@ public class Ventana extends JFrame{
 		subPanelInsertCompras.add(JLresulComboProveedorCompra);//Anadimos	
 		
 		Image imgBotonVerificarCompra = new ImageIcon("img\\check.png").getImage();
-		botonVerificarCompra = new JButton(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,50, Image.SCALE_SMOOTH)));
-		botonVerificarCompra.setBounds(600, 170, 110, 50);
+		botonVerificarCompra = new JButton(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonVerificarCompra.setBounds(600, 170, 110, 42);
 		botonVerificarCompra.setBorder(null); // Eliminamos el borde
 		botonVerificarCompra.setBackground(color_panel);
 		subPanelInsertCompras.add(botonVerificarCompra);// Anadimos
 		
 		Image imgBotonCompra = new ImageIcon("img\\purchases.png").getImage();
-		botonInsertCompraFinal = new JButton(new ImageIcon(imgBotonCompra.getScaledInstance(110,50, Image.SCALE_SMOOTH)));
-		botonInsertCompraFinal.setBounds(20, 215, 110, 50);
+		botonInsertCompraFinal = new JButton(new ImageIcon(imgBotonCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonInsertCompraFinal.setBounds(20, 215, 110, 42);
 		botonInsertCompraFinal.setBorder(null); // Eliminamos el borde
 		botonInsertCompraFinal.setBackground(color_panel);
 		subPanelInsertCompras.add(botonInsertCompraFinal);// Anadimos
@@ -428,6 +426,122 @@ public class Ventana extends JFrame{
 		JLresulinsertComprafinal.setForeground(Color.gray);//Color del text
 		JLresulinsertComprafinal.setVerticalAlignment(JLabel.CENTER);
 		subPanelInsertCompras.add(JLresulinsertComprafinal);//Anadimos
+		
+		//SUBPANEL DELIVERY NOTE COMPRAS
+		
+		subPanelDeliveryNoteCompras = new JPanel();
+		subPanelDeliveryNoteCompras.setBounds(200, 270, 750, 268);
+		subPanelDeliveryNoteCompras.setBackground(color_panel);
+		subPanelDeliveryNoteCompras.setLayout(null);
+		add(subPanelDeliveryNoteCompras);
+		subPanelDeliveryNoteCompras.setVisible(false);
+		
+		JLslectorJTableCom = new JLabel("(* Select a row to show detail)");// Creamos el componente
+		JLslectorJTableCom.setBounds(140, 0, 300, 30);// Posicionamos
+		JLslectorJTableCom.setBorder(null); // Eliminamos el borde
+		JLslectorJTableCom.setFont(new Font("Segoe UI", Font.BOLD, 14));// Damos formato al contenido
+		JLslectorJTableCom.setForeground(color_azul);// Color del texto
+		JLslectorJTableCom.setVerticalAlignment(JLabel.CENTER);
+		subPanelDeliveryNoteCompras.add(JLslectorJTableCom);// Anadimos
+		
+		Image checkDeliveryNoteCompra = new ImageIcon("img\\check.png").getImage();
+		botonCheckDeliNoteCom = new JButton(new ImageIcon(checkDeliveryNoteCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		botonCheckDeliNoteCom.setBounds(20, 0, 110, 42);
+		botonCheckDeliNoteCom.setBorder(null); // Eliminamos el borde
+		botonCheckDeliNoteCom.setBackground(color_panel);
+		subPanelDeliveryNoteCompras.add(botonCheckDeliNoteCom);// Anadimos
+		
+		JLDeliveryNoteCompras = new JLabel("delivery note #: ");// Creamos el componente
+		JLDeliveryNoteCompras.setBounds(20, 50, 160, 30);// Posicionamos
+		JLDeliveryNoteCompras.setBorder(null);
+		JLDeliveryNoteCompras.setFont(new Font("Segoe UI",Font.BOLD,20));//Damos formato al contenido
+		JLDeliveryNoteCompras.setForeground(color_azul);//Color del texto
+		subPanelDeliveryNoteCompras.add(JLDeliveryNoteCompras);// Anadimos		
+		JLDeliveryNoteCompras.setVisible(false);
+		
+		JLnumAlbaranCom = new JLabel();// Creamos el componente
+		JLnumAlbaranCom.setBounds(190, 50, 100, 30);// Posicionamos
+		JLnumAlbaranCom.setBorder(null); // Eliminamos el borde
+		JLnumAlbaranCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLnumAlbaranCom.setForeground(Color.darkGray);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLnumAlbaranCom);// Anadimos	
+		
+		JLCustomerDomCom = new JLabel("CUSTOMER:");// Creamos el componente
+		JLCustomerDomCom.setBounds(20, 80, 120, 30);// Posicionamos
+		JLCustomerDomCom.setBorder(null); // Eliminamos el borde
+		JLCustomerDomCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLCustomerDomCom.setForeground(color_azul);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLCustomerDomCom);// Anadimos
+		JLCustomerDomCom.setVisible(false);
+		
+		JLDomohogarCom = new JLabel("DomHogar, S.L.");// Creamos el componente
+		JLDomohogarCom.setBounds(140, 80, 150, 30);// Posicionamos
+		JLDomohogarCom.setBorder(null); // Eliminamos el borde
+		JLDomohogarCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLDomohogarCom.setForeground(Color.darkGray);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLDomohogarCom);// Anadimos
+		JLDomohogarCom.setVisible(false);
+		
+		JLDateCom = new JLabel("DATE: ");// Creamos el componente
+		JLDateCom.setBounds(300, 50, 70, 30);// Posicionamos
+		JLDateCom.setBorder(null); // Eliminamos el borde
+		JLDateCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLDateCom.setForeground(color_azul);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLDateCom);// Anadimos
+		JLDateCom.setVisible(false);
+		
+		JLDateComRow = new JLabel();// Creamos el componente
+		JLDateComRow.setBounds(370, 50, 200, 30);// Posicionamos
+		JLDateComRow.setBorder(null); // Eliminamos el borde
+		JLDateComRow.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLDateComRow.setForeground(Color.darkGray);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLDateComRow);// Anadimos
+		
+		JLSuplierCom = new JLabel("SUPPLIER: ");// Creamos el componente
+		JLSuplierCom.setBounds(300, 80, 100, 30);// Posicionamos
+		JLSuplierCom.setBorder(null); // Eliminamos el borde
+		JLSuplierCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierCom.setForeground(color_azul);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLSuplierCom);// Anadimos
+		JLSuplierCom.setVisible(false);
+		
+		JLSuplierComRow = new JLabel();// Creamos el componente
+		JLSuplierComRow.setBounds(400, 80, 200, 30);// Posicionamos
+		JLSuplierComRow.setBorder(null); // Eliminamos el borde
+		JLSuplierComRow.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierComRow.setForeground(Color.darkGray);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLSuplierComRow);// Anadimos
+		
+		JLSuplierCode = new JLabel("CODE: ");// Creamos el componente
+		JLSuplierCode.setBounds(610, 80, 70, 30);// Posicionamos
+		JLSuplierCode.setBorder(null); // Eliminamos el borde
+		JLSuplierCode.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierCode.setForeground(color_azul);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLSuplierCode);// Anadimos
+		JLSuplierCode.setVisible(false);
+		
+		JLSuplierCodeRow = new JLabel();// Creamos el componente
+		JLSuplierCodeRow.setBounds(680, 80, 50, 30);// Posicionamos
+		JLSuplierCodeRow.setBorder(null); // Eliminamos el borde
+		JLSuplierCodeRow.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierCodeRow.setForeground(Color.darkGray);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLSuplierCodeRow);// Anadimos
+		
+		JLTotalAccountCom = new JLabel("Total Account: ");// Creamos el componente
+		JLTotalAccountCom.setBounds(400, 230, 180, 30);// Posicionamos
+		JLTotalAccountCom.setBorder(null); // Eliminamos el borde
+		JLTotalAccountCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLTotalAccountCom.setForeground(color_azul);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLTotalAccountCom);// Anadimos
+		JLTotalAccountCom.setVisible(false);
+		
+		JLTotalAccountComSuma = new JLabel();// Creamos el componente
+		JLTotalAccountComSuma.setBounds(580, 230, 120, 30);// Posicionamos
+		JLTotalAccountComSuma.setBorder(null); // Eliminamos el borde
+		JLTotalAccountComSuma.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLTotalAccountComSuma.setForeground(Color.darkGray);// Color del texto
+		subPanelDeliveryNoteCompras.add(JLTotalAccountComSuma);// Anadimos
+		
 		
 		//SUBPANEL EXPORT COMPRAS
 		
@@ -457,7 +571,7 @@ public class Ventana extends JFrame{
 	    insertUsuarioPC.setForeground(color_azul);//Color del texto
 	    subPanelComprasExport.add(insertUsuarioPC);//Anadimos	
 		
-		insertRutaExportCompras = new JLabel("You'll find the file in C:\\Users\\youruser. Name of file: empleados.csv ");//Creamos el componente
+		insertRutaExportCompras = new JLabel("You'll find the file in C:\\Users\\youruser. Name of file: compras.csv ");//Creamos el componente
 	    insertRutaExportCompras.setBounds(20,120,670,30);//Posicionamos		
 	    insertRutaExportCompras.setBorder(null); //Eliminamos el borde
 	    insertRutaExportCompras.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
@@ -487,12 +601,12 @@ public class Ventana extends JFrame{
 		add(subPanelBotonesCompras);
 		subPanelBotonesCompras.setVisible(false);	
 		
-		Image imgBotonUpdateCompras = new ImageIcon("img\\update purchase.png").getImage();
-		botonActualCompra = new JButton(new ImageIcon(imgBotonUpdateCompras.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		botonActualCompra.setBounds((int) 67.5, 20, 160, 42);
-		botonActualCompra.setBorder(null); // Eliminamos el borde
-		botonActualCompra.setBackground(color_panel);
-		subPanelBotonesCompras.add(botonActualCompra);// Anadimos
+		Image imgBotonUpdateCompras = new ImageIcon("img\\delivery notes.png").getImage();
+		botonDeliveryNoteCompra = new JButton(new ImageIcon(imgBotonUpdateCompras.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		botonDeliveryNoteCompra.setBounds((int) 67.5, 20, 160, 42);
+		botonDeliveryNoteCompra.setBorder(null); // Eliminamos el borde
+		botonDeliveryNoteCompra.setBackground(color_panel);
+		subPanelBotonesCompras.add(botonDeliveryNoteCompra);// Anadimos
 
 		Image imgBotonDeleteCompras = new ImageIcon("img\\delete purchase.png").getImage();
 		botonDeleteCompra = new JButton(new ImageIcon(imgBotonDeleteCompras.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
@@ -1304,7 +1418,7 @@ public class Ventana extends JFrame{
 		add(panelAlmacen);
 		panelAlmacen.setVisible(false);
 		
-		detalleAlmacen = new JLabel("detalle almacén");
+		detalleAlmacen = new JLabel("detalle almacï¿½n");
 		detalleAlmacen.setBounds(20, 0, 710, 60);
 		detalleAlmacen.setFont(new Font("Segoe UI",Font.BOLD,30));//Damos formato al contenido
 		detalleAlmacen.setForeground(color_azul);//Color del texto
@@ -1316,7 +1430,7 @@ public class Ventana extends JFrame{
 		barraStock.setBounds(20, 55, 710, 190);
 		panelAlmacen.add(barraStock);
 		
-		String titulosAlmacen[] = {"Código Producto", "Nombre Producto", "Unidades compradas", "Unidades Vendidas", "Total"};
+		String titulosAlmacen[] = {"Cï¿½digo Producto", "Nombre Producto", "Unidades compradas", "Unidades Vendidas", "Total"};
 		String infoAlmacen[][] = AccesoDB.obtenerMatrizStock();
 		
 		tablaAlmacen = new JTable(infoAlmacen,titulosAlmacen);
@@ -1332,7 +1446,7 @@ public class Ventana extends JFrame{
 		botonExportStock.setBackground(color_panel);
 		panelAlmacen.add(botonExportStock);//Anadimos 
 		
-		resumenAlmacen = new JLabel("resumen almacén");
+		resumenAlmacen = new JLabel("resumen almacï¿½n");
 		resumenAlmacen.setBounds(20, 310, 710, 60);
 		resumenAlmacen.setFont(new Font("Segoe UI",Font.BOLD,30));//Damos formato al contenido
 		resumenAlmacen.setForeground(color_azul);//Color del texto
@@ -1344,7 +1458,7 @@ public class Ventana extends JFrame{
 		barraStock2.setBounds(20, 365, 710, 150);
 		panelAlmacen.add(barraStock2);
 		
-		String titulosAlmacen2[] = {"Código Producto", "Nombre Producto", "Unidades compradas", "Unidades Vendidas", "Total"};
+		String titulosAlmacen2[] = {"Cï¿½digo Producto", "Nombre Producto", "Unidades compradas", "Unidades Vendidas", "Total"};
 		String infoAlmacen2[][] = AccesoDB.obtenerMatrizStockResumen();
 		
 		tablaAlmacen2 = new JTable(infoAlmacen2,titulosAlmacen2);
@@ -1811,10 +1925,10 @@ public class Ventana extends JFrame{
 		
 		botonVerificarCompra.addMouseListener(manejador);
 		botonInsertCompraFinal.addMouseListener(manejador);
-		botonActualCompra.addMouseListener(manejador);
+		botonDeliveryNoteCompra.addMouseListener(manejador);
 		botonDeleteCompra.addMouseListener(manejador);
 		botonExportCompra.addMouseListener(manejador);
-		
+		botonCheckDeliNoteCom.addMouseListener(manejador);
 		
 		botonVerificarVenta.addMouseListener(manejador);
 		botonInsertVentaFinal.addMouseListener(manejador);
@@ -2607,12 +2721,12 @@ public class Ventana extends JFrame{
 		this.subPanelBotonesCompras = subPanelBotonesCompras;
 	}
 
-	public JButton getBotonActualCompra() {
-		return botonActualCompra;
+	public JButton getBotonDeliveryNoteCompra() {
+		return botonDeliveryNoteCompra;
 	}
 
-	public void setBotonActualCompra(JButton botonActualCompra) {
-		this.botonActualCompra = botonActualCompra;
+	public void setBotonDeliveryNoteCompra(JButton botonActualCompra) {
+		this.botonDeliveryNoteCompra = botonActualCompra;
 	}
 
 	public JButton getBotonDeleteCompra() {
@@ -3055,5 +3169,117 @@ public class Ventana extends JFrame{
 
 	public void setResulExportAlm(JLabel resulExportAlm) {
 		this.resulExportAlm = resulExportAlm;
+	}
+
+	public JPanel getSubPanelDeliveryNoteCompras() {
+		return subPanelDeliveryNoteCompras;
+	}
+
+	public void setSubPanelDeliveryNoteCompras(JPanel subPanelDeliveryNoteCompras) {
+		this.subPanelDeliveryNoteCompras = subPanelDeliveryNoteCompras;
+	}
+
+	public JButton getBotonCheckDeliNoteCom() {
+		return botonCheckDeliNoteCom;
+	}
+
+	public void setBotonCheckDeliNoteCom(JButton botonCheckDeliNoteCom) {
+		this.botonCheckDeliNoteCom = botonCheckDeliNoteCom;
+	}
+
+	public JLabel getJLnumAlbaranCom() {
+		return JLnumAlbaranCom;
+	}
+
+	public void setJLnumAlbaranCom(JLabel jLnumAlbaranCom) {
+		JLnumAlbaranCom = jLnumAlbaranCom;
+	}
+
+	public JLabel getJLCustomerDomCom() {
+		return JLCustomerDomCom;
+	}
+
+	public void setJLCustomerDomCom(JLabel jLCustomerDomCom) {
+		JLCustomerDomCom = jLCustomerDomCom;
+	}
+
+	public JLabel getJLDomohogarCom() {
+		return JLDomohogarCom;
+	}
+
+	public void setJLDomohogarCom(JLabel jLDomohogarCom) {
+		JLDomohogarCom = jLDomohogarCom;
+	}
+
+	public JLabel getJLDateCom() {
+		return JLDateCom;
+	}
+
+	public void setJLDateCom(JLabel jLDateCom) {
+		JLDateCom = jLDateCom;
+	}
+
+	public JLabel getJLDateComRow() {
+		return JLDateComRow;
+	}
+
+	public void setJLDateComRow(JLabel jLDateComRow) {
+		JLDateComRow = jLDateComRow;
+	}
+
+	public JLabel getJLDeliveryNoteCompras() {
+		return JLDeliveryNoteCompras;
+	}
+
+	public void setJLDeliveryNoteCompras(JLabel jLDeliveryNoteCompras) {
+		JLDeliveryNoteCompras = jLDeliveryNoteCompras;
+	}
+
+	public JLabel getJLSuplierCom() {
+		return JLSuplierCom;
+	}
+
+	public void setJLSuplierCom(JLabel jLSuplierCom) {
+		JLSuplierCom = jLSuplierCom;
+	}
+
+	public JLabel getJLSuplierComRow() {
+		return JLSuplierComRow;
+	}
+
+	public void setJLSuplierComRow(JLabel jLSuplierComRow) {
+		JLSuplierComRow = jLSuplierComRow;
+	}
+
+	public JLabel getJLSuplierCode() {
+		return JLSuplierCode;
+	}
+
+	public void setJLSuplierCode(JLabel jLSuplierCode) {
+		JLSuplierCode = jLSuplierCode;
+	}
+
+	public JLabel getJLSuplierCodeRow() {
+		return JLSuplierCodeRow;
+	}
+
+	public void setJLSuplierCodeRow(JLabel jLSuplierCodeRow) {
+		JLSuplierCodeRow = jLSuplierCodeRow;
+	}
+
+	public JLabel getJLTotalAccountCom() {
+		return JLTotalAccountCom;
+	}
+
+	public void setJLTotalAccountCom(JLabel jLTotalAccountCom) {
+		JLTotalAccountCom = jLTotalAccountCom;
+	}
+
+	public JLabel getJLTotalAccountComSuma() {
+		return JLTotalAccountComSuma;
+	}
+
+	public void setJLTotalAccountComSuma(JLabel jLTotalAccountComSuma) {
+		JLTotalAccountComSuma = jLTotalAccountComSuma;
 	}
 }

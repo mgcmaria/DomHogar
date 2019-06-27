@@ -846,9 +846,7 @@ public static Boolean exportarFicheroAlmacen(String user) {
 				fecha = c.getFechaAlbaran();
 				numAlbaran = c.getNumAlbaran();
 			}
-			System.out.println(codigoProveedor);
-			System.out.println(fecha);
-			System.out.println(numAlbaran);
+	
 			// Con PreparedStatement recogemos los valores introducidos
 			PreparedStatement sentencia = conexion.prepareStatement(sql);
 			sentencia.setString(1, codigoProveedor);
@@ -856,7 +854,6 @@ public static Boolean exportarFicheroAlmacen(String user) {
 			sentencia.setString(3, numAlbaran);
 
 			afectados1 = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
-			System.out.println("Insercion albaran: " + afectados1);
 
 		} catch (SQLException e) {
 			e.getMessage();
@@ -890,7 +887,7 @@ public static Boolean exportarFicheroAlmacen(String user) {
 			sentencia.setString(3, numAlbaran);
 
 			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
-			System.out.println("Insercion linea albaran: " + afectados);
+			
 		} catch (SQLException e) {
 			e.getMessage();
 		}
@@ -1065,6 +1062,71 @@ public static Boolean exportarFicheroAlmacen(String user) {
 		}		
 		
 		return lista_Almacen;
+	}
+
+	public static String[][] obtenerMatrizDeliveryNote(String numAlbaran) {
+		
+		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
+		
+		Connection conexion = AccesoDB.conexion();
+
+		ArrayList<Compras> listaCompras = AccesoDB.datosComprasDeliveryNote(numAlbaran, conexion);
+
+		String matrizInfoCompras[][] = new String[listaCompras.size()][5];
+
+		for (int i = 0; i < listaCompras.size(); i++) {
+			matrizInfoCompras[i][0] = listaCompras.get(i).getCodProducto()+"";
+			matrizInfoCompras[i][1] = listaCompras.get(i).getNomProducto()+"";			
+			matrizInfoCompras[i][2] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" €";			
+			matrizInfoCompras[i][3] = formatea.format(listaCompras.get(i).getCantidad())+"";
+			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteTotal())+" €";
+		}
+		return matrizInfoCompras;		
+		
+	}
+
+	static ArrayList<Compras> datosComprasDeliveryNote(String numAlbaran, Connection conexion) {
+		
+		ArrayList<Compras> lista_compras = new ArrayList<Compras>();
+		
+		Compras compras;
+			
+		try {			
+
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT la.codproducto, pro.nombreProducto,pro.importeCompra, la.cantidad, "
+					+ "la.numAlbaran, a.fecha, a.codProveedor, p.nombreProveedor \r\n" + 
+					"FROM LINEA_ALBARAN la \r\n" + 
+					"JOIN PRODUCTO pro on la.codproducto = pro.cod_Producto \r\n" + 
+					"JOIN ALBARAN a on la.numAlbaran = a.numAlbaran \r\n" + 
+					"JOIN PROVEEDOR p on a.codProveedor = p.codproveedor \r\n" + 
+					"WHERE la.numAlbaran = '"+numAlbaran+"';");			
+
+			// Mientras haya registros anadimos al ArrayList
+			while (rs.next()) { 
+				
+				String numAlbaran1 = rs.getString("numAlbaran");
+				String codProducto = rs.getString("codproducto");
+				String nomProducto = rs.getString("nombreProducto");
+				int importeCompraPro = rs.getInt("importeCompra");
+				int cantidad = rs.getInt("cantidad");
+				int cantidadTotal = importeCompraPro*cantidad;
+				String codProveedor = rs.getString("codProveedor");
+				String nomProveedor = rs.getString("nombreProveedor");
+				Date fecha = rs.getDate("fecha");
+				
+				compras = new Compras(numAlbaran1,codProducto,nomProducto, cantidad, importeCompraPro, cantidadTotal, codProveedor,  nomProveedor, fecha);
+				
+				lista_compras.add(compras);
+							
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}		
+		
+		return lista_compras;
 	}
 
 }

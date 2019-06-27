@@ -15,6 +15,8 @@ import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -35,6 +37,7 @@ public class Eventos implements ActionListener, MouseListener {
 	Connection conexion;
 	ArrayList<Compras> nuevaCompra = new ArrayList<Compras>();
 	ArrayList<Ventas> nuevaVenta = new ArrayList<Ventas>();
+	JScrollPane barraDeliNote  = new JScrollPane();
 
 	public Eventos(Ventana ventana) {
 		this.ventana = ventana;
@@ -157,6 +160,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
@@ -222,6 +226,7 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -460,10 +465,12 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 		}
 		
 		else if(e.getSource() == ventana.getBotonVerificarCompra()) {	
 			
+			//Borramos el contenido del Array por si se hubiera quedado algún registro
 			for (int i = 0; i < nuevaCompra.size(); i++) {
 				nuevaCompra.remove(i);
 			}
@@ -545,7 +552,7 @@ public class Eventos implements ActionListener, MouseListener {
 							"Check",
 							JOptionPane.INFORMATION_MESSAGE);	
 					
-					ok_check =true;					
+					ok_check = true;					
 													
 					Compras c = new Compras(numAlbaran, codProducto, nomProducto, cantidad, importeCompra, importeTotal, codproveedor, nomProveedor, fecha);				
 					nuevaCompra.add(c);
@@ -556,20 +563,16 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			ArrayList<Compras> lista_compras = AccesoDB.datosCompras(conexion);
 			String numAlbaran = ventana.getJTFnumAlbaran().getText();
-			int coincide = 0;
-			System.out.println("Coincide inicial: "+coincide);
+			int coincide = 0; //Para controlar si encuentra el número de albarán en la lista de compras
 			
 			for (Compras compras : lista_compras) {
 				if(compras.getNumAlbaran().equals(numAlbaran)) {
 					coincide = 1;
-					System.out.println("Coincide OK: "+coincide+" Num Albaran: " + numAlbaran);
 					//return;
 				}
 			}
-		
-			System.out.println("Tamaño array: "+ nuevaCompra.size());
 			
-			if(ok_check == true && coincide==1) {				
+			if(ok_check == true && coincide == 1) {				
 				
 						//Mostramos Dialog 
 						JOptionPane.showMessageDialog(new JFrame(), 
@@ -589,12 +592,10 @@ public class Eventos implements ActionListener, MouseListener {
 							for (int i = 0; i < nuevaCompra.size(); i++) {
 								nuevaCompra.remove(i);
 							}				
-							System.out.println("Tamaño array: "+ nuevaCompra.size());
 						}		
 			}
 			
 			else if(ok_check == true && coincide == 0) {
-				System.out.println("** NO Coincide: "+coincide);
 				
 						int afectados1 = AccesoDB.insertarCompra(nuevaCompra, conexion);
 						int afectados2 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
@@ -603,16 +604,14 @@ public class Eventos implements ActionListener, MouseListener {
 							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
 						} 
 						else if (afectados1 == 1 && afectados2 == 0) {
-							ventana.getJLresulinsertComprafinal().setText("Error linea albaran // albaran Ok");
+							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note line");
 						}
 						else if (afectados1 == 0 && afectados2 == 1) {
-							ventana.getJLresulinsertComprafinal().setText("linea albaran OK// ERROR albaran ");
+							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
 						}
 						else if (afectados1 == 1 && afectados2 == 1) {
 							ventana.getJLresulinsertComprafinal().setText("Delivery Note added");
-						}
-						System.out.println(afectados1);
-						System.out.println(afectados2);
+						}						
 						refreshJTableCompras();
 						
 						for (int i = 0; i < nuevaCompra.size(); i++) {
@@ -620,6 +619,129 @@ public class Eventos implements ActionListener, MouseListener {
 						}	
 						System.out.println("Tamaño array: "+ nuevaCompra.size());
 					}
+			
+			else if(ok_check == false) {
+				//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must check the purchase's items first.",
+						"Check",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonDeliveryNoteCompra()) {
+			
+			//Limpiamos etiquetas
+            ventana.getJLDeliveryNoteCompras().setVisible(false);
+            ventana.getJLCustomerDomCom().setVisible(false);
+            ventana.getJLDomohogarCom().setVisible(false);
+            ventana.getJLDateCom().setVisible(false);
+            ventana.getJLSuplierCode().setVisible(false);
+            ventana.getJLSuplierCom().setVisible(false); 
+            ventana.getJLTotalAccountCom().setVisible(false);
+            ventana.getJLnumAlbaranCom().setText("");
+            ventana.getJLDateComRow().setText("");
+            ventana.getJLSuplierComRow().setText("");
+            ventana.getJLSuplierCodeRow().setText("");
+            ventana.getJLTotalAccountComSuma().setText("");
+            barraDeliNote.setVisible(false);
+			
+			//Mostramos el subpanel de compras
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(true);
+			ventana.getPanelCompras().setVisible(true);
+			ventana.getSubPanelBotonesCompras().setVisible(true);
+			
+			//Ocultamos el resto			
+			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelBotonesEmp().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);			
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelAlmacenExport().setVisible(false);
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
+			
+		}
+		
+		else if(e.getSource() == ventana.getBotonCheckDeliNoteCom()) {
+			
+			int row = ventana.getTablaCompras().getSelectedRow();
+
+            if (row != -1) {
+            	
+            	//Mostramos datos de la fila seleccionada
+                String numAlbaran = (String) ventana.getTablaCompras().getValueAt(row, 0);
+                ventana.getJLnumAlbaranCom().setText(numAlbaran);
+                
+                String fecha = (String) ventana.getTablaCompras().getValueAt(row, 8);
+                ventana.getJLDateComRow().setText(fecha);
+                
+                String sup = (String) ventana.getTablaCompras().getValueAt(row, 7);
+                ventana.getJLSuplierComRow().setText(sup);
+                
+                String sup_code = (String) ventana.getTablaCompras().getValueAt(row, 6);
+                ventana.getJLSuplierCodeRow().setText(sup_code);
+                
+                ArrayList<Compras> lista = AccesoDB.datosComprasDeliveryNote(numAlbaran, conexion);
+                
+                int suma = 0;
+                
+                for (Compras c : lista) {
+					
+                	suma = c.getImporteTotal() + suma;
+				}
+                
+                ventana.getJLTotalAccountComSuma().setText(Integer.toString(suma) + " €");
+                
+                //Mostramos datos de las Labels
+                ventana.getJLDeliveryNoteCompras().setVisible(true);
+                ventana.getJLCustomerDomCom().setVisible(true);
+                ventana.getJLDomohogarCom().setVisible(true);
+                ventana.getJLDateCom().setVisible(true);
+                ventana.getJLSuplierCode().setVisible(true);
+                ventana.getJLSuplierCom().setVisible(true); 
+                ventana.getJLTotalAccountCom().setVisible(true);
+                
+                //Creamos la Tabla con la información
+               
+                barraDeliNote.setVisible(true);
+                barraDeliNote.setBounds(20, 120, 710, 100);
+                ventana.getSubPanelDeliveryNoteCompras().add(barraDeliNote);
+        		
+        		String titulosDeliNoteCom[] = {"Product's Code", "Product's Name", "Price", "Quantity", "Total"};
+        		String infoCompras[][] = AccesoDB.obtenerMatrizDeliveryNote(numAlbaran);
+        		
+        		JTable tablaDeliNoteCom = new JTable(infoCompras,titulosDeliNoteCom);
+        		barraDeliNote.setViewportView(tablaDeliNoteCom);
+
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Delivery Note Detail",
+						JOptionPane.ERROR_MESSAGE);
+
+            }
+			
 		}
 		
 		else if(e.getSource() == ventana.getBotonExportCompra()) {
@@ -651,9 +773,7 @@ public class Eventos implements ActionListener, MouseListener {
 				ventana.getResulExportCom().setText("Error creating file");
 			}
 			
-		}
-		
-		
+		}		
 		
 		//INSERT INTO LINEA_ALBARAN (cantidad, codproducto, numAlbaran) VALUES (35, 'AMPL002', '002');
 		
@@ -674,6 +794,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);	
 			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
@@ -882,6 +1003,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);			
@@ -1047,6 +1169,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
@@ -1198,9 +1321,6 @@ public class Eventos implements ActionListener, MouseListener {
 			}
 		}
 		
-		
-
-		
 		else if(e.getSource()==ventana.getBotonCRM()) {
 			
 			//Mostramos panel Servicios
@@ -1215,6 +1335,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
@@ -1254,6 +1375,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
@@ -1316,6 +1438,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -1352,6 +1475,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelBotonesEmp().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
@@ -1450,48 +1574,37 @@ public class Eventos implements ActionListener, MouseListener {
 		}
 		else if (e.getSource()==ventana.getBotonExit()) {
 			ventana.getBotonExit().setIcon(new ImageIcon("imagenes/exit_login_hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonPurchases()) {
 			ventana.getBotonPurchases().setIcon(new ImageIcon("img/purchases hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSales()) {
 			ventana.getBotonSales().setIcon(new ImageIcon("img/sales hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSuppliers()) {
 			ventana.getBotonSuppliers().setIcon(new ImageIcon("img/suppliers hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonCustomers()) {
 			ventana.getBotonCustomers().setIcon(new ImageIcon("img/customers hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonCRM()) {
 			ventana.getBotonCRM().setIcon(new ImageIcon("img/crm hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonStock()) {
 			ventana.getBotonStock().setIcon(new ImageIcon("img/stock hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonHR()) {
 			ventana.getBotonHR().setIcon(new ImageIcon("img/human resources hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonUser()) {
 			ventana.getBotonUser().setIcon(new ImageIcon("img/boton_user hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonLogout()) {
 			ventana.getBotonLogout().setIcon(new ImageIcon("img/logout hover.png"));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonExitInit()) {
 			ventana.getBotonExitInit().setIcon(new ImageIcon("img/exit hover.png"));
-		}
-		
+		}	
 		else if (e.getSource()==ventana.getBotonInsertEmpFinal()) {
 			Image imgBotonInsertFinal = new ImageIcon("img\\insert hover.png").getImage();
 			ventana.getBotonInsertEmpFinal().setIcon(new ImageIcon(imgBotonInsertFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -1524,8 +1637,6 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportEmpleadoFinal = new ImageIcon("img\\export to file hover.png").getImage();
 			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleadoFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		
-		//
 		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert hover.png").getImage();
 			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -1554,8 +1665,6 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete hover.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
-		
-		//
 		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
 			Image imgBotonInsertClienteok = new ImageIcon("img\\insert hover.png").getImage();
 			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -1583,11 +1692,10 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
 			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete hover.png").getImage();
 			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
-		else if (e.getSource()==ventana.getBotonActualCompra()) {
-			Image imgBotonActualCompra = new ImageIcon("img\\update purchase hover.png").getImage();
-			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonDeliveryNoteCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\delivery notes hover.png").getImage();
+			ventana.getBotonDeliveryNoteCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
 			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase hover.png").getImage();
@@ -1600,8 +1708,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonExportComFinal()) {
 			Image imgBotonExportComFinal = new ImageIcon("img\\export to file hover.png").getImage();
 			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonActualVenta()) {
 			Image imgBotonActualVenta = new ImageIcon("img\\update sale hover.png").getImage();
 			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
@@ -1622,10 +1729,17 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportStock = new ImageIcon("img\\export to file hover.png").getImage();
 			ventana.getBotonExportStock().setIcon(new ImageIcon(imgBotonExportStock.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		
 		else if (e.getSource()==ventana.getBotonExportAlmFinal()) {
 			Image imgBotonExportAlmFinal = new ImageIcon("img\\export to file hover.png").getImage();
 			ventana.getBotonExportAlmFinal().setIcon(new ImageIcon(imgBotonExportAlmFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonVerificarCompra()) {
+			Image imgBotonVerificarCompra = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonVerificarCompra().setIcon(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonInsertCompraFinal()) {
+			Image imgBotonInsertComprafinal = new ImageIcon("img\\purchases hover.png").getImage();
+			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
 		
@@ -1700,10 +1814,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonExportEmpFinal()) {
 			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}
-		
-		//
-		
+		}		
 		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
 			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier.png").getImage();
 			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
@@ -1719,24 +1830,19 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert.png").getImage();
 			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
 			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update.png").getImage();
 			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSearchProv()) {
 			Image imgBotonSearchProv = new ImageIcon("img\\search.png").getImage();
 			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
 			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
-		
-		//
 		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
 			Image imgBotonInsertClienteok = new ImageIcon("img\\insert customer.png").getImage();
 			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -1764,11 +1870,10 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
 			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
-		else if (e.getSource()==ventana.getBotonActualCompra()) {
-			Image imgBotonActualCompra = new ImageIcon("img\\update purchase.png").getImage();
-			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonDeliveryNoteCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\delivery notes.png").getImage();
+			ventana.getBotonDeliveryNoteCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
 			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase.png").getImage();
@@ -1781,8 +1886,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonExportComFinal()) {
 			Image imgBotonExportComFinal = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonActualVenta()) {
 			Image imgBotonActualVenta = new ImageIcon("img\\update sale.png").getImage();
 			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
@@ -1798,16 +1902,22 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
 			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonExportStock()) {
 			Image imgBotonExportStock = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportStock().setIcon(new ImageIcon(imgBotonExportStock.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonExportAlmFinal()) {
 			Image imgBotonExportAlmFinal = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportAlmFinal().setIcon(new ImageIcon(imgBotonExportAlmFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonVerificarCompra()) {
+			Image imgBotonVerificarCompra = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonVerificarCompra().setIcon(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonInsertCompraFinal()) {
+			Image imgBotonInsertComprafinal = new ImageIcon("img\\purchases.png").getImage();
+			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
 		
 	}
@@ -1902,8 +2012,6 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonExportEmpFinal().setContentAreaFilled(false);
 		}
-		
-		//
 		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
 			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier press.png").getImage();
 			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
@@ -1923,27 +2031,22 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert press.png").getImage();
 			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonInsertProvOk().setContentAreaFilled(false);
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
 			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update press.png").getImage();
 			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonUpdateFinalPr().setContentAreaFilled(false);
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSearchProv()) {
 			Image imgBotonSearchProv = new ImageIcon("img\\search press.png").getImage();
 			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonSearchProv().setContentAreaFilled(false);
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
 			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete press.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonDeleteProvFinal().setContentAreaFilled(false);
 		}
-		
-		//
 		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
 			Image imgBotonInsertClienteok = new ImageIcon("img\\insert customer press.png").getImage();
 			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -1983,12 +2086,11 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonVerificarCompra = new ImageIcon("img\\check press.png").getImage();
 			ventana.getBotonVerificarCompra().setIcon(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonVerificarCompra().setContentAreaFilled(false);
-		}
-		
-		else if (e.getSource()==ventana.getBotonActualCompra()) {
-			Image imgBotonActualCompra = new ImageIcon("img\\update purchase press.png").getImage();
-			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-			ventana.getBotonActualCompra().setContentAreaFilled(false);
+		}		
+		else if (e.getSource()==ventana.getBotonDeliveryNoteCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\delivery notes press.png").getImage();
+			ventana.getBotonDeliveryNoteCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeliveryNoteCompra().setContentAreaFilled(false);
 		}
 		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
 			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase press.png").getImage();
@@ -2029,14 +2131,22 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportStock = new ImageIcon("img\\export to file press.png").getImage();
 			ventana.getBotonExportStock().setIcon(new ImageIcon(imgBotonExportStock.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonExportStock().setContentAreaFilled(false);
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonExportAlmFinal()) {
 			Image imgBotonExportAlmFinal = new ImageIcon("img\\export to file press.png").getImage();
 			ventana.getBotonExportAlmFinal().setIcon(new ImageIcon(imgBotonExportAlmFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonExportAlmFinal().setContentAreaFilled(false);
 		}
-		
+		else if(e.getSource()==ventana.getBotonVerificarCompra()) {
+			Image imgBotonVerificarCompra = new ImageIcon("img\\check press.png").getImage();
+			ventana.getBotonVerificarCompra().setIcon(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonVerificarCompra().setContentAreaFilled(false);
+		}
+		else if(e.getSource()==ventana.getBotonInsertCompraFinal()) {
+			Image imgBotonInsertComprafinal = new ImageIcon("img\\purchases press.png").getImage();
+			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertCompraFinal().setContentAreaFilled(false);
+		}
 		
 	}
 
@@ -2110,8 +2220,6 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportEmpleado = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportEmpFinal().setIcon(new ImageIcon(imgBotonExportEmpleado.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		
-		//
 		else if (e.getSource()==ventana.getBotonActualizarProveedor()) {
 			Image imgBotonUpdateProveedor = new ImageIcon("img\\update supplier.png").getImage();
 			ventana.getBotonActualizarProveedor().setIcon(new ImageIcon(imgBotonUpdateProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
@@ -2127,24 +2235,19 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert.png").getImage();
 			ventana.getBotonInsertProvOk().setIcon(new ImageIcon(imgBotonInsertProvOk.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
 			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update.png").getImage();
 			ventana.getBotonUpdateFinalPr().setIcon(new ImageIcon(imgBotonUpdateFinalPr.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonSearchProv()) {
 			Image imgBotonSearchProv = new ImageIcon("img\\search.png").getImage();
 			ventana.getBotonSearchProv().setIcon(new ImageIcon(imgBotonSearchProv.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonDeleteProvFinal()) {
 			Image imgBotonDeleteProvFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteProvFinal().setIcon(new ImageIcon(imgBotonDeleteProvFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
-		
-		//
 		else if (e.getSource()==ventana.getBotonInsertClienteok()) {
 			Image imgBotonInsertClienteok = new ImageIcon("img\\insert customer.png").getImage();
 			ventana.getBotonInsertClienteok().setIcon(new ImageIcon(imgBotonInsertClienteok.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
@@ -2172,11 +2275,10 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonDeleteClienteFinal()) {
 			Image imgBotonDeleteClienteFinal = new ImageIcon("img\\delete.png").getImage();
 			ventana.getBotonDeleteClienteFinal().setIcon(new ImageIcon(imgBotonDeleteClienteFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
-		}
-		
-		else if (e.getSource()==ventana.getBotonActualCompra()) {
-			Image imgBotonActualCompra = new ImageIcon("img\\update purchase.png").getImage();
-			ventana.getBotonActualCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}		
+		else if (e.getSource()==ventana.getBotonDeliveryNoteCompra()) {
+			Image imgBotonActualCompra = new ImageIcon("img\\delivery notes.png").getImage();
+			ventana.getBotonDeliveryNoteCompra().setIcon(new ImageIcon(imgBotonActualCompra.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonDeleteCompra()) {
 			Image imgBotonDeleteCompra = new ImageIcon("img\\delete purchase.png").getImage();
@@ -2209,12 +2311,20 @@ public class Eventos implements ActionListener, MouseListener {
 		else if (e.getSource()==ventana.getBotonExportStock()) {
 			Image imgBotonExportStock = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportStock().setIcon(new ImageIcon(imgBotonExportStock.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-		}
-		
+		}		
 		else if (e.getSource()==ventana.getBotonExportAlmFinal()) {
 			Image imgBotonExportAlmFinal = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportAlmFinal().setIcon(new ImageIcon(imgBotonExportAlmFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
+		else if(e.getSource()==ventana.getBotonVerificarCompra()) {
+			Image imgBotonVerificarCompra = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonVerificarCompra().setIcon(new ImageIcon(imgBotonVerificarCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonInsertCompraFinal()) {
+			Image imgBotonInsertComprafinal = new ImageIcon("img\\purchases.png").getImage();
+			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		
 		
 	}	
 }
