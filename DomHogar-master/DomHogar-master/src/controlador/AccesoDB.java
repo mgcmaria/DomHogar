@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import tablas.Almacen;
 import tablas.Cliente;
 import tablas.Compras;
 import tablas.Empleado;
@@ -155,7 +156,7 @@ public class AccesoDB {
 			sentencia.setString(7, pass);
 			sentencia.setString(8, perfil);
 			
-			afectados = sentencia.executeUpdate(); //Ejecutamos la inserci�n
+			afectados = sentencia.executeUpdate(); //Ejecutamos la inserciï¿½n
 
 		} catch (SQLException e) {
 			e.getMessage();
@@ -293,7 +294,7 @@ public class AccesoDB {
 			sentencia.setString(3, email);
 			sentencia.setInt(4, telefono);
 
-			afectados = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
 
 		} catch (SQLException e) {
 			e.getMessage();
@@ -349,8 +350,8 @@ public class AccesoDB {
 			matrizInfoCompras[i][1] = listaCompras.get(i).getCodProducto()+"";
 			matrizInfoCompras[i][2] = listaCompras.get(i).getNomProducto()+"";
 			matrizInfoCompras[i][3] = formatea.format(listaCompras.get(i).getCantidad())+"";
-			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" €";
-			matrizInfoCompras[i][5] = formatea.format(listaCompras.get(i).getImporteTotal())+" €";
+			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" â‚¬";
+			matrizInfoCompras[i][5] = formatea.format(listaCompras.get(i).getImporteTotal())+" â‚¬";
 			matrizInfoCompras[i][6] = listaCompras.get(i).getCodProveedor()+"";
 			matrizInfoCompras[i][7] = listaCompras.get(i).getNomProveedor()+"";
 			matrizInfoCompras[i][8] = listaCompras.get(i).getFechaAlbaran()+"";
@@ -366,7 +367,7 @@ public class AccesoDB {
 		
 		Compras compras;
 		
-		//"N. Albar�n", "Codigo Producto", "Nombre producto", "Cantidad", "Importe compra", "C�d. Proveedor", "Proveedor", "Fecha"
+		//"N. Albarï¿½n", "Codigo Producto", "Nombre producto", "Cantidad", "Importe compra", "Cï¿½d. Proveedor", "Proveedor", "Fecha"
 		
 		try {			
 
@@ -420,8 +421,8 @@ public class AccesoDB {
 				matrizInfoVentas[i][1] = listaVentas.get(i).getCodServicio()+"";
 				matrizInfoVentas[i][2] = listaVentas.get(i).getNombreServicio()+"";
 				matrizInfoVentas[i][3] = formatea.format(listaVentas.get(i).getCantidad())+"";
-				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+"�";
-				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteFactura())+" �";
+				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+"ï¿½";
+				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteFactura())+" ï¿½";
 				matrizInfoVentas[i][6] = listaVentas.get(i).getDni_Cliente()+"";
 				matrizInfoVentas[i][7] = listaVentas.get(i).getNombre()+"";
 				matrizInfoVentas[i][8] = listaVentas.get(i).getFecha()+"";
@@ -567,7 +568,7 @@ public class AccesoDB {
 			sentencia.setString(2, nombre);
 			sentencia.setString(3, mail);
 
-			afectados = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
 
 		} catch (SQLException e) {
 			e.getMessage();
@@ -619,7 +620,7 @@ public class AccesoDB {
 		try {
 			FileWriter ficheroEmp = new FileWriter(f);
 			
-			ficheroEmp.write("NIF,Nombre,Apellidos,Email,Telefono,Usuario,Contrase�a,Perfil");
+			ficheroEmp.write("NIF,Nombre,Apellidos,Email,Telefono,Usuario,Contraseï¿½a,Perfil");
 			ficheroEmp.write("\n");
 			
 			for (Empleado empleado : lista_empleados) {
@@ -664,8 +665,8 @@ public static Boolean exportarFicheroCompras(String user) {
 		try {
 			FileWriter ficheroCompras = new FileWriter(f);
 			
-			ficheroCompras.write("N�mero Albar�n,Nombre,Importe Producto,Cantidad,C�digo Proveedor" +
-			"C�digo Producto,Nombre Producto,Fecha, Nombre Proveedor, Importe Total");
+			ficheroCompras.write("Nï¿½mero Albarï¿½n,Nombre,Importe Producto,Cantidad,Cï¿½digo Proveedor" +
+			"Cï¿½digo Producto,Nombre Producto,Fecha, Nombre Proveedor, Importe Total");
 			ficheroCompras.write("\n");
 			
 			for (Compras compras : lista_compras) {
@@ -713,7 +714,7 @@ public static Boolean exportarFicheroCompras(String user) {
 		try {
 			FileWriter ficheroVentas = new FileWriter(f);
 			
-			ficheroVentas.write("N�mero Factura,Importe Venta Servicio,Cantidad Total,DNI Cliente,C�digo Servicio" +
+			ficheroVentas.write("Nï¿½mero Factura,Importe Venta Servicio,Cantidad Total,DNI Cliente,Cï¿½digo Servicio" +
 			"Nombre Servicio,Fecha,Nombre, Importe Factura");
 			ficheroVentas.write("\n");
 			
@@ -750,6 +751,48 @@ public static Boolean exportarFicheroCompras(String user) {
 		return true;
 		
 	}
+	
+public static Boolean exportarFicheroAlmacen(String user) {
+		
+		File f = new File("C:\\Users\\"+user+"\\almacen.csv");
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Almacen> lista_almacen = datosAlmacen(conexion);
+		
+		try {
+			FileWriter ficheroAlmacen = new FileWriter(f);
+			
+			ficheroAlmacen.write("Código Producto,Nombre Producto,Unidades Compradas,Unidades Vendidas" +
+			"Total");
+			ficheroAlmacen.write("\n");
+			
+			for (Almacen almacen : lista_almacen) {
+				
+				ficheroAlmacen.write(almacen.getCodProducto());
+				ficheroAlmacen.write(",");
+				ficheroAlmacen.write(almacen.getNomProducto());
+				ficheroAlmacen.write(",");
+				ficheroAlmacen.write(Integer.toString(almacen.getUdsCompradas()));
+				ficheroAlmacen.write(",");
+				ficheroAlmacen.write(Integer.toString(almacen.getUdsVendidas()));
+				ficheroAlmacen.write(",");
+				ficheroAlmacen.write(Integer.toString(almacen.getTotal()));
+				ficheroAlmacen.write("\n");
+			
+			}
+			
+			ficheroAlmacen.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+	}
+	
+
 	
 
 	public static ArrayList<Producto> datosProducto(Connection conexion) {
@@ -812,7 +855,7 @@ public static Boolean exportarFicheroCompras(String user) {
 			sentencia.setDate(2, fecha);
 			sentencia.setString(3, numAlbaran);
 
-			afectados1 = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+			afectados1 = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
 			System.out.println("Insercion albaran: " + afectados1);
 
 		} catch (SQLException e) {
@@ -846,7 +889,7 @@ public static Boolean exportarFicheroCompras(String user) {
 			sentencia.setString(2, codProducto);
 			sentencia.setString(3, numAlbaran);
 
-			afectados = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
 			System.out.println("Insercion linea albaran: " + afectados);
 		} catch (SQLException e) {
 			e.getMessage();
@@ -880,7 +923,7 @@ public static Boolean exportarFicheroCompras(String user) {
 			sentencia.setDate(2, fecha);
 			sentencia.setString(3, numFactura);
 
-			afectados = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
 
 		} catch (SQLException e) {
 			e.getMessage();
@@ -913,7 +956,7 @@ public static Boolean exportarFicheroCompras(String user) {
 			sentencia.setString(2, codServicio);
 			sentencia.setString(3, numFactura);
 
-			afectados = sentencia.executeUpdate(); // Ejecutamos la inserci�n
+			afectados = sentencia.executeUpdate(); // Ejecutamos la inserciï¿½n
 
 		} catch (SQLException e) {
 			e.getMessage();
@@ -921,5 +964,107 @@ public static Boolean exportarFicheroCompras(String user) {
 		return afectados;
 	}
 	
+	//STOCK
+	public static String[][] obtenerMatrizStock() {
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Almacen> listaAlmacen = AccesoDB.datosAlmacen(conexion);
+
+		String matrizInfoAlmacen[][] = new String[listaAlmacen.size()][5];
+
+		for (int i = 0; i < listaAlmacen.size(); i++) {
+			matrizInfoAlmacen[i][0] = listaAlmacen.get(i).getCodProducto()+"";
+			matrizInfoAlmacen[i][1] = listaAlmacen.get(i).getNomProducto()+"";
+			matrizInfoAlmacen[i][2] = listaAlmacen.get(i).getUdsCompradas()+"";
+			matrizInfoAlmacen[i][3] = listaAlmacen.get(i).getUdsVendidas()+"";
+			matrizInfoAlmacen[i][4] = listaAlmacen.get(i).getTotal()+"";
+		}
+		return matrizInfoAlmacen;		
+	}	
+	
+	public static ArrayList<Almacen> datosAlmacen(Connection conexion) {
+		
+		
+		ArrayList<Almacen> lista_Almacen = new ArrayList<Almacen>();
+		
+		Almacen almacen;
+		
+		try {			
+
+			Statement sentencia = conexion.createStatement(); 
+			ResultSet rs = sentencia.executeQuery("SELECT p.cod_Producto, p.nombreProducto, la.cantidad, lf.uds_Producto from PRODUCTO p join LINEA_ALBARAN la on p.cod_Producto = la.codproducto join LINEA_FACTURA lf on lf.cod_Producto = la.codproducto");		
+
+			while (rs.next()) { 
+				
+				String codProducto = rs.getString("cod_Producto");
+				String nomProducto = rs.getString("nombreProducto");
+				int udsCompradas = rs.getInt("cantidad");
+				int udsVendidas = rs.getInt("uds_Producto");
+				int total = udsCompradas-udsVendidas;
+				
+				almacen = new Almacen(codProducto,nomProducto, udsCompradas, udsVendidas, total);
+
+				lista_Almacen.add(almacen);
+							
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}		
+		
+		return lista_Almacen;
+	}
+	
+	public static String[][] obtenerMatrizStockResumen() {
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Almacen> listaAlmacen = AccesoDB.datosAlmacenResumen(conexion);
+
+		String matrizInfoAlmacen[][] = new String[listaAlmacen.size()][5];
+
+		for (int i = 0; i < listaAlmacen.size(); i++) {
+			matrizInfoAlmacen[i][0] = listaAlmacen.get(i).getCodProducto()+"";
+			matrizInfoAlmacen[i][1] = listaAlmacen.get(i).getNomProducto()+"";
+			matrizInfoAlmacen[i][2] = listaAlmacen.get(i).getUdsCompradas()+"";
+			matrizInfoAlmacen[i][3] = listaAlmacen.get(i).getUdsVendidas()+"";
+			matrizInfoAlmacen[i][4] = listaAlmacen.get(i).getTotal()+"";
+		}
+		return matrizInfoAlmacen;		
+	}	
+	
+	public static ArrayList<Almacen> datosAlmacenResumen(Connection conexion) {
+		
+		
+		ArrayList<Almacen> lista_Almacen = new ArrayList<Almacen>();
+		
+		Almacen almacen;
+		
+		try {			
+
+			Statement sentencia = conexion.createStatement(); 
+			ResultSet rs = sentencia.executeQuery("SELECT p.cod_Producto, p.nombreProducto, sum(la.cantidad) as sum_cant, sum(lf.uds_Producto) as sum_uds from PRODUCTO p join LINEA_ALBARAN la on p.cod_Producto = la.codproducto join LINEA_FACTURA lf on lf.cod_Producto = la.codproducto group by cod_Producto");		
+
+			while (rs.next()) { 
+				
+				String codProducto = rs.getString("cod_Producto");
+				String nomProducto = rs.getString("nombreProducto");
+				int udsCompradas = rs.getInt("sum_cant");
+				int udsVendidas = rs.getInt("sum_uds");
+				int total = udsCompradas-udsVendidas;
+				
+				almacen = new Almacen(codProducto,nomProducto, udsCompradas, udsVendidas, total);
+
+				lista_Almacen.add(almacen);
+							
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}		
+		
+		return lista_Almacen;
+	}
 
 }

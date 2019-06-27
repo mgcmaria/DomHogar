@@ -2,15 +2,17 @@ package tablas;
 
 public class Linea_Factura {
 	
-	private String 	codLinea, codServicio, numFactura;
-	private int cantidad;
+	private String 	codLinea, codServicio, numFactura, codProducto;
+	private int cantidad, udsProducto;
 	
-	public Linea_Factura(String codLinea, String codServicio, String numFactura, int cantidad) {
+	public Linea_Factura(String codLinea, String codServicio, String numFactura, int cantidad, String codProducto, int udsProducto) {
 		super();
 		this.codLinea = codLinea;
 		this.codServicio = codServicio;
 		this.numFactura = numFactura;
 		this.cantidad = cantidad;
+		this.codProducto = codProducto;
+		this.udsProducto = udsProducto;
 	}
 
 	public String getCodLinea() {
@@ -43,6 +45,22 @@ public class Linea_Factura {
 
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+
+	public String getCodProducto() {
+		return codProducto;
+	}
+
+	public void setCodProducto(String codProducto) {
+		this.codProducto = codProducto;
+	}
+
+	public int getUdsProducto() {
+		return udsProducto;
+	}
+
+	public void setUdsProducto(int udsProducto) {
+		this.udsProducto = udsProducto;
 	}
 	
 	
