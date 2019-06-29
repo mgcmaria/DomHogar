@@ -1129,4 +1129,88 @@ public static Boolean exportarFicheroAlmacen(String user) {
 		return lista_compras;
 	}
 
+	public static String[][] obtenerMatrizDeliveryNoteDelete(String numAlbaranDelete) {
+		
+		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
+		
+		Connection conexion = AccesoDB.conexion();
+
+		ArrayList<Compras> listaCompras = AccesoDB.datosComprasDeliveryNote(numAlbaranDelete, conexion);
+
+		//String titulosDeliNoteCom[] = {"Product's Code", "Product's Name", "Quantity", "Purchase amount", "Total Account", 
+				//"Supplier's code", "Supplier", "Date"};
+		
+		String matrizInfoCompras[][] = new String[listaCompras.size()][8];
+
+		for (int i = 0; i < listaCompras.size(); i++) {
+			matrizInfoCompras[i][0] = listaCompras.get(i).getCodProducto()+"";
+			matrizInfoCompras[i][1] = listaCompras.get(i).getNomProducto()+"";			
+			matrizInfoCompras[i][2] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" €";			
+			matrizInfoCompras[i][3] = formatea.format(listaCompras.get(i).getCantidad())+"";
+			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteTotal())+" €";
+			matrizInfoCompras[i][5] = listaCompras.get(i).getCodProveedor()+"";
+			matrizInfoCompras[i][6] = listaCompras.get(i).getNomProveedor()+"";
+			matrizInfoCompras[i][7] = listaCompras.get(i).getFechaAlbaran()+"";
+		}
+		return matrizInfoCompras;
+		
+	}
+
+	public static int deleteLineaAlbaranCompras(String numAlbaranDelete, String numProductoDelete,
+			int cantidadDeleteCom, Connection conexion) {
+
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM LINEA_ALBARAN WHERE numAlbaran = '"+numAlbaranDelete+"' AND codproducto = '"+numProductoDelete+"' AND cantidad = "+cantidadDeleteCom;
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;	
+		
+	}
+
+	public static int deleteAlbaranCompras(String numAlbaranDelete, Connection conexion) {
+		
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM ALBARAN WHERE numAlbaran = '"+ numAlbaranDelete +"'";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Afectados Albaran:" + afectados);
+		return afectados;		
+		
+	}
+
+	public static int deleteLineaAlbaranCompras(String numAlbaranDelete, Connection conexion) {
+		// TODO Auto-generated method stub
+		
+		int afectados = 0;
+		
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM LINEA_ALBARAN WHERE numAlbaran = '"+ numAlbaranDelete +"'";
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Afectados lineaAlbaran:" + afectados);
+		
+		return afectados;		
+	}
+
 }
