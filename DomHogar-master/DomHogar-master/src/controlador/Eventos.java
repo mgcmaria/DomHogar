@@ -38,6 +38,11 @@ public class Eventos implements ActionListener, MouseListener {
 	ArrayList<Compras> nuevaCompra = new ArrayList<Compras>();
 	ArrayList<Ventas> nuevaVenta = new ArrayList<Ventas>();
 	JScrollPane barraDeliNote  = new JScrollPane();
+	JScrollPane barraDeliNoteDelete  = new JScrollPane();
+	JTable tablaDeliNoteDeleteCom;
+	JScrollPane barraBill  = new JScrollPane();
+	JScrollPane barraBillDelete  = new JScrollPane();
+	JTable tablaBillDeleteVen;
 
 	public Eventos(Ventana ventana) {
 		this.ventana = ventana;
@@ -182,6 +187,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelEmpUpdate().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			
 			ventana.setSize(400,520);
 			ventana.setResizable(false);
@@ -250,6 +259,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonDeleteEmpFinal().setVisible(false);
 			ventana.getSubPanelEmpUpdate().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 		}
 		
 		else if (e.getSource() == ventana.getBotonInsertEmpFinal()) {
@@ -390,7 +403,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonExpEmplFichero()) {
 			
 			//Limpiamos la etiqueta usuario
-			ventana.getInsertUsuarioPC().setText("");
+			ventana.getInsertUsuarioPCEmpleado().setText("");
 			
 			//Ocultamos los paneles de insert, update empleado y boton delete
 			ventana.getSubPanelEmpInsertar().setVisible(false);
@@ -406,7 +419,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonExportEmpFinal()) {
 			
 			//Recojemos el usuario del PC
-			String user = ventana.getInsertUsuarioPC().getText();
+			String user = ventana.getInsertUsuarioPCEmpleado().getText();
 			
 			Boolean ok_fichero = AccesoDB.exportarFicheroEmpleados(user);
 			
@@ -466,6 +479,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 		}
 		
 		else if(e.getSource() == ventana.getBotonVerificarCompra()) {	
@@ -678,6 +695,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(false);
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			
 		}
 		
@@ -744,14 +765,203 @@ public class Eventos implements ActionListener, MouseListener {
 			
 		}
 		
+		else if(e.getSource() == ventana.getBotonDeleteCompra()) {
+
+			//Limpiamos etiquetas
+            ventana.getJLDeliveryNoteDeleteCom().setVisible(false);
+            barraDeliNoteDelete.setVisible(false);
+            ventana.getJLnumAlbaranDeleteCom().setText("");
+            ventana.getBotonDeleteLineaAlbaran().setVisible(false);
+            ventana.getBotonDeleteAlabaran().setVisible(false);
+            ventana.getJLselecJTableComDeleteLineAlbaran().setVisible(false);
+            ventana.getJLselecJTableComDeleteAlbaran().setVisible(false);
+
+
+			//Mostramos el subpanel de compras
+			ventana.getSubPanelComprasDelete().setVisible(true);
+			ventana.getPanelCompras().setVisible(true);
+			ventana.getSubPanelBotonesCompras().setVisible(true);
+
+			//Ocultamos el resto			
+			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelBotonesEmp().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);			
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelAlmacenExport().setVisible(false);
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);		
+
+
+		}
+
+		else if(e.getSource() == ventana.getBotonCheckDeliNoteComDelete()) {
+
+			//Almacenamos en una variable el número de la fila seleccionada
+			int rowDelete = ventana.getTablaCompras().getSelectedRow();
+
+			//Si el número de fila es dstinto a -1 es que se ha seleccionado una fila
+            if (rowDelete != -1) {
+
+            	//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                String numAlbaranDelete = (String) ventana.getTablaCompras().getValueAt(rowDelete, 0);
+                ventana.getJLnumAlbaranDeleteCom().setText(numAlbaranDelete);          
+
+                //Mostramos datos de las Labels que están ocultos en la ventana
+                ventana.getJLDeliveryNoteDeleteCom().setVisible(true);
+                ventana.getBotonDeleteLineaAlbaran().setVisible(true);
+                ventana.getBotonDeleteAlabaran().setVisible(true);
+                ventana.getJLselecJTableComDeleteLineAlbaran().setVisible(true);
+                ventana.getJLselecJTableComDeleteAlbaran().setVisible(true);
+
+                //Creamos la Tabla con la información               
+                barraDeliNoteDelete.setVisible(true);
+                barraDeliNoteDelete.setBounds(20, 50, 710, 100);
+                ventana.getSubPanelComprasDelete().add(barraDeliNoteDelete);
+
+        		String titulosDeliNoteCom[] = {"Product's Code", "Product's Name", "Purchase amount", "Quantity","Total Account", 
+        				"Supplier's code", "Supplier", "Date"};
+        		String infoCompras[][] = AccesoDB.obtenerMatrizDeliveryNoteDelete(numAlbaranDelete);
+
+        		tablaDeliNoteDeleteCom = new JTable(infoCompras,titulosDeliNoteCom);
+        		barraDeliNoteDelete.setViewportView(tablaDeliNoteDeleteCom);
+
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Delete Delivery Note",
+						JOptionPane.ERROR_MESSAGE);
+            }
+		}
+
+		else if(e.getSource() == ventana.getBotonDeleteLineaAlbaran()) {
+
+			//Almacenamos en una variable el número de la fila seleccionada
+			int rowDeleteLine = tablaDeliNoteDeleteCom.getSelectedRow();
+
+			//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+            String numAlbaranDelete = ventana.getJLnumAlbaranDeleteCom().getText();
+
+			//Si el número de fila es dstinto a -1 es que se ha seleccionado una fila
+            if (rowDeleteLine != -1) {
+
+            	//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                String numProductoDelete = (String) tablaDeliNoteDeleteCom.getValueAt(rowDeleteLine, 0);
+                //Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                int cantidadDeleteCom = Integer.parseInt((String) tablaDeliNoteDeleteCom.getValueAt(rowDeleteLine, 3));
+
+                int afect = AccesoDB.deleteLineaAlbaranCompras(numAlbaranDelete, numProductoDelete, cantidadDeleteCom, conexion);
+
+                if(afect == 1) {
+
+                	//Mostramos Dialog 
+    				JOptionPane.showMessageDialog(new JFrame(), 
+    						"Delivery Note line deleted",
+    						"Delete Delivery Note",
+    						JOptionPane.INFORMATION_MESSAGE);
+
+    				refreshJTableDeleteCompras(numAlbaranDelete);
+    				refreshJTableCompras();
+
+                } else {
+
+                	//Mostramos Dialog 
+    				JOptionPane.showMessageDialog(new JFrame(), 
+    						"ERROR to delete the Delivery Note Line",
+    						"Delete Delivery Note",
+    						JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Delete Delivery Note",
+						JOptionPane.ERROR_MESSAGE);
+            }			
+		}
+
+		else if(e.getSource() == ventana.getBotonDeleteAlabaran()) {
+
+			//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+            String numAlbaranDelete = ventana.getJLnumAlbaranDeleteCom().getText();
+
+            int resp = JOptionPane.showConfirmDialog(null, 
+            		"Do you want delete the Delivery Note "+ numAlbaranDelete + "?\n"
+            				+"This operation can't be undone.", 
+            		"Delete Delivery Note", 
+            		JOptionPane.YES_NO_OPTION, 
+            		JOptionPane.QUESTION_MESSAGE);
+
+           if (JOptionPane.OK_OPTION == resp) {
+
+        	   int afect = AccesoDB.deleteAlbaranCompras(numAlbaranDelete, conexion);
+               int afect1 = AccesoDB.deleteLineaAlbaranCompras(numAlbaranDelete, conexion);
+
+               if(afect == 1 && afect1 >= 1) {
+
+               	//Mostramos Dialog 
+   				JOptionPane.showMessageDialog(new JFrame(), 
+   						"Delivery Note DELETED from DataBase",
+   						"Delete Delivery Note",
+   						JOptionPane.INFORMATION_MESSAGE);
+
+   				refreshJTableDeleteCompras(numAlbaranDelete);
+   				refreshJTableCompras();
+
+               } else {
+
+               	//Mostramos Dialog 
+   				JOptionPane.showMessageDialog(new JFrame(), 
+   						"ERROR to delete the Delivery Note",
+   						"Delete Delivery Note",
+   						JOptionPane.ERROR_MESSAGE);
+               }
+
+           } else {
+
+              	//Mostramos Dialog 
+  				JOptionPane.showMessageDialog(new JFrame(), 
+  						"Abort Deleting ...",
+  						"Delete Delivery Note",
+  						JOptionPane.ERROR_MESSAGE);
+           }
+
+		}
+
+		
+
+		
 		else if(e.getSource() == ventana.getBotonExportCompra()) {
 			
 			//Limpiamos la etiqueta usuario
-			ventana.getInsertUsuarioPC().setText("");
+			ventana.getInsertUsuarioPCCompras().setText("");
 			
 			
 			ventana.getSubPanelInsertCompras().setVisible(false);
-
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			//Mostramos el panel de Export
 			ventana.getSubPanelComprasExport().setVisible(true);
 			
@@ -760,7 +970,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonExportComFinal()) {
 			
 			//Recojemos el usuario del PC
-			String user = ventana.getInsertUsuarioPC().getText();
+			String user = ventana.getInsertUsuarioPCCompras().getText();
 			
 			Boolean ok_fichero = AccesoDB.exportarFicheroCompras(user);
 			
@@ -812,25 +1022,34 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelComprasExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			
 		}
 		
 		//EN PRUEBAS
-		else if(e.getSource() == ventana.getBotonVerificarVenta()) {			
+		else if(e.getSource() == ventana.getBotonVerificarVenta()) {	
 			
-			//Recogemos en un Array los servicios y clientes
+			//Borramos el contenido del Array por si se hubiera quedado algÃºn registro
+			for (int i = 0; i < nuevaVenta.size(); i++) {
+				nuevaVenta.remove(i);
+			}
+			
+			//Recogemos en un Array los servicios y clientees
 			ArrayList<Servicio> lista_servicios = AccesoDB.datosServicio(conexion);
 			ArrayList<Cliente> lista_clientes = AccesoDB.datosCliente(conexion);
 			
 			//Recogemos en variables los datos introducidos por el usuario
 			String codServicio = ventana.getComboServicioVentas().getSelectedItem().toString();
-			String dni_Cliente = ventana.getComboClienteVentas().getSelectedItem().toString();
+			String codCliente = ventana.getComboClienteVentas().getSelectedItem().toString();
 			String numFactura = ventana.getJTFnumFactura().getText();
-			String nombreServicio = null;
-			String nombre = null;
+			String nomServicio = null;
+			String nomCliente = null;
 			int cantidad = 0;
-			int importeVentaServicio = 0;
-			int cantidadTotal = 0;
+			int importeVenta = 0;
+			int importeTotal = 0;
 			
 			Calendar hoy = new GregorianCalendar(); //obtiene la fecha actual
 			//ahora accedemos a los anios, meses, dias:
@@ -862,24 +1081,24 @@ public class Eventos implements ActionListener, MouseListener {
 			//Comprobamos los datos de servicio
 			for (Servicio servicio : lista_servicios) {
 				if(codServicio.equalsIgnoreCase(servicio.getCodServicio())) {
-					importeVentaServicio = servicio.getImporteServicio();
-					cantidadTotal = cantidad * servicio.getImporteServicio();
-					nombreServicio = servicio.getNombreServicio().toString();
-					ventana.getJLresulComboSerVenta().setText(nombreServicio);
+					importeVenta = servicio.getImporteServicio();
+					importeTotal = cantidad * servicio.getImporteServicio();
+					nomServicio = servicio.getNombreServicio().toString();
+					ventana.getJLresulComboSerVenta().setText(nomServicio);
 					ventana.getJLresulimporVentaServ().setText(Integer.toString(servicio.getImporteServicio()).toString()+" ï¿½ unity");
-					ventana.getJLresulimporTotalServ().setText(Integer.toString(cantidadTotal).toString()+" ï¿½ total amount");
+					ventana.getJLresulimporTotalServ().setText(Integer.toString(importeTotal).toString()+" ï¿½ total amount");
 				} 
 			}
 			
-			//Comprobamos los datos de clientes
+			//Comprobamos los datos de cliente
 			for (Cliente cliente : lista_clientes) {
-				if(dni_Cliente.equalsIgnoreCase(cliente.getDni_Cliente())) {	
-					nombre = cliente.getNombre().toString();
-					ventana.getJLresulComboClienteVentas().setText(nombre);
+				if(codCliente.equalsIgnoreCase(cliente.getDni_Cliente())) {	
+					nomCliente = cliente.getNombre().toString();
+					ventana.getJLresulComboClienteVentas().setText(nomCliente);
 				} 
 			}
 			
-			//Si algun componente de la los valores del Insert estï¿½ vacï¿½o
+			//Si algun componente de la los valores del Insert estÃ¡ vacÃ­o
 			if(ventana.getJTFnumFactura().getText().isEmpty() || ventana.getComboServicioVentas().getSelectedItem().toString().contains("Service code") ||
 				    ventana.getComboClienteVentas().getSelectedItem().toString().contains("Customer's code"))
 				{
@@ -891,68 +1110,396 @@ public class Eventos implements ActionListener, MouseListener {
 				} else {
 					//Mostramos Dialog 
 					JOptionPane.showMessageDialog(new JFrame(), 
-							"You can insert a new Sale",
+							"You can insert a new Purchase",
 							"Check",
 							JOptionPane.INFORMATION_MESSAGE);	
 					
-					ok_check =true;					
+					ok_check = true;					
 													
-					Ventas v = new Ventas(numFactura, codServicio, nombreServicio, cantidad, importeVentaServicio, cantidadTotal, dni_Cliente, nombre, fecha);				
+					Ventas v = new Ventas(numFactura, codServicio, nomServicio, cantidad, importeVenta, importeTotal, codCliente, nomCliente, fecha);				
 					nuevaVenta.add(v);
 				}	
 		}
 		
+		
 		//EN PRUEBAS
 		else if(e.getSource() == ventana.getBotonInsertVentaFinal()) {
 			
-			if(ok_check == true) {
+			ArrayList<Ventas> lista_ventas = AccesoDB.datosVentas(conexion);
+			String numFactura = ventana.getJTFnumFactura().getText();
+			int coincide = 0; //Para controlar si encuentra el nÃºmero de factura en la lista de ventas
+			
+			for (Ventas ventas : lista_ventas) {
+				if(ventas.getNumFactura().equals(numFactura)) {
+					coincide = 1;
+					//return;
+				}
+			}
+			
+			if(ok_check == true && coincide == 1) {				
 				
-				String numFactura = ventana.getJTFnumFactura().getText();
-				
-				for (Ventas ventas : nuevaVenta) {
-					if(ventas.getNumFactura().contains(numFactura)) {
 						//Mostramos Dialog 
 						JOptionPane.showMessageDialog(new JFrame(), 
-								"Delivery note exists. New line will be inserted",
+								"Bill exists. New line will be inserted",
 								"Check",
 								JOptionPane.INFORMATION_MESSAGE);	
 						
-						int afectados1 = AccesoDB.insertarLineaFactura(nuevaVenta, conexion);
+						int afectados = AccesoDB.insertarLineaFactura(nuevaVenta, conexion);
 						
-						if (afectados1 == 0) {
+						if (afectados == 0) {
 							ventana.getJLresulinsertVentafinal().setText("Error adding Bill line");
 						} else {
 							ventana.getJLresulinsertVentafinal().setText("Bill line added");
 							
-							refreshJTableVentas();
+							refreshJTableCompras();
+							
+							for (int i = 0; i < nuevaVenta.size(); i++) {
+								nuevaVenta.remove(i);
+							}				
 						}		
-					} else {
-						int afectados = AccesoDB.insertarVenta(nuevaVenta, conexion);
+			}
+			
+			else if(ok_check == true && coincide == 0) {
+				
+						int afectados1 = AccesoDB.insertarVenta(nuevaVenta, conexion);
 						int afectados2 = AccesoDB.insertarLineaFactura(nuevaVenta, conexion);
 						
-						if (afectados == 0 || afectados2 == 0) {
+						if (afectados1 == 0 && afectados2 == 0) {
 							ventana.getJLresulinsertVentafinal().setText("Error adding Bill");
-						} else {
+						} 
+						else if (afectados1 == 1 && afectados2 == 0) {
+							ventana.getJLresulinsertVentafinal().setText("Error adding Bill line");
+						}
+						else if (afectados1 == 0 && afectados2 == 1) {
+							ventana.getJLresulinsertVentafinal().setText("Error adding Bill");
+						}
+						else if (afectados1 == 1 && afectados2 == 1) {
 							ventana.getJLresulinsertVentafinal().setText("Bill added");
-							
-							refreshJTableVentas();
-						}		
+						}						
+						refreshJTableVentas();
+						
+						for (int i = 0; i < nuevaVenta.size(); i++) {
+							nuevaVenta.remove(i);
+						}	
+						System.out.println("TamaÃ±o array: "+ nuevaVenta.size());
 					}
-				}				
-			} else {
-				ventana.getJLresulinsertVentafinal().setText("Check all items");
+			
+			else if(ok_check == false) {
+				//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must check the sale's items first.",
+						"Check",
+						JOptionPane.ERROR_MESSAGE);
 			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonBillsVentas()) {
+			
+			//Limpiamos etiquetas
+            ventana.getJLBills().setVisible(false);
+            ventana.getJLCustomer().setVisible(false);
+            ventana.getJLDate().setVisible(false);
+            ventana.getJLCustomerName().setVisible(false);
+            ventana.getJLTotalAmount().setVisible(false);
+            ventana.getJLnumBill().setText("");
+            ventana.getJLCustomerRow().setText("");
+            ventana.getJLDateRow().setText("");
+            ventana.getJLCustomerNameRow().setText("");
+            ventana.getJLTotalAmountSum().setText("");
+            barraBill.setVisible(false);
+			
+			//Mostramos el subpanel de compras
+			ventana.getPanelVentas().setVisible(true);
+			ventana.getSubPanelBills().setVisible(true);
+			ventana.getSubPanelBotonesVentas().setVisible(true);
+			
+			//Ocultamos el resto			
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelBotonesEmp().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);			
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelAlmacenExport().setVisible(false);
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			
 		}
 		
+		else if(e.getSource() == ventana.getBotonCheckBill()) {
+			
+			int row = ventana.getTablaVentas().getSelectedRow();
+
+            if (row != -1) {
+            	
+            	//Mostramos datos de la fila seleccionada
+                String numFactura = (String) ventana.getTablaVentas().getValueAt(row, 0);
+                ventana.getJLnumBill().setText(numFactura);
+                
+                String fecha = (String) ventana.getTablaVentas().getValueAt(row, 8);
+                ventana.getJLDateRow().setText(fecha);
+                
+                String cus = (String) ventana.getTablaVentas().getValueAt(row, 6);
+                ventana.getJLCustomerRow().setText(cus);
+                
+                String cus_nif = (String) ventana.getTablaVentas().getValueAt(row, 7);
+                ventana.getJLCustomerNameRow().setText(cus_nif);
+                
+                ArrayList<Ventas> lista_ventas = AccesoDB.datosVentasBill(numFactura, conexion);
+                
+                int suma = 0;
+                
+                for (Ventas v : lista_ventas) {
+					
+                	suma = v.getImporteTotal() + suma;
+				}
+                
+                ventana.getJLTotalAmountSum().setText(Integer.toString(suma) + " €");
+                
+                //Mostramos datos de las Labels
+                ventana.getJLBills().setVisible(true);
+                ventana.getJLCustomer().setVisible(true);
+                ventana.getJLDate().setVisible(true);
+                ventana.getJLCustomerName().setVisible(true);
+                ventana.getJLTotalAmount().setVisible(true);
+                
+                //Creamos la Tabla con la informaciÃ³n
+               
+                barraBill.setVisible(true);
+                barraBill.setBounds(20, 120, 710, 100);
+                ventana.getSubPanelBills().add(barraBill);
+        		
+        		String titulosBillVen[] = {"Service Code", "Service Name", "Price", "Quantity", "Total"};
+        		String infoVentas[][] = AccesoDB.obtenerMatrizBill(numFactura);
+        		
+        		JTable tablaBillVen = new JTable(infoVentas,titulosBillVen);
+        		barraBill.setViewportView(tablaBillVen);
+
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Bill Detail",
+						JOptionPane.ERROR_MESSAGE);
+
+            }
+			
+		}
 		
+		else if(e.getSource() == ventana.getBotonDeleteVenta()) {
+
+            ventana.getJLBillDeleteVen().setVisible(false);
+            barraBillDelete.setVisible(false);
+            ventana.getJLnumFacturaDeleteVen().setText("");
+            ventana.getBotonDeleteLineaFactura().setVisible(false);
+            ventana.getBotonDeleteFactura().setVisible(false);
+            ventana.getJLselecJTableVenDeleteLineFactura().setVisible(false);
+            ventana.getJLselecJTableVenDeleteFactura().setVisible(false);
+
+
+			//Mostramos el subpanel de ventas
+			ventana.getSubPanelVentasDelete().setVisible(true);
+			ventana.getPanelVentas().setVisible(true);
+			ventana.getSubPanelBotonesVentas().setVisible(true);
+
+			//Ocultamos el resto			
+			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelBotonesEmp().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);			
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelAlmacenExport().setVisible(false);
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);	
+			ventana.getSubPanelComprasDelete().setVisible(false);
+			ventana.getPanelCompras().setVisible(false);
+			ventana.getSubPanelBotonesCompras().setVisible(false);	
+
+
+		}
+
+		else if(e.getSource() == ventana.getBotonCheckBillVenDelete()) {
+
+			//Almacenamos en una variable el número de la fila seleccionada
+			int rowDelete = ventana.getTablaVentas().getSelectedRow();
+
+			//Si el número de fila es dstinto a -1 es que se ha seleccionado una fila
+            if (rowDelete != -1) {
+
+            	//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                String numFacturaDelete = (String) ventana.getTablaVentas().getValueAt(rowDelete, 0);
+                ventana.getJLnumFacturaDeleteVen().setText(numFacturaDelete);          
+
+                //Mostramos datos de las Labels que están ocultos en la ventana
+                ventana.getJLBillDeleteVen().setVisible(true);
+                ventana.getBotonDeleteLineaFactura().setVisible(true);
+                ventana.getBotonDeleteFactura().setVisible(true);
+                ventana.getJLselecJTableVenDeleteLineFactura().setVisible(true);
+                ventana.getJLselecJTableVenDeleteFactura().setVisible(true);
+
+                //Creamos la Tabla con la información               
+                barraBillDelete.setVisible(true);
+                barraBillDelete.setBounds(20, 50, 710, 100);
+                ventana.getSubPanelVentasDelete().add(barraBillDelete);
+
+        		String titulosBillVen[] = {"Service Code", "Service Name", "Purchase amount", "Quantity","Total Amount", 
+        				"Customer's DNI", "Customer", "Date"};
+        		String infoVentas[][] = AccesoDB.obtenerMatrizBillDelete(numFacturaDelete);
+
+        		tablaBillDeleteVen = new JTable(infoVentas,titulosBillVen);
+        		barraBillDelete.setViewportView(tablaBillDeleteVen);
+
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Delete Bill",
+						JOptionPane.ERROR_MESSAGE);
+            }
+		}
+
+		else if(e.getSource() == ventana.getBotonDeleteLineaFactura()) {
+
+			//Almacenamos en una variable el número de la fila seleccionada
+			int rowDeleteLine = tablaBillDeleteVen.getSelectedRow();
+
+			//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+            String numFacturaDelete = ventana.getJLnumFacturaDeleteVen().getText();
+
+			//Si el número de fila es dstinto a -1 es que se ha seleccionado una fila
+            if (rowDeleteLine != -1) {
+
+            	//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                String numServicioDelete = (String) tablaBillDeleteVen.getValueAt(rowDeleteLine, 0);
+                //Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                int cantidadDeleteVen = Integer.parseInt((String) tablaBillDeleteVen.getValueAt(rowDeleteLine, 3));
+
+                int afect = AccesoDB.deleteLineaFacturaVentas(numFacturaDelete, numServicioDelete, cantidadDeleteVen, conexion);
+
+                if(afect == 1) {
+
+                	//Mostramos Dialog 
+    				JOptionPane.showMessageDialog(new JFrame(), 
+    						"Bill's line deleted",
+    						"Delete Bill",
+    						JOptionPane.INFORMATION_MESSAGE);
+
+    				refreshJTableDeleteVentas(numFacturaDelete);
+    				refreshJTableVentas();
+
+                } else {
+
+                	//Mostramos Dialog 
+    				JOptionPane.showMessageDialog(new JFrame(), 
+    						"ERROR deleting Bill's line",
+    						"Delete Bill",
+    						JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Delete Bill",
+						JOptionPane.ERROR_MESSAGE);
+            }			
+		}
+
+		else if(e.getSource() == ventana.getBotonDeleteFactura()) {
+
+			//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+            String numFacturaDelete = ventana.getJLnumFacturaDeleteVen().getText();
+
+            int resp = JOptionPane.showConfirmDialog(null, 
+            		"Do you want delete Bill "+ numFacturaDelete + "?\n"
+            				+"This operation can't be undone.", 
+            		"Delete Bill", 
+            		JOptionPane.YES_NO_OPTION, 
+            		JOptionPane.QUESTION_MESSAGE);
+
+           if (JOptionPane.OK_OPTION == resp) {
+
+        	   int afect = AccesoDB.deleteFacturaVentas(numFacturaDelete, conexion);
+               int afect1 = AccesoDB.deleteLineaFacturaVentas(numFacturaDelete, conexion);
+
+               if(afect == 1 && afect1 >= 1) {
+
+               	//Mostramos Dialog 
+   				JOptionPane.showMessageDialog(new JFrame(), 
+   						"Bill DELETED from DataBase",
+   						"Delete Bill",
+   						JOptionPane.INFORMATION_MESSAGE);
+
+   				refreshJTableDeleteVentas(numFacturaDelete);
+   				refreshJTableVentas();
+
+               } else {
+
+               	//Mostramos Dialog 
+   				JOptionPane.showMessageDialog(new JFrame(), 
+   						"ERROR deleting Bill",
+   						"Delete Bill",
+   						JOptionPane.ERROR_MESSAGE);
+               }
+
+           } else {
+
+              	//Mostramos Dialog 
+  				JOptionPane.showMessageDialog(new JFrame(), 
+  						"Abort Deleting ...",
+  						"Delete Bill",
+  						JOptionPane.ERROR_MESSAGE);
+           }
+
+		}
+
+		
+
 		else if(e.getSource() == ventana.getBotonExportVenta()) {
 			
 			//Limpiamos la etiqueta usuario
-			ventana.getInsertUsuarioPC().setText("");
+			ventana.getInsertUsuarioPCVentas().setText("");
 			
 			//Ocultamos los paneles de insert, update empleado y boton delete
 			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
 
 			//Mostramos el panel de Export
 			ventana.getSubPanelVentasExport().setVisible(true);
@@ -962,7 +1509,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonExportVenFinal()) {
 			
 			//Recojemos el usuario del PC
-			String user = ventana.getInsertUsuarioPC().getText();
+			String user = ventana.getInsertUsuarioPCVentas().getText();
 			
 			Boolean ok_fichero = AccesoDB.exportarFicheroVentas(user);
 			
@@ -976,6 +1523,7 @@ public class Eventos implements ActionListener, MouseListener {
 			}
 			
 		}
+		
 		
 		else if(e.getSource()==ventana.getBotonSuppliers()) {
 			
@@ -991,7 +1539,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesProv().setVisible(true);
 			ventana.getSubPanelEditProv().setVisible(false);
 			ventana.getSubPanelElimProv().setVisible(false);
-			
+			ventana.getSubPanelProvExport().setVisible(false);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -1018,6 +1566,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelComprasExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
+		
 		}
 		
 		
@@ -1149,6 +1701,40 @@ public class Eventos implements ActionListener, MouseListener {
 			}
 		}
 		
+		else if(e.getSource() == ventana.getBotonProveedorExport()) {
+			
+			//Limpiamos la etiqueta usuario
+			ventana.getInsertUsuarioPCProveedor().setText("");
+			
+			//Ocultamos los paneles de insert, update empleado y boton delete
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			
+			//Mostramos el panel de Export
+			ventana.getPanelProveedores().setVisible(true);
+			ventana.getSubPanelProvExport().setVisible(true);
+			ventana.getPanelBotonesProv().setVisible(true);
+			
+		}
+		
+		else if(e.getSource() == ventana.getBotonExportProvFinal()) {
+			
+			//Recojemos el usuario del PC
+			String user = ventana.getInsertUsuarioPCProveedor().getText();
+			
+			Boolean ok_fichero = AccesoDB.exportarFicheroProveedores(user);
+			
+			if (ok_fichero == true) {
+				
+				ventana.getResulExportProv().setText("File created");
+				
+			} else {
+				
+				ventana.getResulExportProv().setText("Error creating file");
+			}
+			
+		}
 		
 		else if(e.getSource()==ventana.getBotonCustomers()) {
 			
@@ -1158,6 +1744,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelBotonesCliente().setVisible(true);
 			ventana.getSubPanelEditCliente().setVisible(false);
 			ventana.getSubPanelElimCliente().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
 			
 			//Ocultamos el resto
 			ventana.getPanelEmpleado().setVisible(false);
@@ -1184,6 +1771,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelComprasExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
+
 			
 			
 		}
@@ -1321,6 +1912,40 @@ public class Eventos implements ActionListener, MouseListener {
 			}
 		}
 		
+		else if(e.getSource() == ventana.getBotonClienteExport()) {
+			
+			//Limpiamos la etiqueta usuario
+			ventana.getInsertUsuarioPCCliente().setText("");
+			
+			//Ocultamos los paneles de insert, update empleado y boton delete
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+
+			
+			//Mostramos el panel de Export
+			ventana.getSubPanelClienteExport().setVisible(true);
+			ventana.getPanelBotonesCliente().setVisible(true);
+		}
+		
+		else if(e.getSource() == ventana.getBotonExportClienteFinal()) {
+			
+			//Recojemos el usuario del PC
+			String user = ventana.getInsertUsuarioPCCliente().getText();
+			
+			Boolean ok_fichero = AccesoDB.exportarFicheroClientes(user);
+			
+			if (ok_fichero == true) {
+				
+				ventana.getResulExportCliente().setText("File created");
+				
+			} else {
+				
+				ventana.getResulExportCliente().setText("Error creating file");
+			}
+			
+		}
+		
 		else if(e.getSource()==ventana.getBotonCRM()) {
 			
 			//Mostramos panel Servicios
@@ -1355,10 +1980,16 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelComprasExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
-			
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 		}
 		
 		else if(e.getSource()==ventana.getBotonStock()) {
+			
+			refreshJTableStock();
+			refreshJTableStockResumen();
 			
 			//Mostramos panel de Stock
 			ventana.getPanelAlmacen().setVisible(true);
@@ -1393,13 +2024,16 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelComprasExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
-			
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 		}	
 		
 		else if(e.getSource() == ventana.getBotonExportStock()) {
 			
 			//Limpiamos la etiqueta usuario
-			ventana.getInsertUsuarioPC().setText("");
+			ventana.getInsertUsuarioPCAlmacen().setText("");
 			
 			//Ocultamos los paneles de insert, update empleado y boton delete
 			ventana.getPanelAlmacen().setVisible(false);
@@ -1412,7 +2046,7 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonExportAlmFinal()) {
 			
 			//Recojemos el usuario del PC
-			String user = ventana.getInsertUsuarioPC().getText();
+			String user = ventana.getInsertUsuarioPCAlmacen().getText();
 			
 			Boolean ok_fichero = AccesoDB.exportarFicheroAlmacen(user);
 			
@@ -1458,6 +2092,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelComprasExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			
 		}	
 		
@@ -1495,6 +2133,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelEmpExport().setVisible(false);
 			ventana.getSubPanelComprasExport().setVisible(false);
 			ventana.getSubPanelVentasExport().setVisible(false);
+			ventana.getSubPanelProvExport().setVisible(false);
+			ventana.getSubPanelBills().setVisible(false);
+			ventana.getSubPanelClienteExport().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 					
 		}
 		
@@ -1510,6 +2152,20 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getTablaCompras().setModel(modelo);
 			
 			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
+		
+		private void refreshJTableDeleteCompras(String numAlbaranDelete) {
+
+				String titulosDeliNoteCom[] = {"Product's Code", "Product's Name", "Purchase amount", "Quantity","Total Account", 
+	    				"Supplier's code", "Supplier", "Date"};
+	    		String infoCompras[][] = AccesoDB.obtenerMatrizDeliveryNoteDelete(numAlbaranDelete);
+
+				TableModel modelo = new DefaultTableModel(infoCompras, titulosDeliNoteCom);
+
+				tablaDeliNoteDeleteCom.setModel(modelo);
+
+				((AbstractTableModel) modelo).fireTableDataChanged();
+
 		}
 	
 		private void refreshJTableEmpleados() {
@@ -1564,7 +2220,47 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			((AbstractTableModel) modelo).fireTableDataChanged();
 		}
+		
+		private void refreshJTableDeleteVentas(String numFacturaDelete) {
+
+			String titulosBillVen[] = {"Service Code", "Service Name", "Purchase amount", "Quantity","Total Amount", 
+    				"Customer's DNI", "Customer", "Date"};
+    		String infoVentas[][] = AccesoDB.obtenerMatrizBillDelete(numFacturaDelete);
+
+			TableModel modelo = new DefaultTableModel(infoVentas, titulosBillVen);
+
+			tablaBillDeleteVen.setModel(modelo);
+
+			((AbstractTableModel) modelo).fireTableDataChanged();
+
+	}
+
 	
+		private void refreshJTableStock() {
+			//ACTUALIZAR JTABLE STOCK
+			
+			String titulosStock[] = {"Product Code", "Product Name", "Purchased Units", "Sold Units", "Total"};
+			String infoStock[][] = AccesoDB.obtenerMatrizStock();
+			
+			TableModel modelo = new DefaultTableModel(infoStock,titulosStock);
+			
+			ventana.getTablaAlmacen().setModel(modelo);
+			
+			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
+		
+		private void refreshJTableStockResumen() {
+			//ACTUALIZAR JTABLE STOCK RESUMEN
+			
+			String titulosStock[] = {"Product Code", "Product Name", "Purchased Units", "Sold Units", "Total"};
+			String infoStock[][] = AccesoDB.obtenerMatrizStockResumen();
+			
+			TableModel modelo = new DefaultTableModel(infoStock,titulosStock);
+			
+			ventana.getTablaAlmacen2().setModel(modelo);
+			
+			((AbstractTableModel) modelo).fireTableDataChanged();
+		}
 
 
 	@Override
@@ -1649,9 +2345,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonBorrarProveedor = new ImageIcon("img\\delete supplier hover.png").getImage();
 			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
-			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes hover.png").getImage();
-			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonProveedorExport()) {
+			Image imgBotonProveedorExport = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonProveedorExport().setIcon(new ImageIcon(imgBotonProveedorExport.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalPr()) {
 			Image imgBotonUpdateFinalPr = new ImageIcon("img\\update hover.png").getImage();
@@ -1677,9 +2373,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonBorrarCliente = new ImageIcon("img\\delete customer hover.png").getImage();
 			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonBills()) {
-			Image imgBotonBills = new ImageIcon("img\\bills hover.png").getImage();
-			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonClienteExport()) {
+			Image imgBotonClienteExpor = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonClienteExport().setIcon(new ImageIcon(imgBotonClienteExpor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
 			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update hover.png").getImage();
@@ -1709,9 +2405,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportComFinal = new ImageIcon("img\\export to file hover.png").getImage();
 			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}		
-		else if (e.getSource()==ventana.getBotonActualVenta()) {
-			Image imgBotonActualVenta = new ImageIcon("img\\update sale hover.png").getImage();
-			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonBillsVentas()) {
+			Image imgBotonBillsVentas = new ImageIcon("img\\bills hover.png").getImage();
+			ventana.getBotonBillsVentas().setIcon(new ImageIcon(imgBotonBillsVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
 			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale hover.png").getImage();
@@ -1741,8 +2437,63 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonInsertComprafinal = new ImageIcon("img\\purchases hover.png").getImage();
 			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		else if(e.getSource()==ventana.getBotonCheckDeliNoteCom()) {
+			Image imgBotonCheckDeliNoteCom = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonCheckDeliNoteCom().setIcon(new ImageIcon(imgBotonCheckDeliNoteCom.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonVerificarVenta()) {
+			Image imgBotonVerificarVenta = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonVerificarVenta().setIcon(new ImageIcon(imgBotonVerificarVenta.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonInsertVentaFinal()) {
+			Image imgBotonInsertVentaFinal = new ImageIcon("img\\sales hover.png").getImage();
+			ventana.getBotonInsertVentaFinal().setIcon(new ImageIcon(imgBotonInsertVentaFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportProvFinal()) {
+			Image imgBotonExportProvFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportProvFinal().setIcon(new ImageIcon(imgBotonExportProvFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportClienteFinal()) {
+			Image imgBotonExportClienteFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportClienteFinal().setIcon(new ImageIcon(imgBotonExportClienteFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonCheckBill()) {
+			Image imgBotonCheckBill = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonCheckBill().setIcon(new ImageIcon(imgBotonCheckBill.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 		
-		
+		else if (e.getSource()==ventana.getBotonCheckDeliNoteComDelete()) {
+			Image imgBotonCheckDeliNoteComDelete = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonCheckDeliNoteComDelete().setIcon(new ImageIcon(imgBotonCheckDeliNoteComDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonDeleteAlabaran()) {
+			Image imgBotonDeleteAlabaran = new ImageIcon("img\\delete purchase hover.png").getImage();
+			ventana.getBotonDeleteAlabaran().setIcon(new ImageIcon(imgBotonDeleteAlabaran.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonCheckBillVenDelete()) {
+			Image imgBotonCheckBillVenDelete = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonCheckBillVenDelete().setIcon(new ImageIcon(imgBotonCheckBillVenDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteFactura()) {
+			Image imgBotonDeleteFactura = new ImageIcon("img\\delete sale hover.png").getImage();
+			ventana.getBotonDeleteFactura().setIcon(new ImageIcon(imgBotonDeleteFactura.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 	}
 
 	@Override
@@ -1823,9 +2574,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonBorrarProveedor = new ImageIcon("img\\delete supplier.png").getImage();
 			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
-			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes.png").getImage();
-			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonProveedorExport()) {
+			Image imgBotonProveedorExport = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonProveedorExport().setIcon(new ImageIcon(imgBotonProveedorExport.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}	
 		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert.png").getImage();
@@ -1855,9 +2606,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonBorrarCliente = new ImageIcon("img\\delete customer.png").getImage();
 			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonBills()) {
-			Image imgBotonBills = new ImageIcon("img\\bills.png").getImage();
-			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonClienteExport()) {
+			Image imgBotonClienteExport = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonClienteExport().setIcon(new ImageIcon(imgBotonClienteExport.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
 			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update.png").getImage();
@@ -1887,9 +2638,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportComFinal = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}		
-		else if (e.getSource()==ventana.getBotonActualVenta()) {
-			Image imgBotonActualVenta = new ImageIcon("img\\update sale.png").getImage();
-			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonBillsVentas()) {
+			Image imgBotonBillsVentas = new ImageIcon("img\\bills.png").getImage();
+			ventana.getBotonBillsVentas().setIcon(new ImageIcon(imgBotonBillsVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
 			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale.png").getImage();
@@ -1919,7 +2670,63 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonInsertComprafinal = new ImageIcon("img\\purchases.png").getImage();
 			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
+		else if(e.getSource()==ventana.getBotonCheckDeliNoteCom()) {
+			Image imgBotonCheckDeliNoteCom = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonCheckDeliNoteCom().setIcon(new ImageIcon(imgBotonCheckDeliNoteCom.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonVerificarVenta()) {
+			Image imgBotonVerificarVenta = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonVerificarVenta().setIcon(new ImageIcon(imgBotonVerificarVenta.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonInsertVentaFinal()) {
+			Image imgBotonInsertVentaFinal = new ImageIcon("img\\sales.png").getImage();
+			ventana.getBotonInsertVentaFinal().setIcon(new ImageIcon(imgBotonInsertVentaFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportProvFinal()) {
+			Image imgBotonExportProvFinal = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportProvFinal().setIcon(new ImageIcon(imgBotonExportProvFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportClienteFinal()) {
+			Image imgBotonExportClienteFinal = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportClienteFinal().setIcon(new ImageIcon(imgBotonExportClienteFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonCheckBill()) {
+			Image imgBotonCheckBill = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonCheckBill().setIcon(new ImageIcon(imgBotonCheckBill.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 		
+		else if (e.getSource()==ventana.getBotonCheckDeliNoteComDelete()) {
+			Image imgBotonCheckDeliNoteComDelete = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonCheckDeliNoteComDelete().setIcon(new ImageIcon(imgBotonCheckDeliNoteComDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonDeleteAlabaran()) {
+			Image imgBotonDeleteAlabaran = new ImageIcon("img\\delete purchase.png").getImage();
+			ventana.getBotonDeleteAlabaran().setIcon(new ImageIcon(imgBotonDeleteAlabaran.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonCheckBillVenDelete()) {
+			Image imgBotonCheckBillVenDelete = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonCheckBillVenDelete().setIcon(new ImageIcon(imgBotonCheckBillVenDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteFactura()) {
+			Image imgBotonDeleteFactura = new ImageIcon("img\\delete sale.png").getImage();
+			ventana.getBotonDeleteFactura().setIcon(new ImageIcon(imgBotonDeleteFactura.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 	}
 
 	@Override
@@ -2022,10 +2829,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonBorrarProveedor().setContentAreaFilled(false);
 		}
-		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
-			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes press.png").getImage();
-			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-			ventana.getBotonDeliveryNotes().setContentAreaFilled(false);
+		else if (e.getSource()==ventana.getBotonProveedorExport()) {
+			Image imgBotonProveedorExport = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonProveedorExport().setIcon(new ImageIcon(imgBotonProveedorExport.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonProveedorExport().setContentAreaFilled(false);
 		}	
 		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert press.png").getImage();
@@ -2062,10 +2869,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonBorrarCliente().setContentAreaFilled(false);
 		}
-		else if (e.getSource()==ventana.getBotonBills()) {
-			Image imgBotonBills = new ImageIcon("img\\bills press.png").getImage();
-			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-			ventana.getBotonBills().setContentAreaFilled(false);
+		else if (e.getSource()==ventana.getBotonClienteExport()) {
+			Image imgBotonClienteExport = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonClienteExport().setIcon(new ImageIcon(imgBotonClienteExport.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonClienteExport().setContentAreaFilled(false);
 		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
 			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update press.png").getImage();
@@ -2107,10 +2914,10 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonExportComFinal().setContentAreaFilled(false);
 		}
-		else if (e.getSource()==ventana.getBotonActualVenta()) {
-			Image imgBotonActualVenta = new ImageIcon("img\\update sale press.png").getImage();
-			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
-			ventana.getBotonActualVenta().setContentAreaFilled(false);
+		else if (e.getSource()==ventana.getBotonBillsVentas()) {
+			Image imgBotonBillsVentas = new ImageIcon("img\\bills press.png").getImage();
+			ventana.getBotonBillsVentas().setIcon(new ImageIcon(imgBotonBillsVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonBillsVentas().setContentAreaFilled(false);
 		}
 		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
 			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale press.png").getImage();
@@ -2147,7 +2954,77 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 			ventana.getBotonInsertCompraFinal().setContentAreaFilled(false);
 		}
+		else if(e.getSource()==ventana.getBotonCheckDeliNoteCom()) {
+			Image imgBotonCheckDeliNoteCom = new ImageIcon("img\\check press.png").getImage();
+			ventana.getBotonCheckDeliNoteCom().setIcon(new ImageIcon(imgBotonCheckDeliNoteCom.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonCheckDeliNoteCom().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportComFinal().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportVenFinal().setContentAreaFilled(false);
+		}
+		else if(e.getSource()==ventana.getBotonVerificarVenta()) {
+			Image imgBotonVerificarVenta = new ImageIcon("img\\check press.png").getImage();
+			ventana.getBotonVerificarVenta().setIcon(new ImageIcon(imgBotonVerificarVenta.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonVerificarVenta().setContentAreaFilled(false);
+		}
+		else if(e.getSource()==ventana.getBotonInsertVentaFinal()) {
+			Image imgBotonInsertVentaFinal = new ImageIcon("img\\sales press.png").getImage();
+			ventana.getBotonInsertVentaFinal().setIcon(new ImageIcon(imgBotonInsertVentaFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonInsertVentaFinal().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportProvFinal()) {
+			Image imgBotonExportProvFinal = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportProvFinal().setIcon(new ImageIcon(imgBotonExportProvFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportProvFinal().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportClienteFinal()) {
+			Image imgBotonExportClienteFinal = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportClienteFinal().setIcon(new ImageIcon(imgBotonExportClienteFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportClienteFinal().setContentAreaFilled(false);
+		}
+		else if(e.getSource()==ventana.getBotonCheckBill()) {
+			Image imgBotonCheckBill = new ImageIcon("img\\check press.png").getImage();
+			ventana.getBotonCheckBill().setIcon(new ImageIcon(imgBotonCheckBill.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonCheckBill().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportComFinal().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file press.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonExportVenFinal().setContentAreaFilled(false);
+		}
 		
+		else if (e.getSource()==ventana.getBotonCheckDeliNoteComDelete()) {
+			Image imgBotonCheckDeliNoteComDelete = new ImageIcon("img\\check press.png").getImage();
+			ventana.getBotonCheckDeliNoteComDelete().setIcon(new ImageIcon(imgBotonCheckDeliNoteComDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonCheckDeliNoteComDelete().setContentAreaFilled(false);
+		}
+		else if(e.getSource()==ventana.getBotonDeleteAlabaran()) {
+			Image imgBotonDeleteAlabaran = new ImageIcon("img\\delete purchase press.png").getImage();
+			ventana.getBotonDeleteAlabaran().setIcon(new ImageIcon(imgBotonDeleteAlabaran.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeleteAlabaran().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonCheckBillVenDelete()) {
+			Image imgBotonCheckBillVenDelete = new ImageIcon("img\\check press.png").getImage();
+			ventana.getBotonCheckBillVenDelete().setIcon(new ImageIcon(imgBotonCheckBillVenDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonCheckBillVenDelete().setContentAreaFilled(false);
+		}
+		else if (e.getSource()==ventana.getBotonDeleteFactura()) {
+			Image imgBotonDeleteFactura = new ImageIcon("img\\delete sale press.png").getImage();
+			ventana.getBotonDeleteFactura().setIcon(new ImageIcon(imgBotonDeleteFactura.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+			ventana.getBotonDeleteFactura().setContentAreaFilled(false);
+		}
 	}
 
 	@Override
@@ -2228,9 +3105,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonBorrarProveedor = new ImageIcon("img\\delete supplier.png").getImage();
 			ventana.getBotonBorrarProveedor().setIcon(new ImageIcon(imgBotonBorrarProveedor.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonDeliveryNotes()) {
-			Image imgBotonDeliveryNotes = new ImageIcon("img\\delivery notes.png").getImage();
-			ventana.getBotonDeliveryNotes().setIcon(new ImageIcon(imgBotonDeliveryNotes.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonProveedorExport()) {
+			Image imgBotonProveedorExport = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonProveedorExport().setIcon(new ImageIcon(imgBotonProveedorExport.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}	
 		else if (e.getSource()==ventana.getBotonInsertProvOk()) {
 			Image imgBotonInsertProvOk = new ImageIcon("img\\insert.png").getImage();
@@ -2260,9 +3137,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonBorrarCliente = new ImageIcon("img\\delete customer.png").getImage();
 			ventana.getBotonBorrarCliente().setIcon(new ImageIcon(imgBotonBorrarCliente.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonBills()) {
-			Image imgBotonBills = new ImageIcon("img\\bills.png").getImage();
-			ventana.getBotonBills().setIcon(new ImageIcon(imgBotonBills.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonClienteExport()) {
+			Image imgBotonClienteExport = new ImageIcon("img\\export to file.png").getImage();
+			ventana.getBotonClienteExport().setIcon(new ImageIcon(imgBotonClienteExport.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}		
 		else if (e.getSource()==ventana.getBotonUpdateFinalCl()) {
 			Image imgBotonUpdateFinalCl = new ImageIcon("img\\update.png").getImage();
@@ -2292,9 +3169,9 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonExportComFinal = new ImageIcon("img\\export to file.png").getImage();
 			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
-		else if (e.getSource()==ventana.getBotonActualVenta()) {
-			Image imgBotonActualVenta = new ImageIcon("img\\update sale.png").getImage();
-			ventana.getBotonActualVenta().setIcon(new ImageIcon(imgBotonActualVenta.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		else if (e.getSource()==ventana.getBotonBillsVentas()) {
+			Image imgBotonBillsVentas = new ImageIcon("img\\bills.png").getImage();
+			ventana.getBotonBillsVentas().setIcon(new ImageIcon(imgBotonBillsVentas.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
 		}
 		else if (e.getSource()==ventana.getBotonDeleteVenta()) {
 			Image imgBotonDeleteVenta = new ImageIcon("img\\delete sale.png").getImage();
@@ -2324,8 +3201,62 @@ public class Eventos implements ActionListener, MouseListener {
 			Image imgBotonInsertComprafinal = new ImageIcon("img\\purchases.png").getImage();
 			ventana.getBotonInsertCompraFinal().setIcon(new ImageIcon(imgBotonInsertComprafinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		}
-		
-		
+		else if(e.getSource()==ventana.getBotonCheckDeliNoteCom()) {
+			Image imgBotonCheckDeliNoteCom = new ImageIcon("img\\check.png").getImage();
+			ventana.getBotonCheckDeliNoteCom().setIcon(new ImageIcon(imgBotonCheckDeliNoteCom.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonVerificarVenta()) {
+			Image imgBotonVerificarVenta = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonVerificarVenta().setIcon(new ImageIcon(imgBotonVerificarVenta.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonInsertVentaFinal()) {
+			Image imgBotonInsertVentaFinal = new ImageIcon("img\\sales hover.png").getImage();
+			ventana.getBotonInsertVentaFinal().setIcon(new ImageIcon(imgBotonInsertVentaFinal.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportProvFinal()) {
+			Image imgBotonExportProvFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportProvFinal().setIcon(new ImageIcon(imgBotonExportProvFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportClienteFinal()) {
+			Image imgBotonExportClienteFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportClienteFinal().setIcon(new ImageIcon(imgBotonExportClienteFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonCheckBill()) {
+			Image imgBotonCheckBill = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonCheckBill().setIcon(new ImageIcon(imgBotonCheckBill.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportComFinal()) {
+			Image imgBotonExportComFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportComFinal().setIcon(new ImageIcon(imgBotonExportComFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonExportVenFinal()) {
+			Image imgBotonExportVenFinal = new ImageIcon("img\\export to file hover.png").getImage();
+			ventana.getBotonExportVenFinal().setIcon(new ImageIcon(imgBotonExportVenFinal.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonCheckDeliNoteComDelete()) {
+			Image imgBotonCheckDeliNoteComDelete = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonCheckDeliNoteComDelete().setIcon(new ImageIcon(imgBotonCheckDeliNoteComDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if(e.getSource()==ventana.getBotonDeleteAlabaran()) {
+			Image imgBotonDeleteAlabaran = new ImageIcon("img\\delete purchase hover.png").getImage();
+			ventana.getBotonDeleteAlabaran().setIcon(new ImageIcon(imgBotonDeleteAlabaran.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonCheckBillVenDelete()) {
+			Image imgBotonCheckBillVenDelete = new ImageIcon("img\\check hover.png").getImage();
+			ventana.getBotonCheckBillVenDelete().setIcon(new ImageIcon(imgBotonCheckBillVenDelete.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
+		else if (e.getSource()==ventana.getBotonDeleteFactura()) {
+			Image imgBotonDeleteFactura = new ImageIcon("img\\delete sale hover.png").getImage();
+			ventana.getBotonDeleteFactura().setIcon(new ImageIcon(imgBotonDeleteFactura.getScaledInstance(160,42, Image.SCALE_SMOOTH)));
+		}
 	}	
 }
 

@@ -421,8 +421,8 @@ public class AccesoDB {
 				matrizInfoVentas[i][1] = listaVentas.get(i).getCodServicio()+"";
 				matrizInfoVentas[i][2] = listaVentas.get(i).getNombreServicio()+"";
 				matrizInfoVentas[i][3] = formatea.format(listaVentas.get(i).getCantidad())+"";
-				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+"ï¿½";
-				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteFactura())+" ï¿½";
+				matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+"€";
+				matrizInfoVentas[i][5] = formatea.format(listaVentas.get(i).getImporteTotal())+" €";
 				matrizInfoVentas[i][6] = listaVentas.get(i).getDni_Cliente()+"";
 				matrizInfoVentas[i][7] = listaVentas.get(i).getNombre()+"";
 				matrizInfoVentas[i][8] = listaVentas.get(i).getFecha()+"";
@@ -654,7 +654,7 @@ public class AccesoDB {
 		
 	}
 	
-public static Boolean exportarFicheroCompras(String user) {
+	public static Boolean exportarFicheroCompras(String user) {
 		
 		File f = new File("C:\\Users\\"+user+"\\compras.csv");
 		
@@ -724,7 +724,7 @@ public static Boolean exportarFicheroCompras(String user) {
 				ficheroVentas.write(",");
 				ficheroVentas.write(Integer.toString(ventas.getImporteVentaServicio()));
 				ficheroVentas.write(",");
-				ficheroVentas.write(Integer.toString(ventas.getCantidadTotal()));
+				ficheroVentas.write(Integer.toString(ventas.getCantidad()));
 				ficheroVentas.write(",");
 				ficheroVentas.write(ventas.getDni_Cliente());
 				ficheroVentas.write(",");
@@ -737,7 +737,7 @@ public static Boolean exportarFicheroCompras(String user) {
 				ficheroVentas.write(",");
 				ficheroVentas.write(ventas.getNombre());
 				ficheroVentas.write(",");
-				ficheroVentas.write(Integer.toString(ventas.getImporteFactura()));
+				ficheroVentas.write(Integer.toString(ventas.getImporteTotal()));
 				ficheroVentas.write("\n");
 			
 			}
@@ -752,7 +752,7 @@ public static Boolean exportarFicheroCompras(String user) {
 		
 	}
 	
-public static Boolean exportarFicheroAlmacen(String user) {
+	public static Boolean exportarFicheroAlmacen(String user) {
 		
 		File f = new File("C:\\Users\\"+user+"\\almacen.csv");
 		
@@ -792,6 +792,77 @@ public static Boolean exportarFicheroAlmacen(String user) {
 		
 	}
 	
+	public static Boolean exportarFicheroProveedores(String user) {
+		
+		File f = new File("C:\\Users\\"+user+"\\proveedores.csv");
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Proveedor> lista_proveedor = datosProveedor(conexion);
+		
+		try {
+			FileWriter ficheroProveedores = new FileWriter(f);
+			
+			ficheroProveedores.write("Código Proveedor,Nombre Proveedor, Mail");
+			ficheroProveedores.write("\n");
+			
+			for (Proveedor proveedor : lista_proveedor) {
+				
+				ficheroProveedores.write(proveedor.getCodproveedor());
+				ficheroProveedores.write(",");
+				ficheroProveedores.write(proveedor.getNombreProveedor());
+				ficheroProveedores.write(",");
+				ficheroProveedores.write(proveedor.getMail());
+				ficheroProveedores.write("\n");
+			
+			}
+			
+			ficheroProveedores.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+	}
+	
+	public static Boolean exportarFicheroClientes(String user) {
+		
+		File f = new File("C:\\Users\\"+user+"\\clientes.csv");
+		
+		Connection conexion = AccesoDB.conexion();
+		
+		ArrayList<Cliente> lista_clientes = datosCliente(conexion);
+		
+		try {
+			FileWriter ficheroClientes = new FileWriter(f);
+			
+			ficheroClientes.write("DNI Cliente,Nombre Cliente, Mail, Teléfono");
+			ficheroClientes.write("\n");
+			
+			for (Cliente cliente : lista_clientes) {
+				
+				ficheroClientes.write(cliente.getDni_Cliente());
+				ficheroClientes.write(",");
+				ficheroClientes.write(cliente.getNombre());
+				ficheroClientes.write(",");
+				ficheroClientes.write(cliente.getEmail());
+				ficheroClientes.write(",");
+				ficheroClientes.write(Integer.toString(cliente.getTelefono()));
+				ficheroClientes.write("\n");
+			
+			}
+			
+			ficheroClientes.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+	}
 
 	
 
@@ -1128,5 +1199,239 @@ public static Boolean exportarFicheroAlmacen(String user) {
 		
 		return lista_compras;
 	}
+	
+	
+	public static String[][] obtenerMatrizDeliveryNoteDelete(String numAlbaranDelete) {
 
+		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
+
+		Connection conexion = AccesoDB.conexion();
+
+		ArrayList<Compras> listaCompras = AccesoDB.datosComprasDeliveryNote(numAlbaranDelete, conexion);
+
+		//String titulosDeliNoteCom[] = {"Product's Code", "Product's Name", "Quantity", "Purchase amount", "Total Account", 
+				//"Supplier's code", "Supplier", "Date"};
+
+		String matrizInfoCompras[][] = new String[listaCompras.size()][8];
+
+		for (int i = 0; i < listaCompras.size(); i++) {
+			matrizInfoCompras[i][0] = listaCompras.get(i).getCodProducto()+"";
+			matrizInfoCompras[i][1] = listaCompras.get(i).getNomProducto()+"";			
+			matrizInfoCompras[i][2] = formatea.format(listaCompras.get(i).getImporteCompraProducto())+" €";			
+			matrizInfoCompras[i][3] = formatea.format(listaCompras.get(i).getCantidad())+"";
+			matrizInfoCompras[i][4] = formatea.format(listaCompras.get(i).getImporteTotal())+" €";
+			matrizInfoCompras[i][5] = listaCompras.get(i).getCodProveedor()+"";
+			matrizInfoCompras[i][6] = listaCompras.get(i).getNomProveedor()+"";
+			matrizInfoCompras[i][7] = listaCompras.get(i).getFechaAlbaran()+"";
+		}
+		return matrizInfoCompras;
+
+	}
+
+	public static int deleteLineaAlbaranCompras(String numAlbaranDelete, String numProductoDelete,
+			int cantidadDeleteCom, Connection conexion) {
+
+		int afectados = 0;
+
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM LINEA_ALBARAN WHERE numAlbaran = '"+numAlbaranDelete+"' AND codproducto = '"+numProductoDelete+"' AND cantidad = "+cantidadDeleteCom;
+
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;	
+
+	}
+
+	public static int deleteAlbaranCompras(String numAlbaranDelete, Connection conexion) {
+
+		int afectados = 0;
+
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM ALBARAN WHERE numAlbaran = '"+ numAlbaranDelete +"'";
+
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Afectados Albaran:" + afectados);
+		return afectados;		
+
+	}
+
+	public static int deleteLineaAlbaranCompras(String numAlbaranDelete, Connection conexion) {
+		// TODO Auto-generated method stub
+
+		int afectados = 0;
+
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM LINEA_ALBARAN WHERE numAlbaran = '"+ numAlbaranDelete +"'";
+
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Afectados lineaAlbaran:" + afectados);
+
+		return afectados;		
+	}
+
+	
+	public static String[][] obtenerMatrizBill(String numFactura) {
+		
+		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
+		
+		Connection conexion = AccesoDB.conexion();
+
+		ArrayList<Ventas> listaVentas = AccesoDB.datosVentasBill(numFactura, conexion);
+
+		String matrizInfoVentas[][] = new String[listaVentas.size()][5];
+
+		for (int i = 0; i < listaVentas.size(); i++) {
+			matrizInfoVentas[i][0] = listaVentas.get(i).getCodServicio()+"";
+			matrizInfoVentas[i][1] = listaVentas.get(i).getNombreServicio()+"";			
+			matrizInfoVentas[i][2] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+" €";			
+			matrizInfoVentas[i][3] = formatea.format(listaVentas.get(i).getCantidad())+"";
+			matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteTotal())+" €";
+		}
+		return matrizInfoVentas;		
+		
+	}
+
+	static ArrayList<Ventas> datosVentasBill(String numFactura, Connection conexion) {
+		
+		ArrayList<Ventas> lista_ventas = new ArrayList<Ventas>();
+		
+		Ventas ventas;
+			
+		try {			
+
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT lf.codServicio, s.nombreServicio, s.importeServicio, lf.cantidad, "
+					+ "lf.numFactura,f.fecha,f.dni_Cliente,c.nombre \r\n" + 
+					"FROM LINEA_FACTURA lf \r\n" + 
+					"JOIN SERVICIO s on lf.codServicio = s.codServicio \r\n" + 
+					"JOIN FACTURA f on lf.numFactura = f.numFactura \r\n" + 
+					"JOIN CLIENTE c on f.dni_Cliente = c.dni_Cliente \r\n" + 
+					"WHERE lf.numFactura = '"+numFactura+"';");			
+
+			// Mientras haya registros anadimos al ArrayList
+			while (rs.next()) { 
+				
+				String numFactura2 = rs.getString("numFactura");
+				String codServicio = rs.getString("codServicio");
+				String nomServicio = rs.getString("nombreServicio");
+				int importeVentaSer = rs.getInt("importeServicio");
+				int cantidad = rs.getInt("cantidad");
+				int cantidadTotal = importeVentaSer*cantidad;
+				String dniCliente = rs.getString("dni_Cliente");
+				String nomCliente = rs.getString("nombre");
+				Date fecha = rs.getDate("fecha");
+				
+				ventas = new Ventas(numFactura2,codServicio,nomServicio, cantidad, importeVentaSer, cantidadTotal, dniCliente,  nomCliente, fecha);
+				
+				lista_ventas.add(ventas);
+							
+			}
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}		
+		
+		return lista_ventas;
+	}
+	
+	public static String[][] obtenerMatrizBillDelete(String numFacturaDelete) {
+
+		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
+
+		Connection conexion = AccesoDB.conexion();
+
+		ArrayList<Ventas> listaVentas = AccesoDB.datosVentasBill(numFacturaDelete, conexion);
+
+		String matrizInfoVentas[][] = new String[listaVentas.size()][8];
+
+		for (int i = 0; i < listaVentas.size(); i++) {
+			matrizInfoVentas[i][0] = listaVentas.get(i).getCodServicio()+"";
+			matrizInfoVentas[i][1] = listaVentas.get(i).getNombreServicio()+"";			
+			matrizInfoVentas[i][2] = formatea.format(listaVentas.get(i).getImporteVentaServicio())+" €";			
+			matrizInfoVentas[i][3] = formatea.format(listaVentas.get(i).getCantidad())+"";
+			matrizInfoVentas[i][4] = formatea.format(listaVentas.get(i).getImporteTotal())+" €";
+			matrizInfoVentas[i][5] = listaVentas.get(i).getDni_Cliente()+"";
+			matrizInfoVentas[i][6] = listaVentas.get(i).getNombre()+"";
+			matrizInfoVentas[i][7] = listaVentas.get(i).getFecha()+"";
+		}
+		return matrizInfoVentas;
+
+	}
+	
+	public static int deleteLineaFacturaVentas(String numFacturaDelete, String numServicioDelete,
+			int cantidadDeleteVen, Connection conexion) {
+
+		int afectados = 0;
+
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM LINEA_FACTURA WHERE numfactura = '"+numFacturaDelete+"' AND codServicio = '"+numServicioDelete+"' AND cantidad = "+cantidadDeleteVen;
+
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;	
+
+	}
+
+	public static int deleteFacturaVentas(String numFacturaDelete, Connection conexion) {
+
+		int afectados = 0;
+
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM FACTURA WHERE numFactura = '"+ numFacturaDelete +"'";
+
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Afectados Factura:" + afectados);
+		return afectados;		
+
+	}
+	
+	public static int deleteLineaFacturaVentas(String numFacturaDelete, Connection conexion) {
+		// TODO Auto-generated method stub
+
+		int afectados = 0;
+
+		// Almacenamos en un String la Sentencia SQL
+		String sql = "DELETE FROM LINEA_FACTURA WHERE numFactura = '"+ numFacturaDelete +"'";
+
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Afectados lineaFactura:" + afectados);
+
+		return afectados;		
+	}
+	
+	
+	
 }

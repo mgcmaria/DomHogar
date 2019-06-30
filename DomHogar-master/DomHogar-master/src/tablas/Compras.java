@@ -11,6 +11,7 @@ public class Compras {
 	
 	public Compras(String numAlbaran, String codProducto, String nomProducto, int cantidad, int importeCompraProducto,  int importeTotal, 
 			String codProveedor, String nomProveedor, Date fechaAlbaran) {
+		
 		super();
 		this.numAlbaran = numAlbaran;
 		this.importeCompraProducto = importeCompraProducto;
