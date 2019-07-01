@@ -31,10 +31,10 @@ public class Ventana extends JFrame{
 	private JScrollPane barraEmpleados;
 	private JTable tablaEmpleados;
 	private JButton botonActualizarEmpleado, botonBorrarEmpleado, botonExpEmplFichero, botonInsertEmpFinal, botonUpdateEmpFinal, botonSearchEmp,
-	botonDeleteEmpFinal, botonExportEmpFinal;
+		botonDeleteEmpFinal, botonExportEmpFinal;
 	private JLabel nuevoEmpleado, updateEmpleado, deleteEmpleado, labelPreguntaCambioEmp, labelNewDataEmp, exportEmpleado;
 	private JTextField insertNomEmpl, insertApelEmpl, insertNIFEmp, insertPhoneEmp, insertEmailEmp, insertUserEmp, 
-	insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp, insertNIFDeleteEmp, insertUsuarioPCEmpleado;
+		insertPassEmp, insertPerfilEmp, insertNIFUpdateEmp, insertNewDataEmp, insertNIFDeleteEmp, insertUsuarioPCEmpleado;
 	private JLabel resulInsertEmp, resultUpdateEmp, resulBusquedaEmp, resulDeleteEmp, resulExportEmp, insertRutaExportEmp;
 	private JComboBox <String> comboUpdateEmp;
 	
@@ -45,10 +45,10 @@ public class Ventana extends JFrame{
 	private JScrollPane barraCompras;
 	private JTable tablaCompras;
 	private JLabel JLabelNuevaCompra, JLresulComboProCompra, JLresulimporCompraPro, JLresulimporTotalPro,
-		JLresulComboProveedorCompra, JLresulinsertComprafinal, exportCompras, insertRutaExportCompras, resulExportCom, JLDeliveryNoteCompras,
-		JLslectorJTableCom, JLnumAlbaranCom, JLCustomerDomCom, JLDomohogarCom, JLDateCom, JLDateComRow, JLSuplierCom, JLSuplierComRow,
-		JLSuplierCode, JLSuplierCodeRow, JLTotalAccountCom, JLTotalAccountComSuma, JLselecJTableComDelete, JLDeliveryNoteDeleteCom,
-		JLnumAlbaranDeleteCom, JLselecJTableComDeleteLineAlbaran, JLselecJTableComDeleteAlbaran;
+	JLresulComboProveedorCompra, JLresulinsertComprafinal, exportCompras, insertRutaExportCompras, resulExportCom, JLDeliveryNoteCompras,
+	JLslectorJTableCom, JLnumAlbaranCom, JLCustomerDomCom, JLDomohogarCom, JLDateCom, JLDateComRow, JLSuplierCom, JLSuplierComRow,
+	JLSuplierCode, JLSuplierCodeRow, JLTotalAccountCom, JLTotalAccountComSuma, JLselecJTableComDelete, JLDeliveryNoteDeleteCom, JLnumAlbaranDeleteCom,
+	JLselecJTableComDeleteLineAlbaran, JLselecJTableComDeleteAlbaran;
 	private JTextField JTFnumAlbaran, JTFcantidadCompra, insertUsuarioPCCompras;
 	private JComboBox <String> comboProductoCompras, comboProveedorCompras;
 	
@@ -457,10 +457,10 @@ public class Ventana extends JFrame{
 		botonCheckDeliNoteCom.setBackground(color_panel);
 		subPanelDeliveryNoteCompras.add(botonCheckDeliNoteCom);// Anadimos
 		
-		JLDeliveryNoteCompras = new JLabel("delivery note #: ");// Creamos el componente
+		JLDeliveryNoteCompras = new JLabel("Delivery note #: ");// Creamos el componente
 		JLDeliveryNoteCompras.setBounds(20, 50, 160, 30);// Posicionamos
 		JLDeliveryNoteCompras.setBorder(null);
-		JLDeliveryNoteCompras.setFont(new Font("Segoe UI",Font.BOLD,20));//Damos formato al contenido
+		JLDeliveryNoteCompras.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
 		JLDeliveryNoteCompras.setForeground(color_azul);//Color del texto
 		subPanelDeliveryNoteCompras.add(JLDeliveryNoteCompras);// Anadimos		
 		JLDeliveryNoteCompras.setVisible(false);
@@ -468,14 +468,14 @@ public class Ventana extends JFrame{
 		JLnumAlbaranCom = new JLabel();// Creamos el componente
 		JLnumAlbaranCom.setBounds(190, 50, 100, 30);// Posicionamos
 		JLnumAlbaranCom.setBorder(null); // Eliminamos el borde
-		JLnumAlbaranCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLnumAlbaranCom.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLnumAlbaranCom.setForeground(Color.darkGray);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLnumAlbaranCom);// Anadimos	
 		
 		JLCustomerDomCom = new JLabel("CUSTOMER:");// Creamos el componente
 		JLCustomerDomCom.setBounds(20, 80, 120, 30);// Posicionamos
 		JLCustomerDomCom.setBorder(null); // Eliminamos el borde
-		JLCustomerDomCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLCustomerDomCom.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLCustomerDomCom.setForeground(color_azul);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLCustomerDomCom);// Anadimos
 		JLCustomerDomCom.setVisible(false);
@@ -483,7 +483,7 @@ public class Ventana extends JFrame{
 		JLDomohogarCom = new JLabel("DomHogar, S.L.");// Creamos el componente
 		JLDomohogarCom.setBounds(140, 80, 150, 30);// Posicionamos
 		JLDomohogarCom.setBorder(null); // Eliminamos el borde
-		JLDomohogarCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLDomohogarCom.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLDomohogarCom.setForeground(Color.darkGray);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLDomohogarCom);// Anadimos
 		JLDomohogarCom.setVisible(false);
@@ -499,14 +499,14 @@ public class Ventana extends JFrame{
 		JLDateComRow = new JLabel();// Creamos el componente
 		JLDateComRow.setBounds(370, 50, 200, 30);// Posicionamos
 		JLDateComRow.setBorder(null); // Eliminamos el borde
-		JLDateComRow.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLDateComRow.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLDateComRow.setForeground(Color.darkGray);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLDateComRow);// Anadimos
 		
 		JLSuplierCom = new JLabel("SUPPLIER: ");// Creamos el componente
 		JLSuplierCom.setBounds(300, 80, 100, 30);// Posicionamos
 		JLSuplierCom.setBorder(null); // Eliminamos el borde
-		JLSuplierCom.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierCom.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLSuplierCom.setForeground(color_azul);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLSuplierCom);// Anadimos
 		JLSuplierCom.setVisible(false);
@@ -514,14 +514,14 @@ public class Ventana extends JFrame{
 		JLSuplierComRow = new JLabel();// Creamos el componente
 		JLSuplierComRow.setBounds(400, 80, 200, 30);// Posicionamos
 		JLSuplierComRow.setBorder(null); // Eliminamos el borde
-		JLSuplierComRow.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierComRow.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLSuplierComRow.setForeground(Color.darkGray);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLSuplierComRow);// Anadimos
 		
 		JLSuplierCode = new JLabel("CODE: ");// Creamos el componente
 		JLSuplierCode.setBounds(610, 80, 70, 30);// Posicionamos
 		JLSuplierCode.setBorder(null); // Eliminamos el borde
-		JLSuplierCode.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierCode.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLSuplierCode.setForeground(color_azul);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLSuplierCode);// Anadimos
 		JLSuplierCode.setVisible(false);
@@ -529,7 +529,7 @@ public class Ventana extends JFrame{
 		JLSuplierCodeRow = new JLabel();// Creamos el componente
 		JLSuplierCodeRow.setBounds(680, 80, 50, 30);// Posicionamos
 		JLSuplierCodeRow.setBorder(null); // Eliminamos el borde
-		JLSuplierCodeRow.setFont(new Font("Segoe UI", Font.BOLD, 20));// Damos formato al contenido
+		JLSuplierCodeRow.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
 		JLSuplierCodeRow.setForeground(Color.darkGray);// Color del texto
 		subPanelDeliveryNoteCompras.add(JLSuplierCodeRow);// Anadimos
 		
@@ -549,14 +549,13 @@ public class Ventana extends JFrame{
 		subPanelDeliveryNoteCompras.add(JLTotalAccountComSuma);// Anadimos
 		
 		//SUBPANEL DELETE COMPRAS
-
 		subPanelComprasDelete = new JPanel();
 		subPanelComprasDelete.setBounds(200, 270, 750, 268);
 		subPanelComprasDelete.setBackground(color_panel);
 		subPanelComprasDelete.setLayout(null);
 		add(subPanelComprasDelete);
 		subPanelComprasDelete.setVisible(false);
-
+		
 		JLselecJTableComDelete = new JLabel("(* Select a row to check purchase before delete)");// Creamos el componente
 		JLselecJTableComDelete.setBounds(140, 0, 450, 30);// Posicionamos
 		JLselecJTableComDelete.setBorder(null); // Eliminamos el borde
@@ -564,7 +563,7 @@ public class Ventana extends JFrame{
 		JLselecJTableComDelete.setForeground(color_azul);// Color del texto
 		JLselecJTableComDelete.setVerticalAlignment(JLabel.CENTER);
 		subPanelComprasDelete.add(JLselecJTableComDelete);// Anadimos
-
+		
 		Image checkDeleteCompra = new ImageIcon("img\\check.png").getImage();
 		botonCheckDeliNoteComDelete = new JButton(new ImageIcon(checkDeleteCompra.getScaledInstance(110,42, Image.SCALE_SMOOTH)));
 		botonCheckDeliNoteComDelete.setBounds(20, 0, 110, 42);
@@ -595,8 +594,8 @@ public class Ventana extends JFrame{
 		botonDeleteLineaAlbaran.setBackground(color_azul);
 		subPanelComprasDelete.add(botonDeleteLineaAlbaran);// Anadimos
 		botonDeleteLineaAlbaran.setVisible(false);
-
-		JLselecJTableComDeleteLineAlbaran = new JLabel("(* Select a row to delete a Delivery Note's line)");// Creamos el componente
+		
+		JLselecJTableComDeleteLineAlbaran = new JLabel("(* Select a row to delete a line of Delivery Note)");// Creamos el componente
 		JLselecJTableComDeleteLineAlbaran.setBounds(140, 160, 450, 42);// Posicionamos
 		JLselecJTableComDeleteLineAlbaran.setBorder(null); // Eliminamos el borde
 		JLselecJTableComDeleteLineAlbaran.setFont(new Font("Segoe UI", Font.BOLD, 14));// Damos formato al contenido
@@ -644,11 +643,12 @@ public class Ventana extends JFrame{
 		TextPrompt placeholder12 = new TextPrompt("Insert user PC. Ej. ejemplo", insertUsuarioPCCompras);
 		placeholder12.changeAlpha(0.75f);
 		placeholder12.changeStyle(Font.ITALIC);
-		insertUsuarioPCCompras.setBounds(20,70,200,30);//Posicionamos		
-		insertUsuarioPCCompras.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
-		insertUsuarioPCCompras.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
-		insertUsuarioPCCompras.setBackground(Color.WHITE); //Color de fondo
-		insertUsuarioPCCompras.setForeground(color_azul);//Color del texto
+
+	    insertUsuarioPCCompras.setBounds(20,70,200,30);//Posicionamos		
+	    insertUsuarioPCCompras.setBorder(BorderFactory.createLineBorder(color_azul, 2)); //Eliminamos el borde
+	    insertUsuarioPCCompras.setFont(new Font("Segoe UI",Font.BOLD,14));//Damos formato al contenido
+	    insertUsuarioPCCompras.setBackground(Color.WHITE); //Color de fondo
+	    insertUsuarioPCCompras.setForeground(color_azul);//Color del texto
 	    subPanelComprasExport.add(insertUsuarioPCCompras);//Anadimos	
 		
 		insertRutaExportCompras = new JLabel("You'll find the file in C:\\Users\\youruser. Name of file: compras.csv ");//Creamos el componente
@@ -2279,9 +2279,11 @@ public class Ventana extends JFrame{
 		botonDeliveryNoteCompra.addMouseListener(manejador);
 		botonDeleteCompra.addMouseListener(manejador);
 		botonExportCompra.addMouseListener(manejador);
+		botonExportComFinal.addMouseListener(manejador);
 		botonCheckDeliNoteCom.addMouseListener(manejador);
 		botonCheckDeliNoteComDelete.addMouseListener(manejador);
 		botonDeleteAlabaran.addMouseListener(manejador);
+		botonDeleteLineaAlbaran.addMouseListener(manejador);
 		
 		botonVerificarVenta.addMouseListener(manejador);
 		botonInsertVentaFinal.addMouseListener(manejador);
@@ -3049,9 +3051,11 @@ public class Ventana extends JFrame{
 		return botonClienteExport;
 	}
 
+
 	public void setBotonClienteExport(JButton botonClienteExport) {
 		this.botonClienteExport = botonClienteExport;
 	}
+
 
 
 	public JPanel getSubPanelInsertCompras() {
@@ -3632,6 +3636,7 @@ public class Ventana extends JFrame{
 		JLTotalAccountComSuma = jLTotalAccountComSuma;
 	}
 
+
 	public JLabel getJLslectorJTableCom() {
 		return JLslectorJTableCom;
 	}
@@ -3654,14 +3659,6 @@ public class Ventana extends JFrame{
 
 	public void setExportVentas(JLabel exportVentas) {
 		this.exportVentas = exportVentas;
-	}
-
-	public JLabel getInsertRutaexportVentas() {
-		return insertRutaexportVentas;
-	}
-
-	public void setInsertRutaexportVentas(JLabel insertRutaexportVentas) {
-		this.insertRutaexportVentas = insertRutaexportVentas;
 	}
 
 	public JLabel getJLBills() {
@@ -3784,14 +3781,6 @@ public class Ventana extends JFrame{
 		this.exportResAlm = exportResAlm;
 	}
 
-	public JLabel getInsertRutaExportAlm() {
-		return insertRutaExportAlm;
-	}
-
-	public void setInsertRutaExportAlm(JLabel insertRutaExportAlm) {
-		this.insertRutaExportAlm = insertRutaExportAlm;
-	}
-
 	public JPanel getSubPanelProvExport() {
 		return subPanelProvExport;
 	}
@@ -3886,6 +3875,7 @@ public class Ventana extends JFrame{
 
 	public void setBotonExportClienteFinal(JButton botonExportClienteFinal) {
 		this.botonExportClienteFinal = botonExportClienteFinal;
+
 	}
 
 	public JPanel getSubPanelComprasDelete() {
@@ -3896,6 +3886,7 @@ public class Ventana extends JFrame{
 		this.subPanelComprasDelete = subPanelComprasDelete;
 	}
 
+
 	public JButton getBotonCheckDeliNoteComDelete() {
 		return botonCheckDeliNoteComDelete;
 	}
@@ -3903,6 +3894,8 @@ public class Ventana extends JFrame{
 	public void setBotonCheckDeliNoteComDelete(JButton botonCheckDeliNoteComDelete) {
 		this.botonCheckDeliNoteComDelete = botonCheckDeliNoteComDelete;
 	}
+		
+
 
 	public JButton getBotonDeleteLineaAlbaran() {
 		return botonDeleteLineaAlbaran;
@@ -3919,6 +3912,7 @@ public class Ventana extends JFrame{
 	public void setBotonDeleteAlabaran(JButton botonDeleteAlabaran) {
 		this.botonDeleteAlabaran = botonDeleteAlabaran;
 	}
+
 
 	public JLabel getJLselecJTableComDelete() {
 		return JLselecJTableComDelete;
@@ -4032,6 +4026,7 @@ public class Ventana extends JFrame{
 		this.botonDeleteFactura = botonDeleteFactura;
 	}
 
+
 	public JTextField getInsertUsuarioPCEmpleado() {
 		return insertUsuarioPCEmpleado;
 	}
@@ -4048,12 +4043,29 @@ public class Ventana extends JFrame{
 		this.insertUsuarioPCCompras = insertUsuarioPCCompras;
 	}
 
+	public JLabel getInsertRutaexportVentas() {
+		return insertRutaexportVentas;
+	}
+
+	public void setInsertRutaexportVentas(JLabel insertRutaexportVentas) {
+		this.insertRutaexportVentas = insertRutaexportVentas;
+
+	}
+
 	public JTextField getInsertUsuarioPCVentas() {
 		return insertUsuarioPCVentas;
 	}
 
 	public void setInsertUsuarioPCVentas(JTextField insertUsuarioPCVentas) {
 		this.insertUsuarioPCVentas = insertUsuarioPCVentas;
+	}
+
+	public JLabel getInsertRutaExportAlm() {
+		return insertRutaExportAlm;
+	}
+
+	public void setInsertRutaExportAlm(JLabel insertRutaExportAlm) {
+		this.insertRutaExportAlm = insertRutaExportAlm;
 	}
 
 	public JTextField getInsertUsuarioPCAlmacen() {
@@ -4063,6 +4075,5 @@ public class Ventana extends JFrame{
 	public void setInsertUsuarioPCAlmacen(JTextField insertUsuarioPCAlmacen) {
 		this.insertUsuarioPCAlmacen = insertUsuarioPCAlmacen;
 	}
-	
-	
+
 }

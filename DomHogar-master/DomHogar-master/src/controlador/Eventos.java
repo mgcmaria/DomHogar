@@ -44,6 +44,7 @@ public class Eventos implements ActionListener, MouseListener {
 	JScrollPane barraBillDelete  = new JScrollPane();
 	JTable tablaBillDeleteVen;
 
+
 	public Eventos(Ventana ventana) {
 		this.ventana = ventana;
 	}
@@ -167,6 +168,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
@@ -236,6 +238,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -403,7 +406,12 @@ public class Eventos implements ActionListener, MouseListener {
 		else if(e.getSource() == ventana.getBotonExpEmplFichero()) {
 			
 			//Limpiamos la etiqueta usuario
+
 			ventana.getInsertUsuarioPCEmpleado().setText("");
+
+			ventana.getInsertUsuarioPCCompras().setText("");
+			ventana.getResulExportEmp().setText("");
+
 			
 			//Ocultamos los paneles de insert, update empleado y boton delete
 			ventana.getSubPanelEmpInsertar().setVisible(false);
@@ -420,18 +428,27 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Recojemos el usuario del PC
 			String user = ventana.getInsertUsuarioPCEmpleado().getText();
-			
-			Boolean ok_fichero = AccesoDB.exportarFicheroEmpleados(user);
-			
-			if (ok_fichero == true) {
+						
+			if(user.isEmpty()) {
 				
-				ventana.getResulExportEmp().setText("File created");
-				
+				//Mostramos Dialog 
+  				JOptionPane.showMessageDialog(new JFrame(), 
+  						"Please, enter you user",
+  						"Export Employees",
+  						JOptionPane.ERROR_MESSAGE);
 			} else {
 				
-				ventana.getResulExportEmp().setText("Error creating file");
-			}
-			
+				Boolean ok_fichero = AccesoDB.exportarFicheroEmpleados(user);
+				
+				if (ok_fichero == true) {
+					
+					ventana.getResulExportEmp().setText("File Created");
+					
+				} else {
+					
+					ventana.getResulExportEmp().setText("Error creating file");
+				}
+			}				
 		}
 		
 		else if(e.getSource()==ventana.getBotonPurchases()) {
@@ -614,28 +631,24 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			else if(ok_check == true && coincide == 0) {
 				
-						int afectados1 = AccesoDB.insertarCompra(nuevaCompra, conexion);
-						int afectados2 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
-						
-						if (afectados1 == 0 && afectados2 == 0) {
-							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
-						} 
-						else if (afectados1 == 1 && afectados2 == 0) {
-							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note line");
-						}
-						else if (afectados1 == 0 && afectados2 == 1) {
-							ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
-						}
-						else if (afectados1 == 1 && afectados2 == 1) {
-							ventana.getJLresulinsertComprafinal().setText("Delivery Note added");
-						}						
-						refreshJTableCompras();
-						
-						for (int i = 0; i < nuevaCompra.size(); i++) {
-							nuevaCompra.remove(i);
-						}	
-						System.out.println("Tamaño array: "+ nuevaCompra.size());
-					}
+				int afectados1 = AccesoDB.insertarCompra(nuevaCompra, conexion);
+				int afectados2 = AccesoDB.insertarLineaAlbaran(nuevaCompra, conexion);
+
+				if (afectados1 == 0 && afectados2 == 0) {
+					ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
+				} else if (afectados1 == 1 && afectados2 == 0) {
+					ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note line");
+				} else if (afectados1 == 0 && afectados2 == 1) {
+					ventana.getJLresulinsertComprafinal().setText("Error adding Delivery Note");
+				} else if (afectados1 == 1 && afectados2 == 1) {
+					ventana.getJLresulinsertComprafinal().setText("Delivery Note added");
+				}
+				refreshJTableCompras();
+
+				for (int i = 0; i < nuevaCompra.size(); i++) {
+					nuevaCompra.remove(i);
+				}
+			}
 			
 			else if(ok_check == false) {
 				//Mostramos Dialog 
@@ -704,11 +717,13 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		else if(e.getSource() == ventana.getBotonCheckDeliNoteCom()) {
 			
+			//Almacenamos en una variable el número de la fila seleccionada
 			int row = ventana.getTablaCompras().getSelectedRow();
-
+			
+			//Si el número de fila es dstinto a -1 es que se ha seleccionado una fila
             if (row != -1) {
             	
-            	//Mostramos datos de la fila seleccionada
+            	//Recogemos los valores de la fila seleccionada indicando los datos de la columna
                 String numAlbaran = (String) ventana.getTablaCompras().getValueAt(row, 0);
                 ventana.getJLnumAlbaranCom().setText(numAlbaran);
                 
@@ -732,7 +747,7 @@ public class Eventos implements ActionListener, MouseListener {
                 
                 ventana.getJLTotalAccountComSuma().setText(Integer.toString(suma) + " €");
                 
-                //Mostramos datos de las Labels
+                //Mostramos datos de las Labels que están ocultos en la ventana
                 ventana.getJLDeliveryNoteCompras().setVisible(true);
                 ventana.getJLCustomerDomCom().setVisible(true);
                 ventana.getJLDomohogarCom().setVisible(true);
@@ -741,8 +756,7 @@ public class Eventos implements ActionListener, MouseListener {
                 ventana.getJLSuplierCom().setVisible(true); 
                 ventana.getJLTotalAccountCom().setVisible(true);
                 
-                //Creamos la Tabla con la información
-               
+                //Creamos la Tabla con la información               
                 barraDeliNote.setVisible(true);
                 barraDeliNote.setBounds(20, 120, 710, 100);
                 ventana.getSubPanelDeliveryNoteCompras().add(barraDeliNote);
@@ -760,12 +774,12 @@ public class Eventos implements ActionListener, MouseListener {
 						"You must select a row",
 						"Delivery Note Detail",
 						JOptionPane.ERROR_MESSAGE);
-
             }
 			
 		}
 		
 		else if(e.getSource() == ventana.getBotonDeleteCompra()) {
+
 
 			//Limpiamos etiquetas
             ventana.getJLDeliveryNoteDeleteCom().setVisible(false);
@@ -958,34 +972,232 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Limpiamos la etiqueta usuario
 			ventana.getInsertUsuarioPCCompras().setText("");
+			//Limpiamos etiquetas
+            ventana.getJLDeliveryNoteDeleteCom().setVisible(false);
+            barraDeliNoteDelete.setVisible(false);
+            ventana.getJLnumAlbaranDeleteCom().setText("");
+            ventana.getBotonDeleteLineaAlbaran().setVisible(false);
+            ventana.getBotonDeleteAlabaran().setVisible(false);
+            ventana.getJLselecJTableComDeleteLineAlbaran().setVisible(false);
+            ventana.getJLselecJTableComDeleteAlbaran().setVisible(false);
+            
+
+			//Mostramos el subpanel de compras
+			ventana.getSubPanelComprasDelete().setVisible(true);
+			ventana.getPanelCompras().setVisible(true);
+			ventana.getSubPanelBotonesCompras().setVisible(true);
 			
-			
+			//Ocultamos el resto			
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
-			//Mostramos el panel de Export
-			ventana.getSubPanelComprasExport().setVisible(true);
+			ventana.getSubPanelComprasExport().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getPanelEmpleado().setVisible(false);
+			ventana.getSubPanelEmpInsertar().setVisible(false);
+			ventana.getSubPanelEmpUpdate().setVisible(false);
+			ventana.getSubPanelEmpDelete().setVisible(false);
+			ventana.getSubPanelBotonesEmp().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);			
+			ventana.getPanelVentas().setVisible(false);
+			ventana.getSubPanelInsertVentas().setVisible(false);
+			ventana.getSubPanelBotonesVentas().setVisible(false);
+			ventana.getPanelProveedores().setVisible(false);
+			ventana.getPanelClientes().setVisible(false);
+			ventana.getSubPanelInsCliente().setVisible(false);
+			ventana.getPanelBotonesCliente().setVisible(false);
+			ventana.getSubPanelEditCliente().setVisible(false);
+			ventana.getSubPanelElimCliente().setVisible(false);
+			ventana.getPanelCRM().setVisible(false);
+			ventana.getPanelAlmacen().setVisible(false);
+			ventana.getSubPanelAlmacenExport().setVisible(false);
+			ventana.getSubPanelInsProv().setVisible(false);
+			ventana.getSubPanelEditProv().setVisible(false);
+			ventana.getSubPanelElimProv().setVisible(false);
+			ventana.getPanelBotonesProv().setVisible(false);
+			ventana.getSubPanelEmpExport().setVisible(false);
+			ventana.getSubPanelVentasExport().setVisible(false);		
+			
 			
 		}
 		
-		else if(e.getSource() == ventana.getBotonExportComFinal()) {
+		else if(e.getSource() == ventana.getBotonCheckDeliNoteComDelete()) {
+			
+			//Almacenamos en una variable el número de la fila seleccionada
+			int rowDelete = ventana.getTablaCompras().getSelectedRow();
+			
+			//Si el número de fila es dstinto a -1 es que se ha seleccionado una fila
+            if (rowDelete != -1) {
+            	
+            	//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                String numAlbaranDelete = (String) ventana.getTablaCompras().getValueAt(rowDelete, 0);
+                ventana.getJLnumAlbaranDeleteCom().setText(numAlbaranDelete);          
+                
+                //Mostramos datos de las Labels que están ocultos en la ventana
+                ventana.getJLDeliveryNoteDeleteCom().setVisible(true);
+                ventana.getBotonDeleteLineaAlbaran().setVisible(true);
+                ventana.getBotonDeleteAlabaran().setVisible(true);
+                ventana.getJLselecJTableComDeleteLineAlbaran().setVisible(true);
+                ventana.getJLselecJTableComDeleteAlbaran().setVisible(true);
+                
+                //Creamos la Tabla con la información               
+                barraDeliNoteDelete.setVisible(true);
+                barraDeliNoteDelete.setBounds(20, 50, 710, 100);
+                ventana.getSubPanelComprasDelete().add(barraDeliNoteDelete);
+        		
+        		String titulosDeliNoteCom[] = {"Product's Code", "Product's Name", "Purchase amount", "Quantity","Total Account", 
+        				"Supplier's code", "Supplier", "Date"};
+        		String infoCompras[][] = AccesoDB.obtenerMatrizDeliveryNoteDelete(numAlbaranDelete);
+        		
+        		tablaDeliNoteDeleteCom = new JTable(infoCompras,titulosDeliNoteCom);
+        		barraDeliNoteDelete.setViewportView(tablaDeliNoteDeleteCom);
+        		
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Delete Delivery Note",
+						JOptionPane.ERROR_MESSAGE);
+            }
+		}
+		
+		else if(e.getSource() == ventana.getBotonDeleteLineaAlbaran()) {
+			
+			//Almacenamos en una variable el número de la fila seleccionada
+			int rowDeleteLine = tablaDeliNoteDeleteCom.getSelectedRow();
+			
+			//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+            String numAlbaranDelete = ventana.getJLnumAlbaranDeleteCom().getText();
+			
+			//Si el número de fila es dstinto a -1 es que se ha seleccionado una fila
+            if (rowDeleteLine != -1) {
+            	
+            	//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                String numProductoDelete = (String) tablaDeliNoteDeleteCom.getValueAt(rowDeleteLine, 0);
+                //Recogemos los valores de la fila seleccionada indicando los datos de la columna
+                int cantidadDeleteCom = Integer.parseInt((String) tablaDeliNoteDeleteCom.getValueAt(rowDeleteLine, 3));
+                
+                int afect = AccesoDB.deleteLineaAlbaranCompras(numAlbaranDelete, numProductoDelete, cantidadDeleteCom, conexion);
+                
+                if(afect == 1) {
+                	
+                	//Mostramos Dialog 
+    				JOptionPane.showMessageDialog(new JFrame(), 
+    						"Delivery Note line deleted",
+    						"Delete Delivery Note",
+    						JOptionPane.INFORMATION_MESSAGE);
+    				
+    				refreshJTableDeleteCompras(numAlbaranDelete);
+    				refreshJTableCompras();
+                	
+                } else {
+                	
+                	//Mostramos Dialog 
+    				JOptionPane.showMessageDialog(new JFrame(), 
+    						"ERROR to delete the Delivery Note Line",
+    						"Delete Delivery Note",
+    						JOptionPane.ERROR_MESSAGE);
+                }
+        		
+            } else {
+
+            	//Mostramos Dialog 
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"You must select a row",
+						"Delete Delivery Note",
+						JOptionPane.ERROR_MESSAGE);
+            }			
+		}
+		
+		else if(e.getSource() == ventana.getBotonDeleteAlabaran()) {
+			
+			//Recogemos los valores de la fila seleccionada indicando los datos de la columna
+            String numAlbaranDelete = ventana.getJLnumAlbaranDeleteCom().getText();
+			
+            int resp = JOptionPane.showConfirmDialog(null, 
+            		"Do you want delete the Delivery Note "+ numAlbaranDelete + "?\n"
+            				+"This operation can't be undone.", 
+            		"Delete Delivery Note", 
+            		JOptionPane.YES_NO_OPTION, 
+            		JOptionPane.QUESTION_MESSAGE);
+            
+           if (JOptionPane.OK_OPTION == resp) {
+        	   
+        	   int afect = AccesoDB.deleteAlbaranCompras(numAlbaranDelete, conexion);
+               int afect1 = AccesoDB.deleteLineaAlbaranCompras(numAlbaranDelete, conexion);
+        	   
+               if(afect == 1 && afect1 >= 1) {
+               	
+               	//Mostramos Dialog 
+   				JOptionPane.showMessageDialog(new JFrame(), 
+   						"Delivery Note DELETED from DataBase",
+   						"Delete Delivery Note",
+   						JOptionPane.INFORMATION_MESSAGE);
+   				
+   				refreshJTableDeleteCompras(numAlbaranDelete);
+   				refreshJTableCompras();
+               	
+               } else {
+               	
+               	//Mostramos Dialog 
+   				JOptionPane.showMessageDialog(new JFrame(), 
+   						"ERROR to delete the Delivery Note",
+   						"Delete Delivery Note",
+   						JOptionPane.ERROR_MESSAGE);
+               }
+        	   
+           } else {
+        	   
+              	//Mostramos Dialog 
+  				JOptionPane.showMessageDialog(new JFrame(), 
+  						"Abort Deleting ...",
+  						"Delete Delivery Note",
+  						JOptionPane.ERROR_MESSAGE);
+           }
+
+		}
+		
+		else if(e.getSource() == ventana.getBotonExportCompra()) {
+			
+			//Limpiamos la etiqueta usuario
+			ventana.getInsertUsuarioPCCompras().setText("");	
+			ventana.getResulExportCom().setText("");
+			//Mostramos el panel de Export
+			ventana.getSubPanelComprasExport().setVisible(true);
+			
+			//Ocultamos
+			ventana.getSubPanelInsertCompras().setVisible(false);
+			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
+			
+		}
+		
+else if(e.getSource() == ventana.getBotonExportComFinal()) {
 			
 			//Recojemos el usuario del PC
 			String user = ventana.getInsertUsuarioPCCompras().getText();
-			
-			Boolean ok_fichero = AccesoDB.exportarFicheroCompras(user);
-			
-			if (ok_fichero == true) {
+						
+			if(user.isEmpty()) {
 				
-				ventana.getResulExportCom().setText("File Created");
-				
+				//Mostramos Dialog 
+  				JOptionPane.showMessageDialog(new JFrame(), 
+  						"Please, enter you user",
+  						"Export Purchases",
+  						JOptionPane.ERROR_MESSAGE);
 			} else {
 				
-				ventana.getResulExportCom().setText("Error creating file");
-			}
-			
-		}		
-		
-		//INSERT INTO LINEA_ALBARAN (cantidad, codproducto, numAlbaran) VALUES (35, 'AMPL002', '002');
+				Boolean ok_fichero = AccesoDB.exportarFicheroCompras(user);
+				
+				if (ok_fichero == true) {
+					
+					ventana.getResulExportCom().setText("File Created");
+					
+				} else {
+					
+					ventana.getResulExportCom().setText("Error creating file");
+				}
+			}			
+		}
 		
 		else if(e.getSource()==ventana.getBotonSales()) {
 			
@@ -1005,6 +1217,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);	
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelProveedores().setVisible(false);
 			ventana.getPanelClientes().setVisible(false);
@@ -1496,32 +1709,46 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Limpiamos la etiqueta usuario
 			ventana.getInsertUsuarioPCVentas().setText("");
+
+			ventana.getInsertUsuarioPCCompras().setText("");
+
 			
-			//Ocultamos los paneles de insert, update empleado y boton delete
+			//Ocultamos los paneles del resto de Ventas
 			ventana.getSubPanelInsertVentas().setVisible(false);
+
 			ventana.getSubPanelBills().setVisible(false);
+
 
 			//Mostramos el panel de Export
 			ventana.getSubPanelVentasExport().setVisible(true);
 			
 		}
 		
-		else if(e.getSource() == ventana.getBotonExportVenFinal()) {
+else if(e.getSource() == ventana.getBotonExportVenFinal()) {
 			
 			//Recojemos el usuario del PC
 			String user = ventana.getInsertUsuarioPCVentas().getText();
-			
-			Boolean ok_fichero = AccesoDB.exportarFicheroVentas(user);
-			
-			if (ok_fichero == true) {
+						
+			if(user.isEmpty()) {
 				
-				ventana.getResulExportVen().setText("File Created");
-				
+				//Mostramos Dialog 
+  				JOptionPane.showMessageDialog(new JFrame(), 
+  						"Please, enter you user",
+  						"Export Sales",
+  						JOptionPane.ERROR_MESSAGE);
 			} else {
 				
-				ventana.getResulExportCom().setText("Error creating file");
-			}
-			
+				Boolean ok_fichero = AccesoDB.exportarFicheroVentas(user);
+				
+				if (ok_fichero == true) {
+					
+					ventana.getResulExportVen().setText("File Created");
+					
+				} else {
+					
+					ventana.getResulExportVen().setText("Error creating file");
+				}
+			}			
 		}
 		
 		
@@ -1552,6 +1779,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);			
@@ -1757,6 +1985,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
@@ -1817,7 +2046,7 @@ public class Eventos implements ActionListener, MouseListener {
 			}
 		}
 		
-	}
+		}
 		
 		
 		else if(e.getSource() == ventana.getBotonActualizarCliente()) {
@@ -1961,6 +2190,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
@@ -2007,6 +2237,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
@@ -2043,22 +2274,31 @@ public class Eventos implements ActionListener, MouseListener {
 			
 		}
 		
-		else if(e.getSource() == ventana.getBotonExportAlmFinal()) {
+else if(e.getSource() == ventana.getBotonExportAlmFinal()) {
 			
 			//Recojemos el usuario del PC
 			String user = ventana.getInsertUsuarioPCAlmacen().getText();
-			
-			Boolean ok_fichero = AccesoDB.exportarFicheroAlmacen(user);
-			
-			if (ok_fichero == true) {
+						
+			if(user.isEmpty()) {
 				
-				ventana.getResulExportAlm().setText("File Created");
-				
+				//Mostramos Dialog 
+  				JOptionPane.showMessageDialog(new JFrame(), 
+  						"Please, enter you user",
+  						"Export Stock",
+  						JOptionPane.ERROR_MESSAGE);
 			} else {
 				
-				ventana.getResulExportAlm().setText("Error creating file");
-			}
-			
+				Boolean ok_fichero = AccesoDB.exportarFicheroAlmacen(user);
+				
+				if (ok_fichero == true) {
+					
+					ventana.getResulExportAlm().setText("File Created");
+					
+				} else {
+					
+					ventana.getResulExportAlm().setText("Error creating file");
+				}
+			}			
 		}
 		
 		else if(e.getSource()==ventana.getBotonUser()) {
@@ -2073,6 +2313,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelBotonesCompras().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
@@ -2114,6 +2355,7 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelCompras().setVisible(false);
 			ventana.getSubPanelInsertCompras().setVisible(false);
 			ventana.getSubPanelDeliveryNoteCompras().setVisible(false);
+			ventana.getSubPanelComprasDelete().setVisible(false);
 			ventana.getPanelVentas().setVisible(false);
 			ventana.getSubPanelInsertVentas().setVisible(false);
 			ventana.getSubPanelBotonesVentas().setVisible(false);
@@ -2141,6 +2383,8 @@ public class Eventos implements ActionListener, MouseListener {
 		}
 		
 	}
+
+
 
 		private void refreshJTableCompras() {
 			String titulosCompras[] = {"Delivery Note's Code", "Product's Code", "Product's Name", "Quantity", "Purchase amount", "Total Account", 

@@ -1200,10 +1200,11 @@ public class AccesoDB {
 		return lista_compras;
 	}
 	
-	
-	public static String[][] obtenerMatrizDeliveryNoteDelete(String numAlbaranDelete) {
 
+	public static String[][] obtenerMatrizDeliveryNoteDelete(String numAlbaranDelete) {
+		
 		DecimalFormat formatea = new DecimalFormat("###,###.##");// Declaramos el formato de los numeros
+		
 
 		Connection conexion = AccesoDB.conexion();
 
@@ -1211,6 +1212,7 @@ public class AccesoDB {
 
 		//String titulosDeliNoteCom[] = {"Product's Code", "Product's Name", "Quantity", "Purchase amount", "Total Account", 
 				//"Supplier's code", "Supplier", "Date"};
+
 
 		String matrizInfoCompras[][] = new String[listaCompras.size()][8];
 
@@ -1233,6 +1235,7 @@ public class AccesoDB {
 
 		int afectados = 0;
 
+
 		// Almacenamos en un String la Sentencia SQL
 		String sql = "DELETE FROM LINEA_ALBARAN WHERE numAlbaran = '"+numAlbaranDelete+"' AND codproducto = '"+numProductoDelete+"' AND cantidad = "+cantidadDeleteCom;
 
@@ -1244,14 +1247,17 @@ public class AccesoDB {
 		}
 		return afectados;	
 
+
 	}
 
+
 	public static int deleteAlbaranCompras(String numAlbaranDelete, Connection conexion) {
-
+		
 		int afectados = 0;
-
+		
 		// Almacenamos en un String la Sentencia SQL
 		String sql = "DELETE FROM ALBARAN WHERE numAlbaran = '"+ numAlbaranDelete +"'";
+		
 
 		try {
 			PreparedStatement sentencia = conexion.prepareStatement(sql);
@@ -1260,18 +1266,22 @@ public class AccesoDB {
 			e.printStackTrace();
 		}
 
-		System.out.println("Afectados Albaran:" + afectados);
+
 		return afectados;		
+		
 
 	}
 
 	public static int deleteLineaAlbaranCompras(String numAlbaranDelete, Connection conexion) {
 		// TODO Auto-generated method stub
 
+
 		int afectados = 0;
 
 		// Almacenamos en un String la Sentencia SQL
 		String sql = "DELETE FROM LINEA_ALBARAN WHERE numAlbaran = '"+ numAlbaranDelete +"'";
+
+		
 
 		try {
 			PreparedStatement sentencia = conexion.prepareStatement(sql);
@@ -1279,6 +1289,7 @@ public class AccesoDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 
 		System.out.println("Afectados lineaAlbaran:" + afectados);
 
@@ -1427,11 +1438,13 @@ public class AccesoDB {
 			e.printStackTrace();
 		}
 
-		System.out.println("Afectados lineaFactura:" + afectados);
+		
 
 		return afectados;		
 	}
 	
-	
-	
-}
+
+	}
+
+
+
